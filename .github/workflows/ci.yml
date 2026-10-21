@@ -17,6 +17,8 @@ concurrency:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    outputs:
+      runtime_changed: ${{ steps.changes.outputs.runtime_changed }}
     services:
       redis-cache:
         image: redis:7-alpine
@@ -34,6 +36,33 @@ jobs:
           --health-interval=5s --health-timeout=5s --health-retries=12
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Detect runtime changes
+        id: changes
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          runtime_changed=false
+          if [[ "$GITHUB_EVENT_NAME" == workflow_dispatch ]]; then
+            runtime_changed=true
+          elif [[ "$GITHUB_EVENT_NAME" == push && "$GITHUB_REF" == refs/heads/main ]]; then
+            if [[ ! "$BEFORE" =~ ^[0-9a-f]{40}$ ]] || [[ "$BEFORE" =~ ^0+$ ]] || \
+              ! git cat-file -e "$BEFORE^{commit}"; then
+              runtime_changed=true
+            elif ! git diff --name-only -z "$BEFORE" "$GITHUB_SHA" > "$RUNNER_TEMP/changed-files"; then
+              runtime_changed=true
+            else
+              while IFS= read -r -d '' path; do
+                case "$path" in
+                  README.md|CLIENT_UPDATES.md|.github/*|deploy/rollout.sh|deploy/runner-entrypoint.sh|deploy/runner.compose.yaml|deploy/bootstrap.sh|.gitignore) ;;
+                  *) runtime_changed=true ;;
+                esac
+              done < "$RUNNER_TEMP/changed-files"
+            fi
+          fi
+          echo "runtime_changed=$runtime_changed" >> "$GITHUB_OUTPUT"
+          echo "Runtime changed: $runtime_changed"
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
@@ -84,7 +113,7 @@ jobs:
           fi
 
   image:
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.tests.outputs.runtime_changed == 'true'
     needs: tests
     runs-on: ubuntu-latest
     outputs:

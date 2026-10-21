@@ -95,7 +95,16 @@ rollback() {
 
 # Pulling first leaves the live site untouched if the registry is unavailable.
 export APP_IMAGE=$target_ref
-docker compose -p elsakr -f next.compose.yaml pull || exit 1
+pull_ok=0
+for attempt in 1 2; do
+  if timeout --signal=TERM --kill-after=10s 180s \
+    docker compose -p elsakr -f next.compose.yaml pull; then
+    pull_ok=1
+    break
+  fi
+  echo "Image pull attempt $attempt failed or timed out" >&2
+done
+(( pull_ok )) || { echo 'Image pull failed; live site was not changed' >&2; exit 1; }
 if (( ! first_install )); then
   # Frappe's backup cleanup expects files, not directories, in private/backups.
   backend bash -lc "mkdir -p '$backup_root'; find '/home/frappe/frappe-bench/sites/$site/private/backups' -maxdepth 1 -type d -name 'deploy-*' -exec mv -t '$backup_root' {} +" || exit 1
