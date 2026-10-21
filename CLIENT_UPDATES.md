@@ -6,7 +6,8 @@ The only site is `elsakr.arab-erp.com`. Its production stack runs in Docker on
 1. Develop on `develop` and open a pull request. CI installs ERPNext, the theme,
    and `elsakr_app`, builds assets, and runs app tests if present.
 2. Merge into `main`. The same workflow builds an image, publishes it to GHCR,
-   and deploys it on the client server. The deploy job requires the
+   and deploys it on the client server. Documentation and CI-only changes skip
+   the image and deployment. The deploy job requires the
    `elsakr-deploy` self hosted runner to be online.
 3. For another app, add its `name`, public GitHub `url`, and `ref` to
    [apps.yml](apps.yml) before `elsakr_app`. Update its `ref` to release an
