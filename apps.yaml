@@ -1,0 +1,15 @@
+# Apps installed on elsakr.arab-erp.com, in installation order.
+# Add another name/repo/ref to install an app on the next main-branch build.
+# The build fetches the latest commit on each ref. Frappe is included by
+# frappe_branch and does not need an entry below.
+frappe_branch: version-15
+apps:
+  - name: erpnext
+    repo: https://github.com/frappe/erpnext
+    ref: version-15
+  - name: arab_erp_theme
+    repo: https://github.com/00JIMMY00/arab_erp_theme
+    ref: develop
+  - name: elsakr_app
+    repo: https://github.com/00JIMMY00/elsakr_app
+    ref: $GITHUB_SHA

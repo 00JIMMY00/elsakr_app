@@ -78,5 +78,5 @@ jobs:
           trap 'rm -rf "$DOCKER_CONFIG"' EXIT
           printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
           cp deploy/compose.yaml /home/hassan/elsakr/next.compose.yaml
-          awk '/^  - name: / { print $3 }' apps.yml > /home/hassan/elsakr/next.apps.txt
+          awk '/^  - name: / { print $3 }' apps.yaml > /home/hassan/elsakr/next.apps.txt
           bash deploy/rollout.sh "$IMAGE_REF" /home/hassan/elsakr
