@@ -85,6 +85,7 @@ rollback() {
     [[ -n $db && -n $public && -n $private ]] || return 1
     backend bench --site "$site" restore "$db" --with-public-files "$public" \
       --with-private-files "$private" --db-root-password "$DB_PASSWORD" --force || return 1
+    backend bench --site "$site" enable-scheduler || return 1
     backend bench --site "$site" clear-cache || return 1
     backend bench --site "$site" set-maintenance-mode off || return 1
   fi
@@ -109,7 +110,8 @@ roll_forward() {
   compose up -d --pull never || return 1
   if (( first_install )); then
     backend bench new-site "$site" --db-root-password "$DB_PASSWORD" \
-      --admin-password "$ADMIN_PASSWORD" --set-default || return 1
+      --admin-password "$ADMIN_PASSWORD" --mariadb-user-host-login-scope '%' \
+      --set-default || return 1
   fi
   mapfile -t desired < next.apps.txt
   [[ ${#desired[@]} -gt 0 ]] || return 1
