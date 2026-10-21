@@ -14,7 +14,10 @@ concurrency:
 
 jobs:
   image:
-    runs-on: [self-hosted, linux, x64, elsakr-deploy]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write
     outputs:
       ref: ${{ steps.image_ref.outputs.ref }}
     steps:
@@ -26,32 +29,54 @@ jobs:
           repository: frappe/frappe_docker
           ref: d84154ae23ab7ae756dfe942e3f24dcd70d1fbda
           path: frappe_docker
-      - name: Build image with latest app branches
-        env:
-          DOCKER_BUILDKIT: '1'
+      - name: Image name
+        id: image_name
         run: |
-          docker build \
-            --file deploy/Containerfile \
-            --build-arg FRAPPE_BRANCH=version-15 \
-            --build-arg APP_COMMIT="$GITHUB_SHA" \
-            --build-arg CACHE_BUST="$GITHUB_SHA" \
-            --secret id=apps_json,src="$RUNNER_TEMP/apps.json" \
-            --tag "elsakr:sha-$GITHUB_SHA" \
-            ./frappe_docker
-      - name: Record image
+          echo "name=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and publish image with latest app branches
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frappe_docker
+          file: ./deploy/Containerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.image_name.outputs.name }}:sha-${{ github.sha }}
+          build-args: |
+            FRAPPE_BRANCH=version-15
+            APP_COMMIT=${{ github.sha }}
+            CACHE_BUST=${{ github.sha }}
+          secret-files: |
+            apps_json=${{ runner.temp }}/apps.json
+      - name: Record image digest
         id: image_ref
-        run: echo "ref=elsakr:sha-$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+        run: echo "ref=${{ steps.image_name.outputs.name }}@${{ steps.build.outputs.digest }}" >> "$GITHUB_OUTPUT"
 
   deploy:
     needs: image
     runs-on: [self-hosted, linux, x64, elsakr-deploy]
+    permissions:
+      contents: read
+      packages: read
     steps:
       - uses: actions/checkout@v4
       - name: Deploy on client machine
         env:
           IMAGE_REF: ${{ needs.image.outputs.ref }}
+          GHCR_USER: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
+          export DOCKER_CONFIG="$RUNNER_TEMP/docker-config"
+          mkdir -p "$DOCKER_CONFIG"
+          trap 'rm -rf "$DOCKER_CONFIG"' EXIT
+          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
           cp deploy/compose.yaml /home/hassan/elsakr/next.compose.yaml
           awk '/^  - name: / { print $3 }' apps.yml > /home/hassan/elsakr/next.apps.txt
           bash deploy/rollout.sh "$IMAGE_REF" /home/hassan/elsakr

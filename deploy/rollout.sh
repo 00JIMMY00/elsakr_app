@@ -27,6 +27,14 @@ exec 9>.rollout.lock
 flock -n 9 || { echo 'Another rollout is in progress' >&2; exit 1; }
 compose() { docker compose -p elsakr -f compose.yaml "$@"; }
 backend() { compose exec -T backend "$@"; }
+sync_assets() {
+  backend bash -lc 'cd /home/frappe/frappe-bench && test -d assets && rm -rf sites/assets && cp -a assets sites/assets'
+}
+invalidate_assets() {
+  compose exec -T redis-cache redis-cli DEL assets_json >/dev/null || true
+  backend bench --site "$site" clear-cache
+  backend bench --site "$site" clear-website-cache
+}
 old_ref=${APP_IMAGE:-}
 old_compose=$(mktemp)
 cp compose.yaml "$old_compose"
@@ -85,6 +93,7 @@ rollback() {
   cp "$old_compose" compose.yaml
   set_image "$old_ref"
   compose up -d --pull never || return 1
+  sync_assets || return 1
   if [[ -n $backup_dir ]]; then
     local db public private root=$backup_root/$backup_dir
     db=$(backend bash -lc "find '$root' -maxdepth 1 -name '*-database.sql.gz' -print -quit")
@@ -94,7 +103,7 @@ rollback() {
     backend bench --site "$site" restore "$db" --with-public-files "$public" \
       --with-private-files "$private" --db-root-password "$DB_PASSWORD" --force || return 1
     backend bench --site "$site" enable-scheduler || return 1
-    backend bench --site "$site" clear-cache || return 1
+    invalidate_assets || return 1
     backend bench --site "$site" set-maintenance-mode off || return 1
   fi
   wait_healthy
@@ -109,8 +118,8 @@ if (( local_image )); then
 else
   pull_ok=0
   for attempt in 1 2; do
-    if timeout --signal=TERM --kill-after=10s 180s \
-      docker compose -p elsakr -f next.compose.yaml pull; then
+    if timeout --signal=TERM --kill-after=10s 1200s \
+      docker pull "$target_ref"; then
       pull_ok=1
       break
     fi
@@ -133,6 +142,7 @@ fi
 roll_forward() {
   cp "$deploy_dir/next.compose.yaml" compose.yaml || return 1
   compose up -d --pull never || return 1
+  sync_assets || return 1
   if (( first_install )); then
     backend bench new-site "$site" --db-root-password "$DB_PASSWORD" \
       --admin-password "$ADMIN_PASSWORD" --mariadb-user-host-login-scope '%' \
@@ -152,7 +162,7 @@ roll_forward() {
   if (( first_install )); then
     backend bench --site "$site" enable-scheduler || return 1
   fi
-  backend bench --site "$site" clear-cache || return 1
+  invalidate_assets || return 1
   backend bench --site "$site" set-maintenance-mode off || return 1
   wait_healthy
 }

@@ -5,9 +5,9 @@ The only site is `elsakr.arab-erp.com`. Its production stack runs in Docker on
 
 1. Push a commit to `elsakr_app/main` to release the app and refresh all
    installed apps from the branches in `apps.yml`.
-2. Every commit builds a new image on
-   the client server with the latest commits from the branches in `apps.yml`,
-   and deploys it. This includes README-only commits when you want to refresh
+2. Every commit builds a new image on GitHub with the latest commits from the
+   branches in `apps.yml`, publishes it to GHCR, and deploys it on the client
+   server. This includes README-only commits when you want to refresh
    upstream apps. The `elsakr-deploy` self hosted runner must be online.
 3. For another app, add its `name`, public GitHub `url`, and `ref` to
    [apps.yml](apps.yml) before `elsakr_app`. Update its `ref` to release an
@@ -29,7 +29,7 @@ then run `docker compose -f /home/hassan/elsakr/runner.compose.yaml up -d`.
 The runner removes the token file after registration. The generated ERPNext
 Administrator password is stored in `/home/hassan/elsakr/.env` on that machine.
 
-No custom GitHub Actions secrets are needed. Images are built on the client
-server and kept there for rollback. Since this repo is public,
+No custom GitHub Actions secrets are needed. GitHub's built-in `GITHUB_TOKEN`
+publishes and pulls the image. Since this repo is public,
 review pull requests before running them: a self hosted runner with Docker
 access can execute code on the client machine.
