@@ -4,14 +4,14 @@ The only site is `elsakr.arab-erp.com`. Its production stack runs in Docker on
 `ssh hassan`; Cloudflare Tunnel points to `127.0.0.1:8000`.
 
 1. Push a commit to `elsakr_app/main` to release the app and refresh all
-   installed apps from the branches in `apps.yml`.
+   installed apps from the branches in `apps.yaml`.
 2. Every commit builds a new image on GitHub with the latest commits from the
-   branches in `apps.yml`, publishes it to GHCR, and deploys it on the client
+   branches in `apps.yaml`, publishes it to GHCR, and deploys it on the client
    server. This includes README-only commits when you want to refresh
    upstream apps. The `elsakr-deploy` self hosted runner must be online.
-3. For another app, add its `name`, public GitHub `url`, and `ref` to
-   [apps.yml](apps.yml) before `elsakr_app`. Update its `ref` to release an
-   upstream change. CI builds all listed apps; deployment installs missing apps.
+3. For another app, add its `name`, public GitHub `repo`, and `ref` to
+   [apps.yaml](apps.yaml). Keep `elsakr_app` in the list. The next build fetches
+   the latest commit of each `ref` and deployment installs missing apps.
    A push to an upstream app alone does not start this workflow: push to
    `elsakr_app/main` or run the workflow manually to take that update.
 4. Check the GitHub Actions result and `https://elsakr.arab-erp.com`.
