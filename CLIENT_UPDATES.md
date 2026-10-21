@@ -12,7 +12,8 @@ The only site is `elsakr.arab-erp.com`. Its production stack runs in Docker on
    [apps.yml](apps.yml) before `elsakr_app`. Update its `ref` to release an
    upstream change. CI builds all listed apps; deployment installs missing apps.
 4. Check the GitHub Actions result and `https://elsakr.arab-erp.com`.
-   A failed rollout restores the previous image and the database/file backup.
+   A failed update restores the previous image and the database/file backup.
+   The first install has no prior release to restore.
    Backups remain in the site's `private/backups/deploy-*` directory.
 
 ## One-time setup

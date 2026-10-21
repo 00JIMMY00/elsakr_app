@@ -25,7 +25,17 @@ cp compose.yaml "$old_compose"
 backup_dir=
 first_install=0
 if [[ -z $old_ref || $old_ref == pending ]]; then
-  first_install=1
+  # A failed first rollout may already have created the site. Adopt its image
+  # so a retry backs up that site and can roll back after a later failure.
+  old_container=$(docker ps -q \
+    --filter label=com.docker.compose.project=elsakr \
+    --filter label=com.docker.compose.service=backend | head -1)
+  if [[ -n $old_container ]] && docker exec "$old_container" \
+    test -f "/home/frappe/frappe-bench/sites/$site/site_config.json"; then
+    old_ref=$(docker inspect -f '{{.Config.Image}}' "$old_container")
+  else
+    first_install=1
+  fi
 elif ! docker image inspect "$old_ref" >/dev/null 2>&1; then
   echo "Previous image is unavailable: $old_ref" >&2
   exit 1
@@ -52,7 +62,7 @@ healthy() {
 
 wait_healthy() {
   local end=$((SECONDS + 180))
-  until healthy; do
+  until healthy && { sleep 5; healthy; }; do
     (( SECONDS < end )) || return 1
     sleep 5
   done
