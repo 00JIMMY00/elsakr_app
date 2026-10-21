@@ -6,15 +6,32 @@ import pathlib
 import re
 import sys
 
-import yaml
-
-
 def main():
-    config = yaml.safe_load(pathlib.Path("apps.yml").read_text())
-    if not isinstance(config, dict) or config.get("frappe_branch") != "version-15":
+    # apps.yml deliberately uses a small, explicit YAML subset so the
+    # production runner needs only Python's standard library.
+    branch = None
+    apps = []
+    for line in pathlib.Path("apps.yml").read_text().splitlines():
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        match = re.fullmatch(r"frappe_branch: ([A-Za-z0-9._/-]+)", line)
+        if match:
+            branch = match.group(1)
+            continue
+        if line == "apps:":
+            continue
+        match = re.fullmatch(r"  - name: ([a-z][a-z0-9_]*)", line)
+        if match:
+            apps.append({"name": match.group(1)})
+            continue
+        match = re.fullmatch(r"    (url|ref): (\S+)", line)
+        if match and apps and match.group(1) not in apps[-1]:
+            apps[-1][match.group(1)] = match.group(2)
+            continue
+        raise ValueError(f"unsupported apps.yml line: {line!r}")
+    if branch != "version-15":
         raise ValueError("apps.yml must target Frappe version-15")
-    apps = config.get("apps")
-    if not isinstance(apps, list) or not apps:
+    if not apps:
         raise ValueError("apps.yml needs a nonempty apps list")
     names = []
     output = []

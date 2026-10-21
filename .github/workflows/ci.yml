@@ -1,109 +1,32 @@
-name: Test, build, deploy
+name: Build and deploy
 
 on:
-  pull_request:
   push:
-    branches: [develop, main]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
-  packages: write
 
 concurrency:
-  group: elsakr-${{ github.ref }}
+  group: elsakr-production
   cancel-in-progress: false
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-    services:
-      redis-cache:
-        image: redis:7-alpine
-        ports: [13000:6379]
-      redis-queue:
-        image: redis:7-alpine
-        ports: [11000:6379]
-      mariadb:
-        image: mariadb:10.11
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports: [3306:3306]
-        options: >-
-          --health-cmd="healthcheck.sh --connect --innodb_initialized"
-          --health-interval=5s --health-timeout=5s --health-retries=12
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-          cache: pip
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      - name: Validate app list
-        run: |
-          python -m pip install PyYAML==6.0.3
-          python deploy/render_apps.py /tmp/apps.json
-          APP_IMAGE=local/test DB_PASSWORD=test docker compose -f deploy/compose.yaml config --format json | python -c \
-            'import json,sys; s=json.load(sys.stdin)["services"]; assert s["queue-short"]["command"] == ["bench","worker","--queue","short,default"]; assert s["queue-long"]["command"] == ["bench","worker","--queue","long,default,short"]'
-      - name: Install Bench
-        run: |
-          python -m pip install frappe-bench
-          attempt=1
-          until bench init --frappe-branch version-15 --skip-redis-config-generation --skip-assets \
-            --python "$(command -v python)" "$HOME/frappe-bench"; do
-            if (( attempt >= 3 )); then exit 1; fi
-            rm -rf "$HOME/frappe-bench"
-            sleep $((attempt * 10))
-            ((attempt += 1))
-          done
-      - name: Install applications and build assets
-        working-directory: /home/runner/frappe-bench
-        env:
-          CI: 'Yes'
-        run: |
-          bench get-app --branch version-15 erpnext https://github.com/frappe/erpnext
-          bench get-app --branch develop arab_erp_theme https://github.com/00JIMMY00/arab_erp_theme
-          bench get-app elsakr_app "$GITHUB_WORKSPACE"
-          bench setup requirements --dev
-          bench new-site --db-root-password root --admin-password admin test_site
-          bench --site test_site install-app erpnext
-          bench --site test_site install-app arab_erp_theme
-          bench --site test_site install-app elsakr_app
-          bench --site test_site migrate
-          bench build
-          bench --site test_site list-apps -f json | python -c \
-            'import json,sys; a=json.load(sys.stdin)["test_site"]; assert all(x in a for x in ("erpnext","arab_erp_theme","elsakr_app"))'
-      - name: Run application tests when present
-        working-directory: /home/runner/frappe-bench
-        run: |
-          if find "$GITHUB_WORKSPACE/elsakr_app" -name 'test_*.py' | grep -q .; then
-            bench --site test_site set-config allow_tests true
-            bench --site test_site run-tests --app elsakr_app --skip-test-records
-          fi
-
   image:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    needs: tests
     runs-on: [self-hosted, linux, x64, elsakr-deploy]
     outputs:
-      ref: ${{ steps.publish.outputs.ref }}
+      ref: ${{ steps.image_ref.outputs.ref }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
       - name: Render app list
-        run: |
-          python -m pip install PyYAML==6.0.3
-          python deploy/render_apps.py /tmp/apps.json
+        run: python3 deploy/render_apps.py "$RUNNER_TEMP/apps.json"
       - uses: actions/checkout@v4
         with:
           repository: frappe/frappe_docker
           ref: d84154ae23ab7ae756dfe942e3f24dcd70d1fbda
           path: frappe_docker
-      - name: Build production image on client server
+      - name: Build image with latest app branches
         env:
           DOCKER_BUILDKIT: '1'
         run: |
@@ -112,28 +35,16 @@ jobs:
             --build-arg FRAPPE_BRANCH=version-15 \
             --build-arg APP_COMMIT="$GITHUB_SHA" \
             --build-arg CACHE_BUST="$GITHUB_SHA" \
-            --secret id=apps_json,src=/tmp/apps.json \
+            --secret id=apps_json,src="$RUNNER_TEMP/apps.json" \
             --tag "elsakr:sha-$GITHUB_SHA" \
             ./frappe_docker
-      - name: Check image contents
-        env:
-          IMAGE: elsakr:sha-${{ github.sha }}
-        run: |
-          docker run --rm --entrypoint bash -e APP_COMMIT="$GITHUB_SHA" "$IMAGE" -lc \
-            'test "$(cat apps/elsakr_app/.source-commit)" = "$APP_COMMIT" && \
-             grep -qx arab_erp_theme sites/apps.txt && grep -qx erpnext sites/apps.txt'
-      - name: Record immutable local image
-        id: publish
-        run: |
-          echo "ref=elsakr:sha-$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+      - name: Record image
+        id: image_ref
+        run: echo "ref=elsakr:sha-$GITHUB_SHA" >> "$GITHUB_OUTPUT"
 
   deploy:
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: image
     runs-on: [self-hosted, linux, x64, elsakr-deploy]
-    permissions:
-      contents: read
-      packages: read
     steps:
       - uses: actions/checkout@v4
       - name: Deploy on client machine

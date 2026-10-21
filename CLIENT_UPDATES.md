@@ -3,9 +3,9 @@
 The only site is `elsakr.arab-erp.com`. Its production stack runs in Docker on
 `ssh hassan`; Cloudflare Tunnel points to `127.0.0.1:8000`.
 
-1. Develop on `develop` and open a pull request. CI installs ERPNext, the theme,
-   and `elsakr_app`, builds assets, and runs app tests if present.
-2. Merge or push into `main`. Every commit runs tests, builds a new image on
+1. Push a commit to `elsakr_app/main` to release the app and refresh all
+   installed apps from the branches in `apps.yml`.
+2. Every commit builds a new image on
    the client server with the latest commits from the branches in `apps.yml`,
    and deploys it. This includes README-only commits when you want to refresh
    upstream apps. The `elsakr-deploy` self hosted runner must be online.
