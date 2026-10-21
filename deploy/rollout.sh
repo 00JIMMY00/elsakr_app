@@ -122,6 +122,9 @@ roll_forward() {
     fi
   done
   backend bench --site "$site" migrate || return 1
+  if (( first_install )); then
+    backend bench --site "$site" enable-scheduler || return 1
+  fi
   backend bench --site "$site" clear-cache || return 1
   backend bench --site "$site" set-maintenance-mode off || return 1
   wait_healthy
