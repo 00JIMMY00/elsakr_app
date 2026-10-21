@@ -10,3 +10,4 @@ Production deployments run from `main` through GitHub Actions. CI installs the
 apps and builds assets, then publishes a Docker image. The client machine pulls
 that image and updates its containerized Frappe stack. A failed rollout restores
 the previous image and the pre-migration database and files backup.
+
