@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-target_ref=${1:?pass an image digest}
+target_ref=${1:?pass an image reference}
 deploy_dir=${2:?pass the deployment directory}
 site=elsakr.arab-erp.com
 backup_root=/home/frappe/frappe-bench/sites/$site/private/deploy-backups
-[[ $target_ref =~ ^ghcr\.io/[a-z0-9._/-]+@sha256:[a-f0-9]{64}$ ]] || exit 2
+if [[ $target_ref =~ ^elsakr:sha-[a-f0-9]{40}$ ]]; then
+  local_image=1
+elif [[ $target_ref =~ ^ghcr\.io/[a-z0-9._/-]+@sha256:[a-f0-9]{64}$ ]]; then
+  local_image=0
+else
+  echo "Invalid image reference: $target_ref" >&2
+  exit 2
+fi
 cd "$deploy_dir"
 [[ -f .env && -f compose.yaml && -f next.compose.yaml && -f next.apps.txt ]] || {
   echo 'Missing deployment configuration' >&2; exit 2;
@@ -93,18 +100,24 @@ rollback() {
   wait_healthy
 }
 
-# Pulling first leaves the live site untouched if the registry is unavailable.
+# Verify the new image before touching the live site.
 export APP_IMAGE=$target_ref
-pull_ok=0
-for attempt in 1 2; do
-  if timeout --signal=TERM --kill-after=10s 180s \
-    docker compose -p elsakr -f next.compose.yaml pull; then
-    pull_ok=1
-    break
-  fi
-  echo "Image pull attempt $attempt failed or timed out" >&2
-done
-(( pull_ok )) || { echo 'Image pull failed; live site was not changed' >&2; exit 1; }
+if (( local_image )); then
+  docker image inspect "$target_ref" >/dev/null || {
+    echo 'Built image is missing on the client server' >&2; exit 1;
+  }
+else
+  pull_ok=0
+  for attempt in 1 2; do
+    if timeout --signal=TERM --kill-after=10s 180s \
+      docker compose -p elsakr -f next.compose.yaml pull; then
+      pull_ok=1
+      break
+    fi
+    echo "Image pull attempt $attempt failed or timed out" >&2
+  done
+  (( pull_ok )) || { echo 'Image pull failed; live site was not changed' >&2; exit 1; }
+fi
 if (( ! first_install )); then
   # Frappe's backup cleanup expects files, not directories, in private/backups.
   backend bash -lc "mkdir -p '$backup_root'; find '/home/frappe/frappe-bench/sites/$site/private/backups' -maxdepth 1 -type d -name 'deploy-*' -exec mv -t '$backup_root' {} +" || exit 1

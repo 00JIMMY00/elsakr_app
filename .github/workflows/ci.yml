@@ -17,8 +17,6 @@ concurrency:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    outputs:
-      runtime_changed: ${{ steps.changes.outputs.runtime_changed }}
     services:
       redis-cache:
         image: redis:7-alpine
@@ -36,33 +34,6 @@ jobs:
           --health-interval=5s --health-timeout=5s --health-retries=12
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Detect runtime changes
-        id: changes
-        env:
-          BEFORE: ${{ github.event.before }}
-        run: |
-          runtime_changed=false
-          if [[ "$GITHUB_EVENT_NAME" == workflow_dispatch ]]; then
-            runtime_changed=true
-          elif [[ "$GITHUB_EVENT_NAME" == push && "$GITHUB_REF" == refs/heads/main ]]; then
-            if [[ ! "$BEFORE" =~ ^[0-9a-f]{40}$ ]] || [[ "$BEFORE" =~ ^0+$ ]] || \
-              ! git cat-file -e "$BEFORE^{commit}"; then
-              runtime_changed=true
-            elif ! git diff --name-only -z "$BEFORE" "$GITHUB_SHA" > "$RUNNER_TEMP/changed-files"; then
-              runtime_changed=true
-            else
-              while IFS= read -r -d '' path; do
-                case "$path" in
-                  README.md|CLIENT_UPDATES.md|.github/*|deploy/rollout.sh|deploy/runner-entrypoint.sh|deploy/runner.compose.yaml|deploy/bootstrap.sh|.gitignore) ;;
-                  *) runtime_changed=true ;;
-                esac
-              done < "$RUNNER_TEMP/changed-files"
-            fi
-          fi
-          echo "runtime_changed=$runtime_changed" >> "$GITHUB_OUTPUT"
-          echo "Runtime changed: $runtime_changed"
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
@@ -113,9 +84,9 @@ jobs:
           fi
 
   image:
-    if: github.ref == 'refs/heads/main' && needs.tests.outputs.runtime_changed == 'true'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: tests
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64, elsakr-deploy]
     outputs:
       ref: ${{ steps.publish.outputs.ref }}
     steps:
@@ -132,48 +103,29 @@ jobs:
           repository: frappe/frappe_docker
           ref: d84154ae23ab7ae756dfe942e3f24dcd70d1fbda
           path: frappe_docker
-      - uses: docker/setup-buildx-action@v3
-      - name: Image name
-        id: image_name
+      - name: Build production image on client server
         env:
-          REPOSITORY: ${{ github.repository }}
-        run: echo "name=ghcr.io/${REPOSITORY,,}" >> "$GITHUB_OUTPUT"
-      - uses: docker/build-push-action@v6
-        with:
-          context: ./frappe_docker
-          file: ./deploy/Containerfile
-          platforms: linux/amd64
-          load: true
-          tags: ${{ steps.image_name.outputs.name }}:sha-${{ github.sha }}
-          build-args: |
-            FRAPPE_BRANCH=version-15
-            APP_COMMIT=${{ github.sha }}
-            CACHE_BUST=${{ github.sha }}
-          secret-files: |
-            apps_json=/tmp/apps.json
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          DOCKER_BUILDKIT: '1'
+        run: |
+          docker build \
+            --file deploy/Containerfile \
+            --build-arg FRAPPE_BRANCH=version-15 \
+            --build-arg APP_COMMIT="$GITHUB_SHA" \
+            --build-arg CACHE_BUST="$GITHUB_SHA" \
+            --secret id=apps_json,src=/tmp/apps.json \
+            --tag "elsakr:sha-$GITHUB_SHA" \
+            ./frappe_docker
       - name: Check image contents
         env:
-          IMAGE: ${{ steps.image_name.outputs.name }}:sha-${{ github.sha }}
+          IMAGE: elsakr:sha-${{ github.sha }}
         run: |
           docker run --rm --entrypoint bash -e APP_COMMIT="$GITHUB_SHA" "$IMAGE" -lc \
             'test "$(cat apps/elsakr_app/.source-commit)" = "$APP_COMMIT" && \
              grep -qx arab_erp_theme sites/apps.txt && grep -qx erpnext sites/apps.txt'
-      - uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish immutable image
+      - name: Record immutable local image
         id: publish
-        env:
-          IMAGE: ${{ steps.image_name.outputs.name }}:sha-${{ github.sha }}
         run: |
-          docker push "$IMAGE" | tee /tmp/elsakr-push.log
-          digest=$(awk '/digest: sha256:/ {print $3}' /tmp/elsakr-push.log | tail -1)
-          [[ $digest =~ ^sha256:[a-f0-9]{64}$ ]]
-          echo "ref=${IMAGE%:*}@$digest" >> "$GITHUB_OUTPUT"
+          echo "ref=elsakr:sha-$GITHUB_SHA" >> "$GITHUB_OUTPUT"
 
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
@@ -187,14 +139,8 @@ jobs:
       - name: Deploy on client machine
         env:
           IMAGE_REF: ${{ needs.image.outputs.ref }}
-          GHCR_USER: ${{ github.actor }}
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          export DOCKER_CONFIG="$RUNNER_TEMP/docker-config"
-          mkdir -p "$DOCKER_CONFIG"
-          trap 'rm -rf "$DOCKER_CONFIG"' EXIT
-          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
           cp deploy/compose.yaml /home/hassan/elsakr/next.compose.yaml
           awk '/^  - name: / { print $3 }' apps.yml > /home/hassan/elsakr/next.apps.txt
           bash deploy/rollout.sh "$IMAGE_REF" /home/hassan/elsakr

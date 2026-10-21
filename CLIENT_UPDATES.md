@@ -5,13 +5,15 @@ The only site is `elsakr.arab-erp.com`. Its production stack runs in Docker on
 
 1. Develop on `develop` and open a pull request. CI installs ERPNext, the theme,
    and `elsakr_app`, builds assets, and runs app tests if present.
-2. Merge into `main`. The same workflow builds an image, publishes it to GHCR,
-   and deploys it on the client server. Documentation and CI-only changes skip
-   the image and deployment. The deploy job requires the
-   `elsakr-deploy` self hosted runner to be online.
+2. Merge or push into `main`. Every commit runs tests, builds a new image on
+   the client server with the latest commits from the branches in `apps.yml`,
+   and deploys it. This includes README-only commits when you want to refresh
+   upstream apps. The `elsakr-deploy` self hosted runner must be online.
 3. For another app, add its `name`, public GitHub `url`, and `ref` to
    [apps.yml](apps.yml) before `elsakr_app`. Update its `ref` to release an
    upstream change. CI builds all listed apps; deployment installs missing apps.
+   A push to an upstream app alone does not start this workflow: push to
+   `elsakr_app/main` or run the workflow manually to take that update.
 4. Check the GitHub Actions result and `https://elsakr.arab-erp.com`.
    A failed update restores the previous image and the database/file backup.
    The first install has no prior release to restore.
@@ -27,8 +29,7 @@ then run `docker compose -f /home/hassan/elsakr/runner.compose.yaml up -d`.
 The runner removes the token file after registration. The generated ERPNext
 Administrator password is stored in `/home/hassan/elsakr/.env` on that machine.
 
-No custom GitHub Actions secrets are needed. The workflow uses GitHub's built-in
-`GITHUB_TOKEN` to publish and pull the image. Keep **Actions → General →
-Workflow permissions** set to allow package writes. Since this repo is public,
+No custom GitHub Actions secrets are needed. Images are built on the client
+server and kept there for rollback. Since this repo is public,
 review pull requests before running them: a self hosted runner with Docker
 access can execute code on the client machine.
