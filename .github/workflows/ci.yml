@@ -50,8 +50,14 @@ jobs:
       - name: Install Bench
         run: |
           python -m pip install frappe-bench
-          bench init --frappe-branch version-15 --skip-redis-config-generation --skip-assets \
-            --python "$(command -v python)" "$HOME/frappe-bench"
+          attempt=1
+          until bench init --frappe-branch version-15 --skip-redis-config-generation --skip-assets \
+            --python "$(command -v python)" "$HOME/frappe-bench"; do
+            if (( attempt >= 3 )); then exit 1; fi
+            rm -rf "$HOME/frappe-bench"
+            sleep $((attempt * 10))
+            ((attempt += 1))
+          done
       - name: Install applications and build assets
         working-directory: /home/runner/frappe-bench
         env:
