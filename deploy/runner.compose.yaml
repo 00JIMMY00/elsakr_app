@@ -1,0 +1,14 @@
+services:
+  runner:
+    image: ghcr.io/actions/actions-runner:2.338.0
+    restart: unless-stopped
+    network_mode: host
+    user: "1001:999"
+    working_dir: /home/runner
+    entrypoint: [bash, /runner-entrypoint.sh]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/libexec/docker/cli-plugins/docker-compose:/usr/local/lib/docker/cli-plugins/docker-compose:ro
+      - /home/hassan/elsakr:/home/hassan/elsakr
+      - /home/hassan/elsakr-runner:/runner-state
+      - /home/hassan/elsakr/runner-entrypoint.sh:/runner-entrypoint.sh:ro

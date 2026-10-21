@@ -1,106 +1,163 @@
-
-name: CI
+name: Test, build, deploy
 
 on:
-  push:
-    branches:
-      - develop
   pull_request:
+  push:
+    branches: [develop, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
 
 concurrency:
-  group: develop-elsakr_app-${{ github.event.number }}
-  cancel-in-progress: true
+  group: elsakr-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   tests:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    name: Server
-
     services:
       redis-cache:
-        image: redis:alpine
-        ports:
-          - 13000:6379
+        image: redis:7-alpine
+        ports: [13000:6379]
       redis-queue:
-        image: redis:alpine
-        ports:
-          - 11000:6379
+        image: redis:7-alpine
+        ports: [11000:6379]
       mariadb:
-        image: mariadb:10.6
+        image: mariadb:10.11
         env:
           MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3306:3306
-        options: --health-cmd="mariadb-admin ping" --health-interval=5s --health-timeout=2s --health-retries=3
-
+        ports: [3306:3306]
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=12
     steps:
-      - name: Clone
-        uses: actions/checkout@v3
-
-      - name: Find tests
-        run: |
-          echo "Finding tests"
-          grep -rn "def test" > /dev/null
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
+          cache: pip
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
-          check-latest: true
-
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/*requirements.txt', '**/pyproject.toml', '**/setup.py', '**/setup.cfg') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-            ${{ runner.os }}-
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: 'echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT'
-
-      - uses: actions/cache@v4
-        id: yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install MariaDB Client
-        run: sudo apt-get install mariadb-client-10.6
-
-      - name: Setup
+          node-version: '18'
+      - name: Validate app list
         run: |
-          pip install frappe-bench
-          bench init --skip-redis-config-generation --skip-assets --python "$(which python)" ~/frappe-bench
-          mariadb --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL character_set_server = 'utf8mb4'"
-          mariadb --host 127.0.0.1 --port 3306 -u root -proot -e "SET GLOBAL collation_server = 'utf8mb4_unicode_ci'"
-
-      - name: Install
+          python -m pip install PyYAML==6.0.3
+          python deploy/render_apps.py /tmp/apps.json
+      - name: Install Bench
+        run: |
+          python -m pip install frappe-bench
+          bench init --frappe-branch version-15 --skip-redis-config-generation --skip-assets \
+            --python "$(command -v python)" "$HOME/frappe-bench"
+      - name: Install applications and build assets
         working-directory: /home/runner/frappe-bench
-        run: |
-          bench get-app elsakr_app $GITHUB_WORKSPACE
-          bench setup requirements --dev
-          bench new-site --db-root-password root --admin-password admin test_site
-          bench --site test_site install-app elsakr_app
-          bench build
         env:
           CI: 'Yes'
-
-      - name: Run Tests
+        run: |
+          bench get-app --branch version-15 erpnext https://github.com/frappe/erpnext
+          bench get-app --branch develop arab_erp_theme https://github.com/00JIMMY00/arab_erp_theme
+          bench get-app elsakr_app "$GITHUB_WORKSPACE"
+          bench setup requirements --dev
+          bench new-site --db-root-password root --admin-password admin test_site
+          bench --site test_site install-app erpnext
+          bench --site test_site install-app arab_erp_theme
+          bench --site test_site install-app elsakr_app
+          bench --site test_site migrate
+          bench build
+          bench --site test_site list-apps -f json | python -c \
+            'import json,sys; a=json.load(sys.stdin)["test_site"]; assert all(x in a for x in ("erpnext","arab_erp_theme","elsakr_app"))'
+      - name: Run application tests when present
         working-directory: /home/runner/frappe-bench
         run: |
-          bench --site test_site set-config allow_tests true
-          bench --site test_site run-tests --app elsakr_app
+          if find "$GITHUB_WORKSPACE/elsakr_app" -name 'test_*.py' | grep -q .; then
+            bench --site test_site set-config allow_tests true
+            bench --site test_site run-tests --app elsakr_app --skip-test-records
+          fi
+
+  image:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: tests
+    runs-on: ubuntu-latest
+    outputs:
+      ref: ${{ steps.publish.outputs.ref }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Render app list
+        run: |
+          python -m pip install PyYAML==6.0.3
+          python deploy/render_apps.py /tmp/apps.json
+      - uses: actions/checkout@v4
+        with:
+          repository: frappe/frappe_docker
+          ref: d84154ae23ab7ae756dfe942e3f24dcd70d1fbda
+          path: frappe_docker
+      - uses: docker/setup-buildx-action@v3
+      - name: Image name
+        id: image_name
         env:
-          TYPE: server
+          REPOSITORY: ${{ github.repository }}
+        run: echo "name=ghcr.io/${REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./frappe_docker
+          file: ./deploy/Containerfile
+          platforms: linux/amd64
+          load: true
+          tags: ${{ steps.image_name.outputs.name }}:sha-${{ github.sha }}
+          build-args: |
+            FRAPPE_BRANCH=version-15
+            APP_COMMIT=${{ github.sha }}
+            CACHE_BUST=${{ github.sha }}
+          secret-files: |
+            apps_json=/tmp/apps.json
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Check image contents
+        env:
+          IMAGE: ${{ steps.image_name.outputs.name }}:sha-${{ github.sha }}
+        run: |
+          docker run --rm --entrypoint bash -e APP_COMMIT="$GITHUB_SHA" "$IMAGE" -lc \
+            'test "$(cat apps/elsakr_app/.source-commit)" = "$APP_COMMIT" && \
+             grep -qx arab_erp_theme sites/apps.txt && grep -qx erpnext sites/apps.txt'
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish immutable image
+        id: publish
+        env:
+          IMAGE: ${{ steps.image_name.outputs.name }}:sha-${{ github.sha }}
+        run: |
+          docker push "$IMAGE" | tee /tmp/elsakr-push.log
+          digest=$(awk '/digest: sha256:/ {print $3}' /tmp/elsakr-push.log | tail -1)
+          [[ $digest =~ ^sha256:[a-f0-9]{64}$ ]]
+          echo "ref=${IMAGE%:*}@$digest" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: image
+    runs-on: [self-hosted, linux, x64, elsakr-deploy]
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy on client machine
+        env:
+          IMAGE_REF: ${{ needs.image.outputs.ref }}
+          GHCR_USER: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          export DOCKER_CONFIG="$RUNNER_TEMP/docker-config"
+          mkdir -p "$DOCKER_CONFIG"
+          trap 'rm -rf "$DOCKER_CONFIG"' EXIT
+          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+          cp deploy/compose.yaml /home/hassan/elsakr/next.compose.yaml
+          awk '/^  - name: / { print $3 }' apps.yml > /home/hassan/elsakr/next.apps.txt
+          bash deploy/rollout.sh "$IMAGE_REF" /home/hassan/elsakr

@@ -1,41 +1,12 @@
-### Elsakr App
+# Elsakr App
 
-app for client hassan
+This is the Frappe app for changes specific to the Elsakr client. The single
+production site is `elsakr.arab-erp.com`.
 
-### Installation
+The installed apps are declared in [apps.yml](apps.yml). See
+[CLIENT_UPDATES.md](CLIENT_UPDATES.md) for the short update and deployment guide.
 
-You can install this app using the [bench](https://github.com/frappe/bench) CLI:
-
-```bash
-cd $PATH_TO_YOUR_BENCH
-bench get-app $URL_OF_THIS_REPO --branch develop
-bench install-app elsakr_app
-```
-
-### Contributing
-
-This app uses `pre-commit` for code formatting and linting. Please [install pre-commit](https://pre-commit.com/#installation) and enable it for this repository:
-
-```bash
-cd apps/elsakr_app
-pre-commit install
-```
-
-Pre-commit is configured to use the following tools for checking and formatting your code:
-
-- ruff
-- eslint
-- prettier
-- pyupgrade
-
-### CI
-
-This app can use GitHub Actions for CI. The following workflows are configured:
-
-- CI: Installs this app and runs unit tests on every push to `develop` branch.
-- Linters: Runs [Frappe Semgrep Rules](https://github.com/frappe/semgrep-rules) and [pip-audit](https://pypi.org/project/pip-audit/) on every pull request.
-
-
-### License
-
-mit
+Production deployments run from `main` through GitHub Actions. CI installs the
+apps and builds assets, then publishes a Docker image. The client machine pulls
+that image and updates its containerized Frappe stack. A failed rollout restores
+the previous image and the pre-migration database and files backup.
