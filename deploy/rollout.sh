@@ -4,6 +4,7 @@ set -Eeuo pipefail
 target_ref=${1:?pass an image digest}
 deploy_dir=${2:?pass the deployment directory}
 site=elsakr.arab-erp.com
+backup_root=/home/frappe/frappe-bench/sites/$site/private/deploy-backups
 [[ $target_ref =~ ^ghcr\.io/[a-z0-9._/-]+@sha256:[a-f0-9]{64}$ ]] || exit 2
 cd "$deploy_dir"
 [[ -f .env && -f compose.yaml && -f next.compose.yaml && -f next.apps.txt ]] || {
@@ -78,7 +79,7 @@ rollback() {
   set_image "$old_ref"
   compose up -d --pull never || return 1
   if [[ -n $backup_dir ]]; then
-    local db public private root=/home/frappe/frappe-bench/sites/$site/private/backups/$backup_dir
+    local db public private root=$backup_root/$backup_dir
     db=$(backend bash -lc "find '$root' -maxdepth 1 -name '*-database.sql.gz' -print -quit")
     public=$(backend bash -lc "find '$root' -maxdepth 1 -name '*-files.tgz' ! -name '*-private-files.tgz' -print -quit")
     private=$(backend bash -lc "find '$root' -maxdepth 1 -name '*-private-files.tgz' -print -quit")
@@ -96,10 +97,12 @@ rollback() {
 export APP_IMAGE=$target_ref
 docker compose -p elsakr -f next.compose.yaml pull || exit 1
 if (( ! first_install )); then
+  # Frappe's backup cleanup expects files, not directories, in private/backups.
+  backend bash -lc "mkdir -p '$backup_root'; find '/home/frappe/frappe-bench/sites/$site/private/backups' -maxdepth 1 -type d -name 'deploy-*' -exec mv -t '$backup_root' {} +" || exit 1
   backup_dir=deploy-$(date -u +%Y%m%dT%H%M%SZ)-${target_ref: -12}
   backend bench --site "$site" set-maintenance-mode on
   if ! backend bench --site "$site" backup --with-files --compress \
-    --backup-path "/home/frappe/frappe-bench/sites/$site/private/backups/$backup_dir"; then
+    --backup-path "$backup_root/$backup_dir"; then
     backend bench --site "$site" set-maintenance-mode off || true
     exit 1
   fi

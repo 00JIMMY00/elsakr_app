@@ -14,7 +14,7 @@ The only site is `elsakr.arab-erp.com`. Its production stack runs in Docker on
 4. Check the GitHub Actions result and `https://elsakr.arab-erp.com`.
    A failed update restores the previous image and the database/file backup.
    The first install has no prior release to restore.
-   Backups remain in the site's `private/backups/deploy-*` directory.
+   Backups remain in the site's `private/deploy-backups/deploy-*` directory.
 
 ## One-time setup
 
