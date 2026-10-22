@@ -1,6 +1,6 @@
 # Elsakr client updates
 
-The only site is `elsakr.arab-erp.com`. Its production stack runs in Docker on
+The production site is `elsakr.arab-erp.com`. Its stack runs in Docker on
 `ssh hassan`; Cloudflare Tunnel points to `127.0.0.1:8000`.
 
 1. Push a commit to `elsakr_app/main` to release the app and refresh all
@@ -33,3 +33,14 @@ No custom GitHub Actions secrets are needed. GitHub's built-in `GITHUB_TOKEN`
 publishes and pulls the image. Since this repo is public,
 review pull requests before running them: a self hosted runner with Docker
 access can execute code on the client machine.
+
+## Local development site
+
+`elsakr-dev2.arab-erp.com` is a separate site in the local Bench at
+`/home/xxx/bench1/my-bench`, with ERPNext and `elsakr_app` installed. It uses
+the Bench web server on `http://localhost:8000`. Its public hostname is routed
+through this machine's existing Cloudflare Tunnel to that service. The hostname
+resolved in Cloudflare DNS and responded over HTTPS on 2026-10-23. Check
+`https://elsakr-dev2.arab-erp.com/api/method/ping` when troubleshooting. The site's initial
+Administrator password is stored locally in
+`/home/xxx/.local/share/elsakr-dev2-admin-password` (mode `600`).
