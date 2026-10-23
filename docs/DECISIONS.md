@@ -2,6 +2,20 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-23 — Mirror the simplified party flow in purchasing
+
+**Decision:** Add a Supplier Name autocomplete plus optional Phone and Address to Purchase Invoice, with name/ID/linked-phone search and native Supplier navigation. Resolve new Individual Suppliers and their linked Contacts/Addresses during the invoice's `before_validate` using a Purchase Invoice subclass. Reuse unambiguous names and linked details, require selection for duplicate names, retain normal permissions and the invoice save transaction, and reuse the existing freeform-address mechanism. Add direct Supplier Phone entry with the same native Contact creation/reuse and preservation of old/shared phone records as Customer.
+
+**Reason:** Purchasing should use the same short entry path as sales without opening Supplier, Contact, and Address separately.
+
+**Consequence:** The Supplier and Purchase Invoice forms use app-managed visibility/defaults, hidden naming series with a valid native default, merged Supplier contact/address sections in Details, native Supplier links, and Item/size/quantity/rate/amount invoice columns. Supplier defaults to Individual. Supplier tax/default/info/portal and contact tabs are simplified along the existing Customer layout. Purchase Invoice hides the matching extra sections/tabs; supplier bill references and header withholding controls remain. Standard tax calculations and validations still run. Existing Sales Invoice/Customer code is retained.
+
+**Decision:** Use the native Purchase Invoice Paid flow with its one payment method/account/amount section in Details. Retain the native unpaid default and payment accounting. Show an orange card for positive net payable balance (credit minus debit on Payable GL accounts) through today, in company currency, with the same permissions, company scope, zero/credit suppression, and stale-response protection as the sales card.
+
+**Reason:** Purchase Invoice has a different payment model from Sales Invoice. Reusing it avoids introducing a separate payment ledger or marking new supplier purchases paid by default.
+
+**Consequence:** Selecting Paid exposes the native payment controls in Details. The payable reminder includes posted purchases, payments, credits, and opening entries and is informational. It requires Purchase Invoice and GL Entry read permissions plus Supplier/Company access. Install/migrate applies all purchasing custom fields and metadata; future Purchase Invoice controller overrides need conflict review.
+
 ## 2026-10-23 — Show current customer debt on Sales Invoice
 
 **Decision:** Show an orange card when the selected customer's net receivable balance is positive for the invoice company. Sum non-cancelled receivable GL debit minus credit through today in company currency, with payments, credits, and opening entries included. Check Customer and Company access and Sales Invoice/GL Entry read permission, applying GL match conditions. Refresh on selection/company/form refresh, immediately hide stale figures, and reject outdated responses.

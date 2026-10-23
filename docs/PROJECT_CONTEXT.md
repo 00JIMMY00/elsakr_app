@@ -80,6 +80,25 @@ phone and reuses/creates a primary linked Contact for later changes. Native
 No are hidden. New Customer forms hide the primary address/contact section until
 saved. Normal permissions and the Customer transaction apply.
 
+Supplier and Purchase Invoice now have purchasing counterparts of these flows.
+`supplier_setup.py` installs direct Supplier Phone and Purchase Invoice Supplier
+Name/Phone/Address fields, Individual Supplier and native series defaults, and
+explicit visibility settings. `supplier_phone.py` synchronizes native Contacts
+on Supplier save; `public/js/supplier.js` moves linked cards and primary details
+into Details while hiding the old tab. The Purchase Invoice subclass resolves
+new suppliers/details during `before_validate`; `invoice_supplier.py` provides
+permission-aware name/phone search and detail loading. New masters stay within
+the invoice transaction, with no permission bypass or separate commit.
+
+`public/js/purchase_invoice.js` provides the matching Item/size/quantity/rate/amount
+grid, Supplier links, hidden naming series, and native Paid payment controls in
+Details (one method/account/amount, with the native unpaid default retained).
+Supplier bill references and header withholding controls remain. `supplier_balance.py`
+shows positive net payable GL credit minus debit through today in company currency,
+with Supplier/Company access checks, Purchase Invoice/GL Entry read permissions,
+GL row restrictions, and protection against stale balance responses. The existing
+sales/customer modules remain separate and unchanged.
+
 Quick Entry is disabled for Item, Customer, Supplier, Sales Invoice, Material
 Request, and Mode of Payment through app-managed DocType Property Setters after
 install/migration. The app's own Item Size DocType also has Quick Entry disabled.

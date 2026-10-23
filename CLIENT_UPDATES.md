@@ -261,3 +261,36 @@ the Company; existing record restrictions apply. This is an informational card.
 if the site has no series default, setup uses its first configured series.
 Applied on `elsakr-dev2.arab-erp.com`; reload Desk after updating. Production
 deployment is pending.
+
+## Faster Supplier and Purchase Invoice entry
+
+**Supplier → New:** enter Supplier Name and optional Phone, then Save. New
+suppliers default to Individual, and the linked Contact is created automatically.
+Existing numbers can be changed directly; previous phone records are retained.
+Contact/address cards and primary details appear in **Details** after saving.
+The old Address & Contact tab and extra Supplier fields/sections are hidden.
+Accounting and Settings remain available for account mappings and supplier holds.
+
+**Purchase Invoice:** search Supplier Name by name or phone, or type a new name
+with optional Phone and Address. Save the invoice to create and link the native
+Supplier/Contact/Address automatically. Selecting an existing supplier fills its
+details; use the open icon or read-only supplier name link to open its record.
+Only the supplier name is required for this party entry; normal invoice and
+master permissions and validations still apply. Duplicate names require explicit
+selection, and failed invoice saves roll back new records.
+
+The Item table starts with **Item, المقاس, Quantity, Rate, Amount** using widths
+2/1/1/2/2. Naming Series is hidden with native numbering preserved. Supplier bill
+number/date and header withholding controls remain available. Select **Is Paid**
+to show native payment method, account, and amount controls in **Details**;
+purchase invoices retain their native unpaid default. Payment accounting stays
+native to Purchase Invoice.
+
+An orange card shows what is currently owed to the selected supplier in the
+invoice company, including posted purchases, payments, credits, and opening
+entries through today. The amount uses company currency. Zero/credit balances
+hide the card. Purchase Invoice/GL Entry read access and Supplier/Company access
+are required; existing record restrictions apply.
+
+These purchasing changes are applied on `elsakr-dev2.arab-erp.com`; reload Desk.
+Installation/migration preserves them. Production deployment is pending.

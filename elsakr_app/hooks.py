@@ -12,6 +12,7 @@ after_install = [
 	"elsakr_app.setup.setup_item_size",
 	"elsakr_app.full_form.setup_full_form",
 	"elsakr_app.customer_setup.setup_customer_flow",
+	"elsakr_app.supplier_setup.setup_supplier_flow",
 	"elsakr_app.sales_invoice_setup.setup_sales_invoice_defaults",
 	"elsakr_app.sales_invoice_visibility.setup_sales_invoice_visibility",
 	"elsakr_app.dashboard_setup.setup_operations_dashboard",
@@ -20,12 +21,19 @@ after_migrate = after_install
 doc_events = {
 	doctype: {"validate": "elsakr_app.transactions.set_item_sizes"} for doctype in TRANSACTION_DOCTYPES
 }
+doc_events["Supplier"] = {"before_save": "elsakr_app.supplier_phone.sync_supplier_phone"}
 doc_events["Customer"] = {"before_save": "elsakr_app.customer_phone.sync_customer_phone"}
 doc_events["Address"] = {"validate": "elsakr_app.customer_setup.validate_address_city"}
 doc_events["Item"] = {"validate": "elsakr_app.item_variants.set_variant_size"}
 
-doctype_js = {"Sales Invoice": "public/js/sales_invoice.js", "Customer": "public/js/customer.js"}
+doctype_js = {
+	"Sales Invoice": "public/js/sales_invoice.js",
+	"Customer": "public/js/customer.js",
+	"Purchase Invoice": "public/js/purchase_invoice.js",
+	"Supplier": "public/js/supplier.js",
+}
 override_doctype_class = {
+	"Purchase Invoice": "elsakr_app.overrides.purchase_invoice.ElsakrPurchaseInvoice",
 	"Report": "elsakr_app.overrides.report.ElsakrReport",
 	"Sales Invoice": "elsakr_app.overrides.sales_invoice.ElsakrSalesInvoice",
 }
