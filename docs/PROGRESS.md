@@ -2,6 +2,12 @@
 
 Add the newest update first. Each entry should state the change, the checks performed, and remaining work. Use **Local**, **Deployed**, or **Unverified** to make release status clear. Mark **Deployed** only after checking the production workflow and live site.
 
+## 2026-10-23 — Open common DocTypes in full forms (Local)
+
+- Changed: Disabled Quick Entry for Item, Customer, Supplier, Sales Invoice, Material Request, Mode of Payment, and Item Size. Added an installation/migration hook for the six ERPNext DocTypes and changed the app-owned Item Size metadata. Applied the change to `elsakr-dev2.arab-erp.com` through local migration.
+- Checked: Local migration and a repeated setup call completed successfully. The site has six `quick_entry=0` DocType Property Setters and Item Size has `quick_entry=0` in its DocType record. Ruff lint/format, Python compilation, and `git diff --check` passed.
+- Remaining: Browser confirmation is pending; reload Desk metadata before testing New on these lists. No production deployment was performed.
+
 ## 2026-10-23 — Add Operations dashboard child Workspace (Local)
 
 - Changed: Added `Operations Dashboard` under `Operations` with two app-managed HTML blocks, shared company/From/To controls, revenue and expense totals, customer receivables and supplier payables, a daily income/expense chart, and a top-ten sales quantity chart. The default dates are the first of the current month through today. The balances use all entries through the selected end date. Applied the blocks and Workspace to `elsakr-dev2.arab-erp.com`.

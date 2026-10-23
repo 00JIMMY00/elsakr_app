@@ -2,6 +2,14 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-23 — Open common records in full forms
+
+**Decision:** Disable Quick Entry for Item, Customer, Supplier, Sales Invoice, Material Request, and Mode of Payment using DocType Property Setters applied on installation and migration. Disable it in the standard JSON for the app-owned Item Size DocType.
+
+**Reason:** Frappe's New action uses Quick Entry when a DocType enables it, adding an Edit Full Form step for users who need the complete form.
+
+**Consequence:** New actions for these seven DocTypes go directly to their full forms, including when launched from the Item list. No permissions or required fields change. The six ERPNext settings are app-managed and reasserted on migration; other DocTypes retain their current behavior.
+
 ## 2026-10-23 — Put the dashboard in a child Workspace with shared date filters
 
 **Decision:** Ship a public child Workspace under Operations with two Custom HTML Blocks and one read-only API. Use posted GL Entries for income, expenses, receivables, and payables; use submitted Sales Invoice Items for the ten top sellers. The selected date range applies to activity and sales, while customer and supplier balances are measured through the end date. Scope all figures to one permitted company and its currency.

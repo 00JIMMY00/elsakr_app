@@ -42,6 +42,11 @@ Property Setters used by Customize Form. Ten selected fields/sections/tabs are
 hidden and five remain visible. The snapshot lives in
 `elsakr_app/sales_invoice_visibility.py`; ERPNext source is not edited.
 
+Quick Entry is disabled for Item, Customer, Supplier, Sales Invoice, Material
+Request, and Mode of Payment through app-managed DocType Property Setters after
+install/migration. The app's own Item Size DocType also has Quick Entry disabled.
+The normal New action for these records opens the full form directly.
+
 ## Source of truth
 
 - `elsakr_app/`: Python app, hooks, modules, and patches.

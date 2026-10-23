@@ -26,6 +26,10 @@ development site; production deployment is pending.
 
 The **Operations Dashboard** child Workspace (`/app/operations-dashboard`) shows top-selling Items, daily income and expenses, and total customer/supplier balances. Select a company and From/To dates; the initial range is month start through today. Customer and supplier balances are as of the end date. It is activated on the second local development site; production deployment is pending.
 
+The **New** action opens the full form directly for Item, Customer, Supplier,
+Sales Invoice, Material Request, Mode of Payment, and Item Size. This is active
+on the second development site and will be applied to production by migration.
+
 Items now support an optional **المقاس** (size) Link to the one-field **Item Size**
 master, labelled **المقاس** in Arabic. Stock Balance and Stock Ledger include a
 size filter that restricts their native calculations to matching Items. The

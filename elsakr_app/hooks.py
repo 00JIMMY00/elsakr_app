@@ -10,6 +10,7 @@ from elsakr_app.setup import TRANSACTION_DOCTYPES
 required_apps = ["erpnext"]
 after_install = [
 	"elsakr_app.setup.setup_item_size",
+	"elsakr_app.full_form.setup_full_form",
 	"elsakr_app.sales_invoice_visibility.setup_sales_invoice_visibility",
 	"elsakr_app.dashboard_setup.setup_operations_dashboard",
 ]

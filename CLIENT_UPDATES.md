@@ -47,6 +47,11 @@ Administrator password is stored locally in
 
 ## Operations Workspace
 
+For Item, Customer, Supplier, Sales Invoice, Material Request, Mode of Payment,
+and Item Size, **New** opens the full form without an **Edit Full Form** step.
+This is active on `elsakr-dev2.arab-erp.com`; reload Desk before trying it.
+Production receives the change through the normal migration.
+
 The app ships one public **Operations** Workspace at `/app/operations` with Arabic
 sections for customers, suppliers, accounts, and stock. Its 21 shortcuts include
 receivables/payables and their summaries, Trial Balance, Gross Profit, Stock
