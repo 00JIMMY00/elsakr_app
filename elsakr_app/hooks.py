@@ -5,6 +5,25 @@ app_description = "app for client hassan"
 app_email = "a@arab-erp.com"
 app_license = "mit"
 
+from elsakr_app.setup import TRANSACTION_DOCTYPES
+
+required_apps = ["erpnext"]
+after_install = "elsakr_app.setup.setup_item_size"
+after_migrate = "elsakr_app.setup.setup_item_size"
+doc_events = {
+	doctype: {"validate": "elsakr_app.transactions.set_item_sizes"} for doctype in TRANSACTION_DOCTYPES
+}
+doc_events["Item"] = {"validate": "elsakr_app.item_variants.set_variant_size"}
+
+doctype_js = {"Sales Invoice": "public/js/sales_invoice.js"}
+override_doctype_class = {
+	"Report": "elsakr_app.overrides.report.ElsakrReport",
+	"Sales Invoice": "elsakr_app.overrides.sales_invoice.ElsakrSalesInvoice",
+}
+override_whitelisted_methods = {
+	"frappe.desk.query_report.get_script": "elsakr_app.report_filters.get_script",
+}
+
 # Apps
 # ------------------
 
@@ -252,4 +271,3 @@ app_license = "mit"
 # ------------
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
-

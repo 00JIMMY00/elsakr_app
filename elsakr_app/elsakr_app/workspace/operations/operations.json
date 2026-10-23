@@ -1,0 +1,197 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"operation-customers\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h1\\\"><b>\u0627\u0644\u0639\u0645\u0644\u0627\u0621</b></span>\",\"col\":12}},{\"id\":\"customers-1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0627\u0644\u0639\u0645\u0644\u0627\u0621\",\"col\":3}},{\"id\":\"customers-2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0645\u062c\u0645\u0648\u0639\u0627\u062a \u0627\u0644\u0639\u0645\u0644\u0627\u0621\",\"col\":3}},{\"id\":\"customers-3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0645\u062f\u064a\u0648\u0646\u064a\u0629 \u0627\u0644\u0639\u0645\u0644\u0627\u0621\",\"col\":3}},{\"id\":\"customers-4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0645\u0644\u062e\u0635 \u0645\u062f\u064a\u0648\u0646\u064a\u0629 \u0627\u0644\u0639\u0645\u0644\u0627\u0621\",\"col\":3}},{\"id\":\"O7NeQBfafz\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"operation-suppliers\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h1\\\"><b>\u0627\u0644\u0645\u0648\u0631\u062f\u064a\u0646</b></span>\",\"col\":12}},{\"id\":\"suppliers-1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0627\u0644\u0645\u0648\u0631\u062f\u064a\u0646\",\"col\":3}},{\"id\":\"suppliers-2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0645\u062c\u0645\u0648\u0639\u0627\u062a \u0627\u0644\u0645\u0648\u0631\u062f\u064a\u0646\",\"col\":3}},{\"id\":\"suppliers-3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0627\u0633\u062a\u062d\u0642\u0627\u0642\u0627\u062a \u0627\u0644\u0645\u0648\u0631\u062f\u064a\u0646\",\"col\":3}},{\"id\":\"suppliers-4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0645\u0644\u062e\u0635 \u0627\u0633\u062a\u062d\u0642\u0627\u0642\u0627\u062a \u0627\u0644\u0645\u0648\u0631\u062f\u064a\u0646\",\"col\":3}},{\"id\":\"cJfLQOM7QV\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"operation-accounts\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h1\\\">\u0627\u0644\u062d\u0633\u0627\u0628\u0627\u062a</span>\",\"col\":12}},{\"id\":\"accounts-1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0642\u064a\u062f \u0627\u0644\u064a\u0648\u0645\u064a\u0629\",\"col\":3}},{\"id\":\"accounts-2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0634\u062c\u0631\u0629 \u0627\u0644\u062d\u0633\u0627\u0628\u0627\u062a\",\"col\":3}},{\"id\":\"accounts-3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0641\u0627\u062a\u0648\u0631\u0629 \u0627\u0644\u0645\u0628\u064a\u0639\u0627\u062a\",\"col\":3}},{\"id\":\"accounts-4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0641\u0627\u062a\u0648\u0631\u0629 \u0627\u0644\u0645\u0634\u062a\u0631\u064a\u0627\u062a\",\"col\":3}},{\"id\":\"accounts-5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0645\u064a\u0632\u0627\u0646 \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629\",\"col\":3}},{\"id\":\"accounts-6\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0645\u062c\u0645\u0644 \u0627\u0644\u0631\u0628\u062d (Gross Profit)\",\"col\":3}},{\"id\":\"qvDRVtRpcj\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0627\u0644\u0631\u0628\u062d \u0648 \u0627\u0644\u062e\u0633\u0627\u0631\u0629\",\"col\":3}},{\"id\":\"jCi7RLQh_N\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0642\u064a\u062f \u0627\u0644\u0645\u0635\u0631\u0648\u0641\",\"col\":3}},{\"id\":\"aKtEAzJkLD\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0627\u0646\u0648\u0627\u0639 \u0627\u0644\u0645\u0635\u0631\u0648\u0641\u0627\u062a\",\"col\":3}},{\"id\":\"R--Uyndas2\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"operation-stock\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h1\\\">\u0627\u0644\u0645\u062e\u0627\u0632\u0646</span>\",\"col\":12}},{\"id\":\"stock-1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0631\u0635\u064a\u062f \u0627\u0644\u0645\u062e\u0632\u0646\",\"col\":3}},{\"id\":\"stock-2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u062d\u0631\u0643\u0627\u062a \u0627\u0644\u0645\u062e\u0632\u0646\",\"col\":3}},{\"id\":\"stock-3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0642\u064a\u062f \u0627\u0644\u0645\u062e\u0632\u0646\",\"col\":3}},{\"id\":\"stock-4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0627\u0644\u0645\u062e\u0627\u0632\u0646\",\"col\":3}},{\"id\":\"stock-5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0627\u0644\u0623\u0635\u0646\u0627\u0641\",\"col\":3}},{\"id\":\"YR4s9RtOnC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0627\u0644\u0645\u0642\u0627\u0633\",\"col\":3}},{\"id\":\"stock-6\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u0645\u062c\u0645\u0648\u0639\u0627\u062a \u0627\u0644\u0623\u0635\u0646\u0627\u0641\",\"col\":3}},{\"id\":\"stock-7\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"\u062c\u0631\u062f \u0627\u0644\u0645\u062e\u0632\u0648\u0646\",\"col\":3}},{\"id\":\"elVPxwT-Tu\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
+ "creation": "2026-10-23 12:00:00",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "organization",
+ "idx": 0,
+ "indicator_color": "blue",
+ "is_hidden": 0,
+ "label": "Operations",
+ "links": [],
+ "modified": "2026-10-23 14:46:53.590118",
+ "modified_by": "Administrator",
+ "module": "Elsakr App",
+ "name": "Operations",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [],
+ "sequence_id": 1.0,
+ "shortcuts": [
+  {
+   "doc_view": "List",
+   "label": "\u0627\u0644\u0639\u0645\u0644\u0627\u0621",
+   "link_to": "Customer",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "\u0627\u0644\u0631\u0628\u062d \u0648 \u0627\u0644\u062e\u0633\u0627\u0631\u0629",
+   "link_to": "Profit and Loss Statement",
+   "report_ref_doctype": "GL Entry",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "\u0627\u0644\u0645\u0642\u0627\u0633",
+   "link_to": "Item Size",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "Tree",
+   "label": "\u0645\u062c\u0645\u0648\u0639\u0627\u062a \u0627\u0644\u0639\u0645\u0644\u0627\u0621",
+   "link_to": "Customer Group",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "\u0642\u064a\u062f \u0627\u0644\u0645\u0635\u0631\u0648\u0641",
+   "link_to": "Expense Entry",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "",
+   "label": "\u0645\u062f\u064a\u0648\u0646\u064a\u0629 \u0627\u0644\u0639\u0645\u0644\u0627\u0621",
+   "link_to": "Accounts Receivable",
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "\u0627\u0646\u0648\u0627\u0639 \u0627\u0644\u0645\u0635\u0631\u0648\u0641\u0627\u062a",
+   "link_to": "Expense Entry Type",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "",
+   "label": "\u0645\u0644\u062e\u0635 \u0645\u062f\u064a\u0648\u0646\u064a\u0629 \u0627\u0644\u0639\u0645\u0644\u0627\u0621",
+   "link_to": "Accounts Receivable Summary",
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Report"
+  },
+  {
+   "doc_view": "List",
+   "label": "\u0627\u0644\u0645\u0648\u0631\u062f\u064a\u0646",
+   "link_to": "Supplier",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "Tree",
+   "label": "\u0645\u062c\u0645\u0648\u0639\u0627\u062a \u0627\u0644\u0645\u0648\u0631\u062f\u064a\u0646",
+   "link_to": "Supplier Group",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "",
+   "label": "\u0627\u0633\u062a\u062d\u0642\u0627\u0642\u0627\u062a \u0627\u0644\u0645\u0648\u0631\u062f\u064a\u0646",
+   "link_to": "Accounts Payable",
+   "report_ref_doctype": "Purchase Invoice",
+   "type": "Report"
+  },
+  {
+   "doc_view": "",
+   "label": "\u0645\u0644\u062e\u0635 \u0627\u0633\u062a\u062d\u0642\u0627\u0642\u0627\u062a \u0627\u0644\u0645\u0648\u0631\u062f\u064a\u0646",
+   "link_to": "Accounts Payable Summary",
+   "report_ref_doctype": "Purchase Invoice",
+   "type": "Report"
+  },
+  {
+   "doc_view": "List",
+   "label": "\u0642\u064a\u062f \u0627\u0644\u064a\u0648\u0645\u064a\u0629",
+   "link_to": "Journal Entry",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "Tree",
+   "label": "\u0634\u062c\u0631\u0629 \u0627\u0644\u062d\u0633\u0627\u0628\u0627\u062a",
+   "link_to": "Account",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "\u0641\u0627\u062a\u0648\u0631\u0629 \u0627\u0644\u0645\u0628\u064a\u0639\u0627\u062a",
+   "link_to": "Sales Invoice",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "\u0641\u0627\u062a\u0648\u0631\u0629 \u0627\u0644\u0645\u0634\u062a\u0631\u064a\u0627\u062a",
+   "link_to": "Purchase Invoice",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "",
+   "label": "\u0645\u064a\u0632\u0627\u0646 \u0627\u0644\u0645\u0631\u0627\u062c\u0639\u0629",
+   "link_to": "Trial Balance",
+   "report_ref_doctype": "GL Entry",
+   "type": "Report"
+  },
+  {
+   "doc_view": "",
+   "label": "\u0645\u062c\u0645\u0644 \u0627\u0644\u0631\u0628\u062d (Gross Profit)",
+   "link_to": "Gross Profit",
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Report"
+  },
+  {
+   "doc_view": "",
+   "label": "\u0631\u0635\u064a\u062f \u0627\u0644\u0645\u062e\u0632\u0646",
+   "link_to": "Stock Balance",
+   "report_ref_doctype": "Stock Ledger Entry",
+   "type": "Report"
+  },
+  {
+   "doc_view": "",
+   "label": "\u062d\u0631\u0643\u0627\u062a \u0627\u0644\u0645\u062e\u0632\u0646",
+   "link_to": "Stock Ledger",
+   "report_ref_doctype": "Stock Ledger Entry",
+   "type": "Report"
+  },
+  {
+   "doc_view": "List",
+   "label": "\u0642\u064a\u062f \u0627\u0644\u0645\u062e\u0632\u0646",
+   "link_to": "Stock Entry",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "Tree",
+   "label": "\u0627\u0644\u0645\u062e\u0627\u0632\u0646",
+   "link_to": "Warehouse",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "\u0627\u0644\u0623\u0635\u0646\u0627\u0641",
+   "link_to": "Item",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "Tree",
+   "label": "\u0645\u062c\u0645\u0648\u0639\u0627\u062a \u0627\u0644\u0623\u0635\u0646\u0627\u0641",
+   "link_to": "Item Group",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "\u062c\u0631\u062f \u0627\u0644\u0645\u062e\u0632\u0648\u0646",
+   "link_to": "Stock Reconciliation",
+   "type": "DocType"
+  }
+ ],
+ "title": "Operations"
+}

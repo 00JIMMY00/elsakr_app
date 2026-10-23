@@ -17,3 +17,78 @@ apps and builds assets, then publishes a Docker image. The client machine pulls
 that image and updates its containerized Frappe stack. A failed rollout restores
 the previous image and the pre-migration database and files backup.
 
+
+The **Operations** Workspace (`/app/operations`) groups 21 shortcuts into four
+Arabic sections: customers and receivables, suppliers and payables, accounts
+and invoices, and stock records and reports. It uses existing ERPNext permissions
+and syncs during installation or migration. It is activated on the second local
+development site; production deployment is pending.
+
+Items now support an optional **المقاس** (size) Link to the one-field **Item Size**
+master, labelled **المقاس** in Arabic. Stock Balance and Stock Ledger include a
+size filter that restricts their native calculations to matching Items. The
+feature is activated on the second development site; production is pending.
+
+Size is also shown automatically on sales/purchase transaction rows, stock
+entries, reconciliation, material requests, and pick lists. The second development
+site contains retained `DEMO-TYRE-*` Items and submitted demo transactions dated
+2026-10-23 for manual testing; see CLIENT_UPDATES.md for balances and documents.
+
+Stock Balance and Stock Ledger also show **المقاس** as a Link column after
+Item Name, whether or not the size filter is selected. The column uses the
+current Item size and is included in report output for export. Refresh the report
+to load the added column. This change is active on the second development site.
+
+## Tyre model with size variants
+
+The second development site includes template `DEMO-TYRE-MODEL-X` (كاوتش تجريبي
+موديل X) and three native Item Variants under Item Group `DEMO Tyre Variants`:
+
+| Variant code suffix | Size | Retained stock |
+| --- | --- | ---: |
+| 185-65-R14 | 185/65 R14 | 18 |
+| 195-65-R15 | 195/65 R15 | 27 |
+| 205-55-R16 | 205/55 R16 | 36 |
+
+Open `/app/item/DEMO-TYRE-MODEL-X` to inspect the template and its variants.
+Use the size-specific variant in invoices. Purchase invoice
+`ACC-PINV-2026-00002` and sales invoice `ACC-SINV-2026-00002` are submitted and
+retained for testing, dated 2026-10-23. For report testing select the new Item
+Group and the date, then choose a size. Earlier standalone tyre demos remain.
+
+For another model, enable Has Variants and use Item Attribute `Item Size`
+(Arabic label المقاس). Add the desired values to this attribute and create
+variants through ERPNext's Create action. Saving a variant automatically creates
+a matching Item Size master if missing and selects it in the Item's size Link.
+Existing size masters are reused. Normal Item Size create permission is required
+for new masters. Templates have no single size and transactions use their variants.
+This feature is active locally; production deployment is pending.
+
+## Sales Invoice: Include Payment (POS)
+
+Select **Include Payment (POS)** after choosing the company. The native payment
+table appears in **Details**, immediately below the customer/invoice header. Its
+width is limited to 760 px and adapts to smaller screens. Enter the payment amount in
+one method or split it across several methods. ERPNext calculates Paid Amount
+and Outstanding Amount and posts each payment to its configured account.
+
+An applicable POS Profile supplies its configured payment methods. Without a
+profile, the app loads enabled methods mapped to an enabled company Cash/Bank
+ledger account. Configure company mappings under **Mode of Payment**; profile
+methods also need correct accounts. Reload Desk after updating the app.
+
+On `elsakr-dev2.arab-erp.com`, retained submitted examples dated 2026-10-23 are
+`ACC-SINV-2026-00003` (EGP 1,000 Cash) and `ACC-SINV-2026-00004` (EGP 400 Cash +
+EGP 600 Credit Card). Each invoice totals EGP 1,000 with zero outstanding. The
+development Credit Card mapping was corrected from Debtors to the new
+`DEMO POS Bank - T` bank ledger. Both examples have balanced GL entries and no
+stock movements. These are synthetic test records. Production deployment is
+pending; the demo helper does not run on installation/migration.
+
+Variant size detection also recognizes `Size` and `المقاس`. A variant with
+exactly one attribute uses its full value as size even when the attribute is
+named Colour. For multiple attributes, use one recognized size attribute.
+Saving a variant generates its display name from the template name plus all
+full attribute values, replacing abbreviation-based names. Item codes remain
+unchanged. The reported Colour/White Item was repaired on the second development
+site; other existing variants update on save.

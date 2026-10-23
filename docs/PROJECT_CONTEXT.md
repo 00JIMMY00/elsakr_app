@@ -2,7 +2,37 @@
 
 ## Purpose and scope
 
-`elsakr_app` is the Frappe app for Elsakr-specific changes. The repository also defines the app list and Docker deployment for the single production site, `elsakr.arab-erp.com`. The app package currently contains Frappe scaffolding; `hooks.py` has no active customization hooks and `patches.txt` lists no patches.
+`elsakr_app` is the Frappe app for Elsakr-specific changes. The repository also defines the app list and Docker deployment for the single production site, `elsakr.arab-erp.com`. The app includes a standard public `Operations` Workspace in the Elsakr App module, with Arabic sections for customers, suppliers, accounts, and stock. Its 21 shortcuts open existing ERPNext records and reports under the user's existing permissions. `hooks.py` requires ERPNext, installs the Item size Link field after installation/migration, overrides the Report controller for size filtering in Stock Balance/Stock Ledger, and extends those reports' scripts through the `get_script` endpoint override. `patches.txt` includes a pre-model-sync patch to rename the original `Operation` Workspace, whose route conflicts with ERPNext's manufacturing Operation DocType. Standard Workspace JSON is synced on app installation and migration.
+
+The app also defines the `Item Size` master (Arabic label «المقاس») with one
+required, unique `size` field, and the optional Item Link `custom_size`. Stock
+Balance and Stock Ledger display a size Link column after Item Name and accept the same optional Link filter. The column uses the current Item size and is also included in the server report output for export. Report execution
+intersects the selected size with item/group/brand choices before calling the
+native ERPNext calculation; no match returns empty rows. Reports without a size
+filter retain the native execution path. Size filtering uses the Item's current
+classification, including for historical stock movements.
+
+Transaction child rows also carry read-only `custom_size`, fetched from the
+selected Item and synchronized on server validation. Coverage includes sales
+and purchase quotations/orders/invoices, Delivery Note, Purchase Receipt,
+Material Request, Stock Entry, Stock Reconciliation, Pick List, and Packed Item
+rows on supported parents. Existing submitted transactions are not backfilled.
+The explicit `elsakr_app.demo.create_tyre_demo` helper is restricted to the
+second development site and never runs from installation or migration.
+
+Item variants synchronize `custom_size` from `Item Size`, `Size`, or `المقاس` attributes on validation. A variant with only one attribute uses that value even if the attribute has another name. Multi-attribute variants require one recognized size attribute for automatic size selection. Variant display names use the template name followed by all full attribute values; Item codes remain unchanged. Matching Item Size master
+records are created automatically from nonempty attribute values when missing, using normal Item Size create permissions within the Item save transaction; existing records are reused. Templates carry no single size. Regular Items remain
+unchanged. `elsakr_app.variant_demo.create_variant_demo` is an explicit,
+development-only retained example and is never invoked by migration.
+
+Sales Invoice uses an app controller subclass to populate enabled company Cash/Bank
+payment methods when Include Payment (POS) has no applicable POS Profile. Existing
+profiles retain native ERPNext behavior. A DocType script corrects the section collapse dependency and opens the native
+payment table in Details, below the customer header, when POS is selected. The
+table is capped at 760 px and fits narrower screens. Payment allocation and ledger posting
+remain native. The explicit `elsakr_app.payment_demo.create_payment_demo` helper
+is restricted to the second development site and retains synthetic accounting
+examples without stock movements; migration never invokes it.
 
 ## Source of truth
 

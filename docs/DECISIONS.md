@@ -2,6 +2,70 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-23 — Support single-attribute variants and full display names
+
+**Decision:** Recognize `Item Size`, `Size`, and `المقاس` as size attributes. For a variant with exactly one attribute, use its value as size regardless of attribute name. Build variant display names from the template display name and all full attribute values during validation; preserve Item codes.
+
+**Reason:** A user-created single-attribute Colour/White variant was excluded by the earlier canonical-only rule, and ERPNext's abbreviation-based display name obscured the full value.
+
+**Consequence:** Single-attribute values, including colour names, can create size masters as requested. Multiple attributes use one recognized size attribute; multiple size attributes are rejected to avoid ambiguous classification. Saving variants refreshes their generated display names. Existing variants receive the change on save; only the reported Item was repaired immediately. Existing transaction row names are not backfilled.
+
+## 2026-10-23 — Keep Sales Invoice POS payments in native accounting
+
+**Decision:** Extend the ERPNext Sales Invoice controller only to load enabled, company-specific payment methods with non-group, enabled Cash/Bank accounts when no POS Profile applies. Preserve native profile payment selection, amount calculation, validation and GL posting. Correct the payment section collapse dependency in form metadata and open the native Payments table when POS is selected.
+
+**Reason:** Users need to allocate invoice payment across one or more methods without a separate receipt workflow or duplicated accounting logic. The native `eval:!doc.is_pos` collapse dependency folds the section during refresh when POS is selected.
+
+**Consequence:** Sites with a POS Profile continue to configure their methods there. Sites without one need company account mappings in Mode of Payment; new rows start at zero and existing allocations are retained. Invalid profile mappings still require operator correction. The development-only payment demo is explicit and never runs during migration. Future Sales Invoice controller overrides must be checked for conflicts.
+
+## 2026-10-23 — Automatically create size masters when saving variants
+
+**Decision:** When an Item variant uses the canonical `Item Size` attribute, create the matching Item Size master if absent, then assign `custom_size`. Reuse existing masters and tolerate duplicate insertion for concurrent variant creation. Keep normal master permissions and use the Item save transaction without committing separately.
+
+**Reason:** The requested Create Variant workflow should require entering the size attribute value once, without separately creating the same size master.
+
+**Consequence:** This supersedes the earlier requirement to create size masters manually first. Nonempty values are required. Users creating new size masters need the existing Item Size create permission; no roles are widened. Templates and unrelated attributes do not create sizes. A failed transaction rolls back both new records.
+
+## 2026-10-23 — Use native Item Variants for multiple tyre sizes
+
+**Decision:** Use ERPNext Item templates/variants with canonical Item Attribute `Item Size`. On Item validation, map the variant attribute to `custom_size`, require a matching Item Size master record, and clear the single-size field on templates using this attribute.
+
+**Reason:** Every size needs its own inventory identity, while the template groups one tyre model. Reusing the existing size Link keeps transaction columns and stock report filters consistent with variant attributes.
+
+**Consequence:** Variants remain separate stocked Items under one template. Ordinary Items retain their manual size classification. Users maintain matching master/attribute values before creating variants; validation does not create masters with elevated permissions. The new retained demo is separate from the earlier standalone tyre Items, so their transactions are preserved. The helper pins demo Item codes explicitly without changing the site's naming configuration.
+
+## 2026-10-23 — Derive transaction size from the selected Item
+
+**Decision:** Add a read-only size Link column to the 13 supported transaction child tables, use `fetch_from` for interactive selection, and synchronize Item sizes in parent validation for the 12 supported transaction types. Keep demo data creation explicit and restricted to `elsakr-dev2.arab-erp.com`.
+
+**Reason:** The Item defines its size; showing a different editable size on an invoice or stock movement would contradict the Item identity and stock report filter. Server validation covers API-created transactions as well as the UI.
+
+**Consequence:** Changing or clearing an Item on a draft row refreshes or clears its size. New saves/submissions store the current Item size, including return documents using the same transaction types. Existing submitted documents are not backfilled, and stock report filtering continues to use the current Item master classification. Demo purchases/sales affect accounting and inventory on the development site and are retained for the user's manual testing; migrations never create them.
+
+## 2026-10-23 — Classify Items by a linked size master and filter native stock reports
+
+**Decision:** Add standard `Item Size` (translated to «المقاس») with a single unique, required `size` field, and optional `Item.custom_size` Link. Create/update the Custom Field through installation and migration hooks. Extend the existing Stock Balance and Stock Ledger interfaces through a scoped `get_script` override and filter their execution through a Report controller subclass, delegating all other reports and unfiltered runs to Frappe.
+
+**Reason:** Sizes need a reusable editable master. Applying the restriction before ERPNext computes stock preserves opening quantities, balances, and totals without maintaining copies of upstream reports or changing ERPNext source.
+
+**Consequence:** Existing Items can remain without a size. Selecting a size intersects item/group/brand choices; zero matches produces an empty report rather than ERPNext's unrestricted empty-item behavior. Normal report permissions and calculations remain in place for interactive, exported, and prepared execution. Size is the Item's current classification, not a snapshot on each stock transaction. Item/Stock/System Managers can maintain sizes; stock, sales, purchase, and accounts users can read/select them. Future Report controller or `get_script` overrides from other apps must be checked for conflicts.
+
+## 2026-10-23 — Use Operations to avoid the ERPNext Operation route
+
+**Decision:** Rename the app Workspace to `Operations` (`/app/operations`) and ship a pre-model-sync patch for sites with the original app-owned `Operation` Workspace. Preserve Frappe's normal route validation.
+
+**Reason:** ERPNext already has an `Operation` DocType. The original Workspace imported successfully but normal Desk saves raised `Name already taken, please set a new name` because both records shared `/app/operation`.
+
+**Consequence:** The name and URL change to Operations. The patch preserves the existing layout and shortcuts when renaming and stops if a destination Workspace already exists, avoiding an automatic merge. Standard Workspace sync follows the normal app migration process. Manufacturing Operation records are unchanged.
+
+## 2026-10-23 — Ship Operation as a standard app Workspace
+
+**Decision:** Store one public `Operation` Workspace as standard JSON in the Elsakr App module, with four Arabic sections and shortcuts to existing ERPNext DocTypes and reports. Use Tree views for accounts, warehouses, and master groups.
+
+**Reason:** The requested operations screen should travel with the app and use Frappe's native navigation and permission checks.
+
+**Consequence:** Installation and migration sync the Workspace. Users see shortcuts allowed by their existing permissions; this change grants no additional access. Other Workspaces remain available. The initial activation targets the second local development site; production receives it through the normal release process.
+
 ## 2026-10-23 — Host the second Elsakr development site in the local Bench
 
 **Decision:** Keep `elsakr-dev2.arab-erp.com` as a separate site in the existing DNS multitenant Bench, with ERPNext and `elsakr_app`. Route its public hostname to that Bench through the existing Cloudflare Tunnel when the Cloudflare configuration is added.
