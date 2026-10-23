@@ -2,6 +2,12 @@
 
 Add the newest update first. Each entry should state the change, the checks performed, and remaining work. Use **Local**, **Deployed**, or **Unverified** to make release status clear. Mark **Deployed** only after checking the production workflow and live site.
 
+## 2026-10-23 — Save Customer name and phone directly (Local)
+
+- Changed: Hid Customer Salutation and the duplicate read-only Mobile No through the app-managed visibility snapshot. Added optional Phone immediately after Customer Name. Customer save now creates/selects the linked primary Contact automatically using normal permissions; matching linked contacts are reused and previous phone records are retained. Shared Contact phone values are preserved. Native contact selection/fetching remains available. New Customer forms hide the primary address/contact section until saved. Applied the setup twice on `elsakr-dev2.arab-erp.com`.
+- Checked: Eleven transaction-backed tests passed: five Customer phone tests covering initial creation, optional phone/later addition, changes and reuse, native contact edits, and shared Contact preservation; all six existing inline-invoice customer tests also passed. Headless Chrome over development HTTPS verified hidden Salutation, visible Phone beside the name, Individual default, hidden primary-contact section on a new form, one-save Customer/Contact creation, direct phone changes, clean reopening with the saved number, and invoice phone search finding that Customer. Verified effective Hidden flags and Phone metadata. Removed the temporary browser Customer and both linked Contacts. Ruff lint/format, Python compilation, JavaScript syntax, and diff whitespace checks passed.
+- Remaining: Reload Desk to load the new Customer form. Normal Contact permissions still apply. No production deployment was performed.
+
 ## 2026-10-23 — Link invoice customer, default POS, and set item columns (Local)
 
 - Changed: Added an open-Customer icon beside the draft customer entry and a clickable Customer Name in read-only/submitted invoices, using the linked Customer ID. New Sales Invoices default Include Payment (POS) to 1 through an installation/migration setup hook. Initialized the Items grid to Item (2), المقاس (1), Quantity (1), Rate (2), Amount (2), including users with older grid preferences. Applied the defaults setup twice and cleared cache on `elsakr-dev2.arab-erp.com`.

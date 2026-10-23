@@ -20,6 +20,7 @@ after_migrate = after_install
 doc_events = {
 	doctype: {"validate": "elsakr_app.transactions.set_item_sizes"} for doctype in TRANSACTION_DOCTYPES
 }
+doc_events["Customer"] = {"before_save": "elsakr_app.customer_phone.sync_customer_phone"}
 doc_events["Address"] = {"validate": "elsakr_app.customer_setup.validate_address_city"}
 doc_events["Item"] = {"validate": "elsakr_app.item_variants.set_variant_size"}
 

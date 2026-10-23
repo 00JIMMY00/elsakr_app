@@ -59,7 +59,13 @@ retain the City requirement through client metadata and a validation hook. Count
 the company/site default. The native Customer Link, party defaults, and accounting remain
 in use. `customer_setup.py` installs these fields, captures the development Customer
 Hidden settings and Individual default, and `public/js/customer.js` moves primary
-address/contact details into Details while hiding the old tab.
+address/contact details into Details while hiding the old tab. Customer also has
+an optional direct Phone input (`custom_phone`) beside Customer Name. The Customer
+`before_save` hook in `customer_phone.py` uses native Contact creation for a new
+phone and reuses/creates a primary linked Contact for later changes. Native
+`mobile_no` fetching remains intact; Salutation and the duplicate read-only Mobile
+No are hidden. New Customer forms hide the primary address/contact section until
+saved. Normal permissions and the Customer transaction apply.
 
 Quick Entry is disabled for Item, Customer, Supplier, Sales Invoice, Material
 Request, and Mode of Payment through app-managed DocType Property Setters after

@@ -2,6 +2,14 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-23 — Enter Customer phone directly beside the name
+
+**Decision:** Add optional `Customer.custom_phone` directly after Customer Name, hide Salutation and the duplicate read-only Mobile No, and hide the primary address/contact section until the Customer is saved. A Customer `before_save` hook passes new numbers into ERPNext's native primary-contact creation. For an existing primary contact, reuse a matching linked Contact or create a new primary Contact without replacing the old phone record. Preserve shared Contact numbers. Keep native `mobile_no` and primary-contact fetching intact.
+
+**Reason:** Creating a Customer with a phone should require one Customer save rather than a separate Contact form and link-selection step.
+
+**Consequence:** The new Phone field is a convenience input; Contact remains the canonical phone record, and Sales Invoice phone search continues to use linked Contacts. Existing phones display without marking opened forms dirty. Blank convenience input preserves existing contact details. Normal Contact create/write/read permissions apply, and all writes stay in the Customer transaction. Installation/migration reapplies the added field and Hidden settings.
+
 ## 2026-10-23 — Default invoice POS and initialize the counter-sales grid
 
 **Decision:** Apply `is_pos` default 1 through an app-managed Property Setter on install/migration. Initialize the Sales Invoice Item grid's in-memory GridView preference to Item/size/quantity/rate/amount with configured widths 2/1/1/2/2. Render read-only Customer Name as an escaped link to the actual Customer ID, with an open icon during draft entry.

@@ -5,6 +5,8 @@ from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 
 CUSTOMER_HIDDEN = (
+	"salutation",
+	"mobile_no",
 	"naming_series",
 	"territory",
 	"gender",
@@ -34,6 +36,15 @@ def setup_customer_flow():
 	make_property_setter("Customer", "naming_series", "reqd", 0, "Check")
 	create_custom_fields(
 		{
+			"Customer": [
+				{
+					"fieldname": "custom_phone",
+					"label": "Phone",
+					"fieldtype": "Data",
+					"insert_after": "customer_name",
+					"no_copy": 1,
+				}
+			],
 			"Sales Invoice": [
 				{
 					"fieldname": "custom_customer_entry",

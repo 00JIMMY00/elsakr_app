@@ -144,3 +144,17 @@ Quantity (1), Rate (2), Amount (2)**. The numbers are the Configure Columns widt
 The app sets this layout when the form initializes, including for users with older
 column preferences. Configure Columns can adjust it during the current form session.
 Reload Desk to load these changes. Existing invoices keep their saved POS setting.
+
+## Add a Customer with a phone in one save
+
+On **Customer → New**, enter **Customer Name**, optionally enter **Phone** directly
+below it, and Save. The app creates and selects the linked Contact automatically.
+Salutation is hidden, Individual remains the default, and the primary
+address/contact section appears after saving. Existing customers also show the
+direct Phone input; saving a changed number selects a matching linked Contact or
+creates a new primary Contact while retaining the previous number. Leaving Phone
+blank preserves existing contact details. Invoice phone search finds these
+customers through their linked Contacts. Normal Contact permissions apply.
+
+Applied on `elsakr-dev2.arab-erp.com`. Reload Desk after updating. Production
+deployment is pending; installation/migration preserves these settings.
