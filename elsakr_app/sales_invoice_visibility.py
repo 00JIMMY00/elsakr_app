@@ -2,6 +2,7 @@
 
 import frappe
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
+from frappe.model.naming import get_default_naming_series
 from frappe.utils import cint
 
 # Explicit snapshot of the development site's Customize Form Hidden settings.
@@ -12,6 +13,7 @@ HIDDEN_FIELDS = {
 	"company_tax_id": 1,
 	"is_debit_note": 1,
 	"more_info_tab": 1,
+	"naming_series": 1,
 	"payments_tab": 1,
 	"pricing_rule_details": 1,
 	"sec_tax_breakup": 1,
@@ -27,6 +29,9 @@ HIDDEN_FIELDS = {
 
 def setup_sales_invoice_visibility():
 	doctype = "Sales Invoice"
+	# A mandatory hidden series needs a default; retain the site's current choice.
+	if not frappe.get_meta(doctype).get_field("naming_series").default:
+		make_property_setter(doctype, "naming_series", "default", get_default_naming_series(doctype), "Data")
 	fields = {field.fieldname: field for field in frappe.get_doc("DocType", doctype).fields}
 	for fieldname, hidden in HIDDEN_FIELDS.items():
 		field = fields[fieldname]

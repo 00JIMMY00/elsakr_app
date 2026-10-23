@@ -191,14 +191,14 @@ site; other existing variants update on save.
 ## Sales Invoice visibility in both editors
 
 On the second development site, **Edit DocType** now matches the existing
-**Customize Form** Hidden settings for Sales Invoice: ten hidden fields/sections/
+**Customize Form** Hidden settings for Sales Invoice: eleven hidden fields/sections/
 tabs, including Accounting Dimensions, Taxes, Tax Breakup, Pricing Rule Details,
 Time Sheets, Payments and More Info tabs, Company Tax ID, Is Debit Note, and
-Additional Discount Account. Five existing explicit visible settings remain:
+Additional Discount Account, and Naming Series. Five existing explicit visible settings remain:
 Scan Barcode, Tax ID, In Words, Rounded Total, and Base Rounded Total.
 
 POS payment methods remain available in **Details** even though the old Payments
-tab is hidden. These 15 visibility settings are stored in the app and reapplied
+tab is hidden. These 16 visibility settings are stored in the app and reapplied
 after installation/migration. To change them permanently, update
 `elsakr_app/sales_invoice_visibility.py`. Reload Desk after updating.
 Production deployment is pending.
@@ -246,3 +246,18 @@ customers through their linked Contacts. Normal Contact permissions apply.
 
 Applied on `elsakr-dev2.arab-erp.com`. Reload Desk after updating. Production
 deployment is pending; installation/migration preserves these settings.
+
+## Customer unpaid-balance card
+
+Selecting a Customer on Sales Invoice shows an orange card when they have a
+positive unpaid balance in that invoice's company, formatted in company currency.
+It shows the current net receivable balance through today, including receipts,
+credits, opening entries, and posted invoices. It refreshes when the customer or
+company changes or the form refreshes, and hides for zero/credit balances or no
+customer. Users need read access to GL Entry, Sales Invoice, the Customer, and
+the Company; existing record restrictions apply. This is an informational card.
+
+**Naming Series** is hidden on Sales Invoice. Native numbering remains active;
+if the site has no series default, setup uses its first configured series.
+Applied on `elsakr-dev2.arab-erp.com`; reload Desk after updating. Production
+deployment is pending.

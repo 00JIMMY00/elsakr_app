@@ -1,5 +1,11 @@
 frappe.ui.form.on("Sales Invoice", {
 	setup(frm) {
+		// ERPNext's controller reveals the series after normal form handlers run.
+		const native_refresh = frm.cscript.refresh;
+		frm.cscript.refresh = async function (...args) {
+			await native_refresh.apply(this, args);
+			frm.toggle_display("naming_series", false);
+		};
 		// A true collapsible dependency expands the section in Frappe v15.
 		frm.set_df_property("payments_section", "collapsible_depends_on", "eval:doc.is_pos");
 		// Start each form with the requested layout, including users with older grid settings.
@@ -127,7 +133,10 @@ frappe.ui.form.on("Sales Invoice", {
 function update_invoice_customer_link(frm) {
 	const field = frm.fields_dict.custom_customer_entry;
 	field.$customer_link
-		.attr("href", frm.doc.customer ? frappe.utils.get_form_link("Customer", frm.doc.customer) : null)
+		.attr(
+			"href",
+			frm.doc.customer ? frappe.utils.get_form_link("Customer", frm.doc.customer) : null
+		)
 		.toggle(!!frm.doc.customer);
 	if (field.disp_area) field.set_disp_area(frm.doc.custom_customer_entry);
 }
@@ -176,5 +185,74 @@ async function load_invoice_customer(frm) {
 		});
 	} finally {
 		frm._setting_inline_customer = previous;
+	}
+}
+
+frappe.ui.form.on("Sales Invoice", {
+	refresh: update_customer_unpaid_card,
+	customer: update_customer_unpaid_card,
+	company: update_customer_unpaid_card,
+});
+
+async function update_customer_unpaid_card(frm) {
+	if (!frm.$customer_unpaid_card) {
+		frm.$customer_unpaid_card = $(
+			'<div class="elsakr-customer-unpaid-card" role="status" aria-live="polite">'
+		)
+			.css({
+				display: "none",
+				padding: "16px 20px",
+				margin: "0 0 16px",
+				background: "var(--orange-50, #fff9f5)",
+				color: "var(--orange-700, #9a3412)",
+				border: "1px solid var(--orange-200, #fce6d5)",
+				"border-inline-start": "4px solid var(--orange-500, #e86c13)",
+				"border-radius": "12px",
+			})
+			.append(
+				$('<div class="unpaid-title">')
+					.css({ "font-weight": 600 })
+					.text(__("Customer has an unpaid balance")),
+				$('<div class="unpaid-amount">').css({
+					"font-size": "24px",
+					"font-weight": 700,
+					"margin-top": "4px",
+				}),
+				$('<div class="unpaid-customer">').css({
+					"font-size": "12px",
+					"margin-top": "4px",
+				})
+			);
+	}
+	// Reuse one card and immediately clear stale figures on customer/company changes.
+	frm.$customer_unpaid_card
+		.hide()
+		.insertBefore(frm.fields_dict.custom_customer_entry.section.wrapper);
+	const request = (frm._unpaid_request || 0) + 1;
+	frm._unpaid_request = request;
+	const { customer, company } = frm.doc;
+	if (!customer || !company || !frappe.model.can_read("GL Entry")) return;
+	try {
+		const { message } = await frappe.call({
+			method: "elsakr_app.customer_balance.get_customer_unpaid_balance",
+			args: { customer, company },
+		});
+		if (
+			request !== frm._unpaid_request ||
+			customer !== frm.doc.customer ||
+			company !== frm.doc.company
+		)
+			return;
+		if (!message || message.amount <= 0) return;
+		frm.$customer_unpaid_card
+			.find(".unpaid-amount")
+			.text(format_currency(message.amount, message.currency, message.precision));
+		frm.$customer_unpaid_card
+			.find(".unpaid-customer")
+			.text(`${frm.doc.customer_name || customer} · ${company}`);
+		frm.$customer_unpaid_card.show();
+	} catch {
+		// An unavailable balance must never leave a previous customer's figure visible.
+		if (request === frm._unpaid_request) frm.$customer_unpaid_card.hide();
 	}
 }

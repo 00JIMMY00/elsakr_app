@@ -2,6 +2,18 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-23 — Show current customer debt on Sales Invoice
+
+**Decision:** Show an orange card when the selected customer's net receivable balance is positive for the invoice company. Sum non-cancelled receivable GL debit minus credit through today in company currency, with payments, credits, and opening entries included. Check Customer and Company access and Sales Invoice/GL Entry read permission, applying GL match conditions. Refresh on selection/company/form refresh, immediately hide stale figures, and reject outdated responses.
+
+**Reason:** Invoice entry needs a visible reminder of existing customer debt. Posted company-currency ledger amounts avoid mixing invoice currencies or ignoring receipts and credits.
+
+**Consequence:** The card shows current net debt, including a saved submitted invoice's posted amounts, rather than an overdue-only total or a historical balance at the invoice date. Zero and credit balances show no warning. The feature is informational and does not block sales or alter accounting. Users need GL Entry read access; no permissions are widened.
+
+**Decision:** Add Naming Series to the app's Sales Invoice Hidden snapshot. Preserve an existing series default; if absent, set Frappe's first configured series as the default so the mandatory hidden field remains valid. Rehide the control after native controller refresh, which otherwise reveals it on new forms.
+
+**Consequence:** Existing invoice names, series options, and naming rules remain unchanged; new invoices continue to receive native generated names. This visibility/default is reapplied after install/migration.
+
 ## 2026-10-23 — Enter Customer phone directly beside the name
 
 **Decision:** Add optional `Customer.custom_phone` directly after Customer Name, hide Salutation and the duplicate read-only Mobile No, and hide the primary address/contact section until the Customer is saved. A Customer `before_save` hook passes new numbers into ERPNext's native primary-contact creation. For an existing primary contact, reuse a matching linked Contact or create a new primary Contact without replacing the old phone record. Preserve shared Contact numbers. Keep native `mobile_no` and primary-contact fetching intact.

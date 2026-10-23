@@ -43,11 +43,24 @@ remain native. The explicit `elsakr_app.payment_demo.create_payment_demo` helper
 is restricted to the second development site and retains synthetic accounting
 examples without stock movements; migration never invokes it.
 
-The app also reapplies 15 selected Sales Invoice Hidden settings after install
+The app also reapplies 16 selected Sales Invoice Hidden settings after install
 and migration, keeping database DocFields used by Edit DocType aligned with
-Property Setters used by Customize Form. Ten selected fields/sections/tabs are
+Property Setters used by Customize Form. Eleven selected fields/sections/tabs are
 hidden and five remain visible. The snapshot lives in
-`elsakr_app/sales_invoice_visibility.py`; ERPNext source is not edited.
+`elsakr_app/sales_invoice_visibility.py`; ERPNext source is not edited. Naming
+Series is hidden and defaults to the site's first configured series if no default
+exists. The form reapplies its hidden state after the native controller refresh.
+
+Sales Invoice displays an orange unpaid-balance card for a selected customer
+with a positive net receivable balance in the invoice company. A read-only API
+in `customer_balance.py` sums non-cancelled receivable GL debit minus credit
+through today in company currency, including payments, credits, and opening
+entries. It checks Customer/Company access and Sales Invoice/GL Entry read
+permissions, and applies GL row restrictions. Draft invoices are not posted;
+submitted invoices are included in the customer's current balance. The card
+refreshes on customer/company selection and form refresh, hides for zero/credit
+balances or no customer, and rejects outdated responses. It does not persist
+values or change the invoice.
 
 Sales Invoice also supports inline Customer Name autocomplete, optional Phone, and optional
 Address. Existing customers can be found by name/ID or linked Contact phone; selection
