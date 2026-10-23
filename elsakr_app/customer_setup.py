@@ -59,12 +59,14 @@ def setup_customer_flow():
 					"label": "Phone",
 					"fieldtype": "Data",
 					"insert_after": "custom_customer_entry",
+					"read_only_depends_on": "eval:!!doc.customer",
 				},
 				{
 					"fieldname": "custom_customer_address",
 					"label": "Address",
 					"fieldtype": "Small Text",
 					"insert_after": "custom_customer_phone",
+					"read_only_depends_on": "eval:!!doc.customer",
 				},
 			],
 			"Address": [

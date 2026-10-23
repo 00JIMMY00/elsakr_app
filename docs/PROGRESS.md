@@ -1,5 +1,11 @@
 # Progress
 
+## 2026-10-23 — Lock selected invoice party details and hide purchase tax fields (Local)
+
+- Changed: Added native `read_only_depends_on` conditions to Sales Invoice and Purchase Invoice Phone/Address fields. Selecting an existing customer/supplier locks both fields; a new inline party leaves them editable. Added `apply_tds`, `taxes_and_charges_added`, `taxes_and_charges_deducted`, and `total_taxes_and_charges` to the app-managed Purchase Invoice Hidden snapshot. Applied both setup functions to `elsakr-dev2.arab-erp.com`.
+- Checked: Both setup calls succeeded. Local effective metadata assertions confirmed all four read-only conditions and all four Hidden flags; database DocField Hidden flags also matched. Python compilation and diff whitespace checks passed. Ruff was unavailable on PATH.
+- Remaining: Reload Desk to load metadata; visual browser verification is pending. No production deployment was performed.
+
 ## 2026-10-23 — Mirror the simplified sales flow in purchasing (Local)
 
 - Changed: Added direct Supplier Phone entry with automatic native Contact creation/reuse, Individual defaults, hidden series/extra fields, and address/contact cards plus primary details in Details. Added Purchase Invoice Supplier Name autocomplete with name/ID/linked-phone search, optional Phone/Address, automatic linked master creation during save, and Supplier navigation links. Added the matching five-column Item/size/quantity/rate/amount grid, hidden series and extra sections/tabs, native Paid method/account/amount controls in Details, and an orange company-currency net-payable card. Retained the native unpaid default, purchase bill references, header withholding controls, permissions, accounting, and inherited validation. Existing sales/customer modules remain unchanged. Added install/migrate setup and purchasing regression tests. Applied setup and a full migration on `elsakr-dev2.arab-erp.com`.

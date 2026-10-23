@@ -93,7 +93,7 @@ the invoice transaction, with no permission bypass or separate commit.
 `public/js/purchase_invoice.js` provides the matching Item/size/quantity/rate/amount
 grid, Supplier links, hidden naming series, and native Paid payment controls in
 Details (one method/account/amount, with the native unpaid default retained).
-Supplier bill references and header withholding controls remain. `supplier_balance.py`
+Supplier bill references remain. Apply TDS and the added/deducted/total tax summary fields are hidden; native tax calculations remain active. `supplier_balance.py`
 shows positive net payable GL credit minus debit through today in company currency,
 with Supplier/Company access checks, Purchase Invoice/GL Entry read permissions,
 GL row restrictions, and protection against stale balance responses. The existing

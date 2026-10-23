@@ -206,3 +206,10 @@ are required; existing record restrictions apply.
 
 These purchasing changes are applied on `elsakr-dev2.arab-erp.com`; reload Desk.
 Installation/migration preserves them. Production deployment is pending.
+
+Phone and Address on Sales Invoice and Purchase Invoice become read-only when an
+existing customer or supplier is selected; they remain editable for a new inline
+party. To change existing details, edit the Customer or Supplier record. Purchase
+Invoice hides Apply TDS, Taxes and Charges Added, Taxes and Charges Deducted, and
+Total Taxes and Charges. These form settings are active on the second development
+site; reload Desk. Production receives them through migration.

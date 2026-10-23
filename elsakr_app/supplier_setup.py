@@ -18,6 +18,10 @@ SUPPLIER_HIDDEN = (
 	"contact_and_address_tab",
 )
 PURCHASE_INVOICE_HIDDEN = (
+	"apply_tds",
+	"taxes_and_charges_added",
+	"taxes_and_charges_deducted",
+	"total_taxes_and_charges",
 	"naming_series",
 	"accounting_dimensions_section",
 	"more_info_tab",
@@ -65,12 +69,14 @@ def setup_supplier_flow():
 					"label": "Phone",
 					"fieldtype": "Data",
 					"insert_after": "custom_supplier_entry",
+					"read_only_depends_on": "eval:!!doc.supplier",
 				},
 				{
 					"fieldname": "custom_supplier_address",
 					"label": "Address",
 					"fieldtype": "Small Text",
 					"insert_after": "custom_supplier_phone",
+					"read_only_depends_on": "eval:!!doc.supplier",
 				},
 			],
 		}
