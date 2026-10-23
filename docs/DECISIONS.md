@@ -2,6 +2,14 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-23 — Default invoice POS and initialize the counter-sales grid
+
+**Decision:** Apply `is_pos` default 1 through an app-managed Property Setter on install/migration. Initialize the Sales Invoice Item grid's in-memory GridView preference to Item/size/quantity/rate/amount with configured widths 2/1/1/2/2. Render read-only Customer Name as an escaped link to the actual Customer ID, with an open icon during draft entry.
+
+**Reason:** New counter invoices should start with payment enabled and the requested item layout. Existing per-user grid settings would otherwise override the requested columns. Customer names must remain navigable after submission while retaining draft autocomplete.
+
+**Consequence:** Saved POS values remain unchanged and users can clear POS on drafts. The grid starts with the app layout when the form initializes; Configure Columns remains usable during that form session. Links preserve Customer access checks and do not modify submitted invoices. ERPNext source is unchanged.
+
 ## 2026-10-23 — Enter and find invoice customers inline
 
 **Decision:** Add a Customer Name autocomplete plus optional Phone and Address to Sales Invoice. Keep the native Customer Link behind the form and resolve new names during `before_validate`, inside the invoice transaction. Use native Customer, Contact, Address, party defaults, and invoice accounting. Search permitted customers by name/ID or any linked Contact phone. Reuse a unique exact name; require explicit selection for duplicate display names. Preserve existing primary records when adding different details.

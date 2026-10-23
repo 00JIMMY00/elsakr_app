@@ -2,6 +2,12 @@
 
 Add the newest update first. Each entry should state the change, the checks performed, and remaining work. Use **Local**, **Deployed**, or **Unverified** to make release status clear. Mark **Deployed** only after checking the production workflow and live site.
 
+## 2026-10-23 — Link invoice customer, default POS, and set item columns (Local)
+
+- Changed: Added an open-Customer icon beside the draft customer entry and a clickable Customer Name in read-only/submitted invoices, using the linked Customer ID. New Sales Invoices default Include Payment (POS) to 1 through an installation/migration setup hook. Initialized the Items grid to Item (2), المقاس (1), Quantity (1), Rate (2), Amount (2), including users with older grid preferences. Applied the defaults setup twice and cleared cache on `elsakr-dev2.arab-erp.com`.
+- Checked: Headless Chrome over development HTTPS verified the new invoice POS default, visible payments, exact five column names/order/configured widths, draft customer link, and switching POS off. Opened retained submitted invoice `ACC-SINV-2026-00004`: Customer Name rendered a link, clicking it opened the correct Customer form, and the invoice stayed unmodified. Python compilation, Ruff lint/format, JavaScript syntax, and diff whitespace checks passed.
+- Remaining: Reload Desk to load the form script. Production deployment has not been performed.
+
 ## 2026-10-23 — Enter invoice customers inline and preserve Customer layout (Local)
 
 - Changed: Added one Customer Name autocomplete that searches permitted customers by name/ID and linked Contact phone, with optional Phone and Address immediately below it. Selecting an existing customer fills the details. Saving a new name creates an Individual Customer and optional linked Contact/Address inside the invoice transaction. Unique exact names and matching linked records are reused; ambiguous names require selection. Native Customer, receivable defaults, invoice validation, and accounting remain in use. Added focused regression tests. Captured the development Customer Hidden settings and Individual default, moved the primary address/contact section into Details, and hid the old Address & Contact tab. Freeform invoice addresses use company/site country without requiring or inventing a city; ordinary addresses retain the City requirement. Applied setup and full local migration on `elsakr-dev2.arab-erp.com`.

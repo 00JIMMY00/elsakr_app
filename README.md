@@ -72,7 +72,8 @@ This feature is active locally; production deployment is pending.
 
 ## Sales Invoice: Include Payment (POS)
 
-Select **Include Payment (POS)** after choosing the company. The native payment
+**Include Payment (POS)** is selected by default on new Sales Invoices. Clear it
+for a credit invoice. The native payment
 table appears in **Details**, immediately below the customer/invoice header. Its
 width is limited to 760 px and adapts to smaller screens. Enter the payment amount in
 one method or split it across several methods. ERPNext calculates Paid Amount
@@ -117,7 +118,9 @@ Production deployment is pending.
 ## Enter a customer directly on Sales Invoice
 
 In **Customer Name**, search by name or phone and select an existing customer to
-fill Phone and Address. For a new customer, type the name and optionally enter
+fill Phone and Address. Click the open icon beside a selected customer to open
+the Customer record; after submission, the displayed Customer Name itself is
+clickable. For a new customer, type the name and optionally enter
 Phone and Address, add the invoice items, then Save. The app creates an
 **Individual** Customer, a linked Contact when a phone is supplied, and a linked
 Address when an address is supplied. No separate master forms are needed.
@@ -135,3 +138,9 @@ addresses use the company's country (or site default) and need no separate City;
 regular Address forms still require City. Reload Desk after updating.
 
 This is applied on `elsakr-dev2.arab-erp.com`; production deployment is pending.
+
+Sales Invoice Items open with these columns in order: **Item (2), المقاس (1),
+Quantity (1), Rate (2), Amount (2)**. The numbers are the Configure Columns widths.
+The app sets this layout when the form initializes, including for users with older
+column preferences. Configure Columns can adjust it during the current form session.
+Reload Desk to load these changes. Existing invoices keep their saved POS setting.

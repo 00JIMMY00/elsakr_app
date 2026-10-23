@@ -2,6 +2,20 @@ frappe.ui.form.on("Sales Invoice", {
 	setup(frm) {
 		// A true collapsible dependency expands the section in Frappe v15.
 		frm.set_df_property("payments_section", "collapsible_depends_on", "eval:doc.is_pos");
+		// Start each form with the requested layout, including users with older grid settings.
+		// Keep this in memory: Configure Columns can still adjust the current session.
+		const settings = frappe.model.user_settings[frm.doctype] || {};
+		settings.GridView = {
+			...settings.GridView,
+			"Sales Invoice Item": [
+				{ fieldname: "item_code", columns: 2 },
+				{ fieldname: "custom_size", columns: 1 },
+				{ fieldname: "qty", columns: 1 },
+				{ fieldname: "rate", columns: 2 },
+				{ fieldname: "amount", columns: 2 },
+			],
+		};
+		frappe.model.user_settings[frm.doctype] = settings;
 	},
 	refresh(frm) {
 		position_pos_payments(frm);
@@ -31,6 +45,19 @@ function position_pos_payments(frm) {
 frappe.ui.form.on("Sales Invoice", {
 	setup(frm) {
 		const field = frm.fields_dict.custom_customer_entry;
+		field.df.formatter = (value) => {
+			const label = value || frm.doc.customer_name || frm.doc.customer || "";
+			if (!frm.doc.customer) return frappe.utils.escape_html(label);
+			return $("<a>")
+				.attr("href", frappe.utils.get_form_link("Customer", frm.doc.customer))
+				.text(label)[0].outerHTML;
+		};
+		// Retain text entry on drafts and provide the native-style open link beside it.
+		field.$customer_link = $('<a class="btn-open no-decoration">')
+			.attr("title", __("Open Customer"))
+			.attr("aria-label", __("Open Customer"))
+			.html(frappe.utils.icon("external-link", "sm"));
+		$("<span class='link-btn'>").append(field.$customer_link).appendTo(field.input_area);
 		field.df.ignore_validation = true;
 		field.get_query = () => ({ query: "elsakr_app.invoice_customer.search_customers" });
 		const validate_party = frm.cscript.validate_company_and_party;
@@ -48,6 +75,7 @@ frappe.ui.form.on("Sales Invoice", {
 	},
 	refresh(frm) {
 		const field = frm.fields_dict.custom_customer_entry;
+		update_invoice_customer_link(frm);
 		if (field.awesomplete) {
 			field.awesomplete.filter = () => true;
 			// Customer labels must be rendered as text.
@@ -79,6 +107,7 @@ frappe.ui.form.on("Sales Invoice", {
 		if (selected) return select_invoice_customer(frm, selected.value);
 		if (frm.doc.customer && value !== frm.doc.customer_name) {
 			await frm.set_value("customer", "");
+			update_invoice_customer_link(frm);
 			await frm.set_value({
 				custom_customer_phone: "",
 				custom_customer_address: "",
@@ -90,9 +119,18 @@ frappe.ui.form.on("Sales Invoice", {
 		}
 	},
 	customer(frm) {
+		update_invoice_customer_link(frm);
 		if (frm.doc.customer && !frm._setting_inline_customer) return load_invoice_customer(frm);
 	},
 });
+
+function update_invoice_customer_link(frm) {
+	const field = frm.fields_dict.custom_customer_entry;
+	field.$customer_link
+		.attr("href", frm.doc.customer ? frappe.utils.get_form_link("Customer", frm.doc.customer) : null)
+		.toggle(!!frm.doc.customer);
+	if (field.disp_area) field.set_disp_area(frm.doc.custom_customer_entry);
+}
 
 async function select_invoice_customer(frm, customer) {
 	if (frm._setting_inline_customer) return;

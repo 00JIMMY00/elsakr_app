@@ -27,6 +27,13 @@ records are created automatically from nonempty attribute values when missing, u
 unchanged. `elsakr_app.variant_demo.create_variant_demo` is an explicit,
 development-only retained example and is never invoked by migration.
 
+New Sales Invoices default `is_pos` to 1 through an installation/migration
+Property Setter. Existing saved values are preserved. The form initializes its
+Items grid to Item (2), المقاس (1), Quantity (1), Rate (2), Amount (2), replacing
+older in-memory grid preferences for that form session. A selected customer has
+an open-record icon during entry and a clickable Customer Name in read-only
+mode, routed by the actual Customer ID.
+
 Sales Invoice uses an app controller subclass to populate enabled company Cash/Bank
 payment methods when Include Payment (POS) has no applicable POS Profile. Existing
 profiles retain native ERPNext behavior. A DocType script corrects the section collapse dependency and opens the native
