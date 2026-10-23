@@ -1,5 +1,12 @@
 # Progress
 
+## 2026-10-23 — Reconcile local and GitHub main histories (Local)
+
+- Changed: Merged the GitHub main commit into the local branch, retaining all nine local commits and the remote commit. Resolved the README overlap by keeping the development-site paragraph and the apps.yaml deployment instructions. Preserved the original local tip in `backup/main-before-sync-2026-10-23`.
+- Checked: Before this tracking entry, the resolved tree matched the original local tree exactly. Confirmed apps.yaml, the build/deploy workflow, and the app-list renderer match the GitHub main versions. App-list rendering with a full commit SHA passed; Git whitespace and unresolved-conflict checks passed.
+- Remaining: Push and production workflow/live-site verification are pending. No production deployment is claimed by this entry.
+
+
 Add the newest update first. Each entry should state the change, the checks performed, and remaining work. Use **Local**, **Deployed**, or **Unverified** to make release status clear. Mark **Deployed** only after checking the production workflow and live site.
 
 ## 2026-10-23 — Show customer unpaid balance and hide invoice series (Local)
