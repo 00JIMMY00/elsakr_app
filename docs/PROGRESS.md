@@ -1,5 +1,17 @@
 # Progress
 
+## 2026-10-23 — Simplify dashboard and make its Workspace independent (Local)
+
+- Changed: Removed the introductory Arabic header and company selector, kept date filters, and made Operations Dashboard a standalone public Workspace with no parent. The existing API chooses the permitted default company automatically. Updated operator and project documentation. Applied blocks, reloaded the standard Workspace, and cleared cache on the second development site.
+- Checked: JavaScript syntax and ESLint passed. Local Workspace metadata returned an empty parent and public=1. Development HTTPS browser checks passed for populated totals/rankings, 320/390/768 px fit, date presets, empty results, stale-response protection, simulated failures, and multi-date activity/table rendering.
+- Remaining: Production deployment has not been performed. Reload Desk for the new sidebar placement and stored blocks.
+
+## 2026-10-23 — Redesign Operations dashboard for phones (Local)
+
+- Changed: Rebuilt the Arabic RTL dashboard with a navy/teal financial overview, revenue-minus-expenses result, four compact metric cards, separated currency labels, touch-sized Today/Last 7 Days/This Month presets, and expandable company/custom-date filters (initially collapsed on phones). Replaced numbered product columns and the separate key with named horizontal ranking bars. Added a responsive SVG activity chart, grouped bars for a single activity date, an expandable exact daily-values table, dark-theme styling, and explicit loading/empty/error states. Both blocks now share one request/result and ignore older responses. Existing API queries, permissions, currency, and balance/date semantics are retained. Applied the managed blocks and cleared cache on `elsakr-dev2.arab-erp.com`.
+- Checked: Headless Chrome over development HTTPS verified four totals and eight retained demo sellers, rendered activity bars, quick-date changes, September empty states, rejection of a delayed older result, and clearing both blocks after a simulated request failure. A synthetic three-date response verified both line series, negative amounts, and three exact-values table rows without writing records. Checked desktop at 1440 px and dashboard fit at 320/390/768 px; a fresh 390 px load had collapsed filters and an expandable daily table. Reviewed desktop, phone, and dark-theme screenshots. The final browser run reported no JavaScript errors. JavaScript syntax, ESLint, and diff whitespace checks passed. Repeated block synchronization succeeded.
+- Remaining: Reload Desk to load the refreshed blocks and JavaScript. Production deployment has not been performed; production requires the normal app update/migration to sync the stored HTML/CSS blocks.
+
 ## 2026-10-23 — Lock selected invoice party details and hide purchase tax fields (Local)
 
 - Changed: Added native `read_only_depends_on` conditions to Sales Invoice and Purchase Invoice Phone/Address fields. Selecting an existing customer/supplier locks both fields; a new inline party leaves them editable. Added `apply_tds`, `taxes_and_charges_added`, `taxes_and_charges_deducted`, and `total_taxes_and_charges` to the app-managed Purchase Invoice Hidden snapshot. Applied both setup functions to `elsakr-dev2.arab-erp.com`.

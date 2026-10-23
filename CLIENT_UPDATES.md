@@ -72,9 +72,9 @@ shortcuts; reload Desk and use `/app/operations` after updating.
 
 ## Operations dashboard
 
-Under **Operations**, open **Operations Dashboard** at `/app/operations-dashboard`. Select the company and dates and click **تحديث**. It opens from the first day of the current month through today. The top cards show posted revenue and expenses during that range, plus customer debt and supplier dues as of the ending date. The charts show daily revenue/expenses and the ten highest-selling Items by quantity from submitted Sales Invoices. Values use the selected company currency.
+Open the standalone **Operations Dashboard** Workspace at `/app/operations-dashboard`. Use **اليوم**, **آخر ٧ أيام**, or **هذا الشهر** to refresh immediately. For a custom range, expand **التواريخ** (collapsed initially on phones), select the dates, and click **تحديث البيانات**. It opens from the first day of the current month through today. The top cards show posted revenue and expenses during that range, plus customer debt and supplier dues as of the ending date. The navy overview shows revenue minus expenses, with currency labels separated from amounts. The daily chart compares revenue/expenses (grouped bars for a single activity date); **عرض القيم اليومية** expands an exact-values table for the activity chart; the ranked list shows the ten highest-selling Items by quantity from submitted Sales Invoices, with names and quantities together. Quantities use stock units, which may differ between Items. Values use the selected company currency.
 
-The dashboard is active on `elsakr-dev2.arab-erp.com` after local synchronization. Production deployment has not been performed. The user needs read permission for GL Entry, Sales Invoice, Company, and Custom HTML Block. Reload Desk after updating the app.
+The dashboard is active on `elsakr-dev2.arab-erp.com` after local synchronization. Production deployment has not been performed. The user needs read permission for GL Entry, Sales Invoice, Company, and Custom HTML Block. Reload Desk after updating the app. For this dashboard redesign, installation/migration must refresh both managed HTML blocks as well as serving the updated app JavaScript; a script-only refresh does not update the stored HTML/CSS.
 
 ## Item sizes and stock report filters
 
@@ -170,7 +170,7 @@ and Outstanding Amount and posts each payment to its configured account.
 An applicable POS Profile supplies its configured payment methods. Without a
 profile, the app loads enabled methods mapped to an enabled company Cash/Bank
 ledger account. Configure company mappings under **Mode of Payment**; profile
-methods also need correct accounts. Reload Desk after updating the app.
+methods also need correct accounts. Reload Desk after updating the app. For this dashboard redesign, installation/migration must refresh both managed HTML blocks as well as serving the updated app JavaScript; a script-only refresh does not update the stored HTML/CSS.
 
 On `elsakr-dev2.arab-erp.com`, retained submitted examples dated 2026-10-23 are
 `ACC-SINV-2026-00003` (EGP 1,000 Cash) and `ACC-SINV-2026-00004` (EGP 400 Cash +
@@ -301,3 +301,5 @@ party. To change existing details, edit the Customer or Supplier record. Purchas
 Invoice hides Apply TDS, Taxes and Charges Added, Taxes and Charges Deducted, and
 Total Taxes and Charges. These form settings are active on the second development
 site; reload Desk. Production receives them through migration.
+
+The Operations Dashboard opens independently of Operations. It uses the single company automatically; there is no company selector or introductory header copy.

@@ -1,7 +1,14 @@
-<div class="elsakr-dashboard" dir="rtl">
+<div class="elsakr-dashboard dashboard-charts" dir="rtl">
   <div class="dashboard-panels">
-    <section class="dashboard-panel"><h3>الإيرادات والمصروفات حسب اليوم</h3><div data-chart="activity"></div></section>
-    <section class="dashboard-panel"><h3>الأصناف الأكثر مبيعاً بالكمية</h3><div data-chart="items"></div><ol class="top-items" data-list="items"></ol></section>
+    <section class="dashboard-panel activity-panel">
+      <header class="panel-heading"><div><span class="dashboard-eyebrow">حركة الأعمال</span><h3>الإيرادات والمصروفات</h3><p>متابعة يومية خلال الفترة المختارة</p></div><span class="panel-symbol" aria-hidden="true">↗</span></header>
+      <div class="dashboard-legend"><span><i class="revenue-dot"></i>الإيرادات</span><span><i class="expense-dot"></i>المصروفات</span><span data-context="currency"></span></div>
+      <div data-chart="activity" aria-label="الرسم اليومي للإيرادات والمصروفات"></div>
+    </section>
+    <section class="dashboard-panel items-panel">
+      <header class="panel-heading"><div><span class="dashboard-eyebrow">الأكثر طلباً</span><h3>أصنافك الأكثر مبيعاً</h3><p>أفضل ١٠ أصناف حسب الكمية المباعة</p></div><span class="panel-symbol" aria-hidden="true">≋</span></header>
+      <ol class="top-items" data-list="items" aria-label="ترتيب الأصناف حسب الكمية"></ol>
+    </section>
   </div>
-  <p class="dashboard-note">المبيعات من فواتير البيع المعتمدة، والإيرادات والمصروفات من القيود المحاسبية، وأرصدة الأطراف حتى تاريخ النهاية. تُعرض القيم بعملة الشركة المختارة.</p>
+  <details class="dashboard-source"><summary>عن الأرقام المعروضة</summary><p>المبيعات من فواتير البيع المعتمدة، والإيرادات والمصروفات من القيود المحاسبية، وأرصدة العملاء والموردين حتى تاريخ النهاية. تُعرض القيم بعملة الشركة المختارة. كميات الأصناف بوحدات المخزون وقد تختلف الوحدة بين صنف وآخر.</p></details>
 </div>

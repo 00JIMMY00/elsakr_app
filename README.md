@@ -24,7 +24,7 @@ and invoices, and stock records and reports. It uses existing ERPNext permission
 and syncs during installation or migration. It is activated on the second local
 development site; production deployment is pending.
 
-The **Operations Dashboard** child Workspace (`/app/operations-dashboard`) shows top-selling Items, daily income and expenses, and total customer/supplier balances. Select a company and From/To dates; the initial range is month start through today. Customer and supplier balances are as of the end date. It is activated on the second local development site; production deployment is pending.
+The **Operations Dashboard** standalone Workspace (`/app/operations-dashboard`) shows top-selling Items, daily income and expenses, and total customer/supplier balances. The phone-first Arabic layout includes a navy financial overview (revenue minus expenses), four balance/activity cards, and named product ranking bars. Use Today, Last 7 Days, or This Month, or expand **التواريخ** for custom dates; the initial range is month start through today. Customer and supplier balances are as of the end date. It is activated on the second local development site; production deployment is pending.
 
 The **New** action opens the full form directly for Item, Customer, Supplier,
 Sales Invoice, Material Request, Mode of Payment, and Item Size. This is active
@@ -213,3 +213,5 @@ party. To change existing details, edit the Customer or Supplier record. Purchas
 Invoice hides Apply TDS, Taxes and Charges Added, Taxes and Charges Deducted, and
 Total Taxes and Charges. These form settings are active on the second development
 site; reload Desk. Production receives them through migration.
+
+The Operations Dashboard opens independently of Operations. It uses the single company automatically; there is no company selector or introductory header copy.

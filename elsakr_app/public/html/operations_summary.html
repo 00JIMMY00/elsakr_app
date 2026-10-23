@@ -1,18 +1,32 @@
-<div class="elsakr-dashboard" dir="rtl">
-  <div class="dashboard-toolbar">
-    <div><h2>لوحة متابعة العمليات</h2><p>ملخص المبيعات والمصروفات والأرصدة</p></div>
-    <div class="dashboard-filters">
-      <label>الشركة <select data-field="company"></select></label>
-      <label>من تاريخ <input data-field="from_date" type="date"></label>
-      <label>إلى تاريخ <input data-field="to_date" type="date"></label>
-      <button type="button" data-action="refresh">تحديث</button>
+<div class="elsakr-dashboard dashboard-summary" dir="rtl">
+  <div class="dashboard-controls">
+    <div class="dashboard-periods" role="group" aria-label="الفترة الزمنية">
+      <button type="button" data-period="today" aria-pressed="false">اليوم</button>
+      <button type="button" data-period="week" aria-pressed="false">آخر ٧ أيام</button>
+      <button type="button" data-period="month" aria-pressed="true">هذا الشهر</button>
     </div>
+    <details class="dashboard-filter-details">
+      <summary>التواريخ</summary>
+      <form class="dashboard-filters">
+        <label>من تاريخ <input data-field="from_date" type="date" required></label>
+        <label>إلى تاريخ <input data-field="to_date" type="date" required></label>
+        <button type="submit" data-action="refresh">تحديث البيانات <span aria-hidden="true">↻</span></button>
+      </form>
+    </details>
   </div>
-  <div class="dashboard-status" role="status"></div>
-  <div class="dashboard-kpis">
-    <div class="kpi"><span>الإيرادات خلال الفترة</span><strong data-value="revenue">—</strong></div>
-    <div class="kpi"><span>المصروفات خلال الفترة</span><strong data-value="expenses">—</strong></div>
-    <div class="kpi"><span>مديونية العملاء حتى تاريخ النهاية</span><strong data-value="receivables">—</strong></div>
-    <div class="kpi"><span>مستحقات الموردين حتى تاريخ النهاية</span><strong data-value="payables">—</strong></div>
-  </div>
+  <div class="dashboard-status" role="status" aria-live="polite">جارٍ تحميل البيانات…</div>
+  <section class="dashboard-overview" aria-label="الملخص المالي">
+    <div class="dashboard-hero">
+      <div class="hero-heading"><span>صافي نتيجة الفترة</span><span class="hero-icon" aria-hidden="true">↗</span></div>
+      <strong data-value="net">—</strong>
+      <p>الإيرادات ناقص المصروفات</p>
+      <div class="hero-footer"><span data-context="company">—</span><span data-context="period">—</span></div>
+    </div>
+    <div class="dashboard-kpis">
+      <article class="kpi kpi-revenue"><div class="kpi-heading"><span>الإيرادات</span><span class="kpi-icon" aria-hidden="true">↙</span></div><strong data-value="revenue">—</strong><small>خلال الفترة المختارة</small></article>
+      <article class="kpi kpi-expenses"><div class="kpi-heading"><span>المصروفات</span><span class="kpi-icon" aria-hidden="true">↗</span></div><strong data-value="expenses">—</strong><small>خلال الفترة المختارة</small></article>
+      <article class="kpi kpi-receivables"><div class="kpi-heading"><span>مديونية العملاء</span><span class="kpi-icon" aria-hidden="true">↙</span></div><strong data-value="receivables">—</strong><small>حتى تاريخ النهاية</small></article>
+      <article class="kpi kpi-payables"><div class="kpi-heading"><span>مستحقات الموردين</span><span class="kpi-icon" aria-hidden="true">↗</span></div><strong data-value="payables">—</strong><small>حتى تاريخ النهاية</small></article>
+    </div>
+  </section>
 </div>

@@ -2,6 +2,22 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-23 — Make the dashboard standalone and remove company selection
+
+**Decision:** Clear the Operations Dashboard Workspace parent, remove the introductory header and company selector, and retain only date controls. Let the existing API select the permitted default company, retaining the returned company for subsequent requests.
+
+**Reason:** The site has one company and the dashboard needs its own sidebar entry.
+
+**Consequence:** The route and data permissions remain unchanged. Installation/migration syncs the standalone Workspace and managed blocks.
+
+## 2026-10-23 — Prioritize phone use in the Operations dashboard
+
+**Decision:** Keep the two existing Workspace HTML blocks and read-only API, with a navy/teal RTL layout, a derived revenue-minus-expenses overview, four existing totals, quick Today/Last 7 Days/This Month filters, collapsible company/date controls, and named horizontal ranking bars for the ten best sellers. Separate currency labels from amounts. Use daily lines for multiple activity dates and grouped bars for one activity date.
+
+**Reason:** Phone users need a clear reading order, touch-sized filters, legible amounts, and product names beside their quantities. A single activity date cannot form a meaningful line.
+
+**Consequence:** No ledger queries, permissions, or balance/date semantics change. The summary fetches once and shares loading/results/errors with the charts, rejecting older responses. The activity chart uses responsive inline SVG with an expandable exact-values table; this avoids the chart library’s animation errors inside Frappe shadow roots during resize/refresh. No comparative trends are inferred. Product quantities retain stock units, which can differ between Items. Install/migration continues to update the managed HTML blocks; the JavaScript is a shared app asset.
+
 ## 2026-10-23 — Mirror the simplified party flow in purchasing
 
 **Decision:** Add a Supplier Name autocomplete plus optional Phone and Address to Purchase Invoice, with name/ID/linked-phone search and native Supplier navigation. Resolve new Individual Suppliers and their linked Contacts/Addresses during the invoice's `before_validate` using a Purchase Invoice subclass. Reuse unambiguous names and linked details, require selection for duplicate names, retain normal permissions and the invoice save transaction, and reuse the existing freeform-address mechanism. Add direct Supplier Phone entry with the same native Contact creation/reuse and preservation of old/shared phone records as Customer.
