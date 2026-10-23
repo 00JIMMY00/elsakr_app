@@ -27,3 +27,116 @@ function position_pos_payments(frm) {
 	section.fields_list.forEach((field) => details.add_field(field));
 	payment_field.$wrapper.css({ width: "100%", "max-width": "760px" });
 }
+
+frappe.ui.form.on("Sales Invoice", {
+	setup(frm) {
+		const field = frm.fields_dict.custom_customer_entry;
+		field.df.ignore_validation = true;
+		field.get_query = () => ({ query: "elsakr_app.invoice_customer.search_customers" });
+		const validate_party = frm.cscript.validate_company_and_party;
+		frm.cscript.validate_company_and_party = function (...args) {
+			if (frm.doc.company && !frm.doc.customer && frm.doc.custom_customer_entry?.trim()) {
+				return true;
+			}
+			return validate_party.apply(this, args);
+		};
+	},
+	onload(frm) {
+		if (frm.doc.customer && !frm.doc.custom_customer_entry) {
+			return load_invoice_customer(frm);
+		}
+	},
+	refresh(frm) {
+		const field = frm.fields_dict.custom_customer_entry;
+		if (field.awesomplete) {
+			field.awesomplete.filter = () => true;
+			// Customer labels must be rendered as text.
+			field.awesomplete.item = (item) => {
+				const row = field.get_data().find((d) => d.value === item.value) || item;
+				return $("<li>").append(
+					$("<strong>").text(row.label),
+					$("<div>").text(row.description || "")
+				)[0];
+			};
+		}
+		frm.toggle_display("customer", false);
+		frm.toggle_reqd("customer", false);
+		frm.toggle_reqd("custom_customer_entry", true);
+	},
+	before_save(frm) {
+		// ERPNext fills these from the new Customer during server validation.
+		if (!frm.doc.customer && frm.doc.custom_customer_entry?.trim()) {
+			frm.toggle_reqd("debit_to", false);
+			frm.toggle_reqd("due_date", false);
+		}
+	},
+	async custom_customer_entry(frm) {
+		if (frm._setting_inline_customer) return;
+		const value = frm.doc.custom_customer_entry;
+		const selected = frm.fields_dict.custom_customer_entry
+			.get_data()
+			.find((d) => d.value === value);
+		if (selected) return select_invoice_customer(frm, selected.value);
+		if (frm.doc.customer && value !== frm.doc.customer_name) {
+			await frm.set_value("customer", "");
+			await frm.set_value({
+				custom_customer_phone: "",
+				custom_customer_address: "",
+				contact_person: "",
+				contact_mobile: "",
+				customer_address: "",
+				address_display: "",
+			});
+		}
+	},
+	customer(frm) {
+		if (frm.doc.customer && !frm._setting_inline_customer) return load_invoice_customer(frm);
+	},
+});
+
+async function select_invoice_customer(frm, customer) {
+	if (frm._setting_inline_customer) return;
+	frm._setting_inline_customer = true;
+	try {
+		await frm.set_value("customer", customer);
+		await load_invoice_customer(frm);
+	} finally {
+		frm._setting_inline_customer = false;
+	}
+}
+
+async function load_invoice_customer(frm) {
+	const customer = frm.doc.customer;
+	if (!customer) return;
+	const { message } = await frappe.call({
+		method: "elsakr_app.invoice_customer.customer_details",
+		args: { customer },
+	});
+	if (frm.doc.customer !== customer) return;
+	if (frm.doc.docstatus) {
+		// Show details on older submitted invoices without marking them as modified.
+		Object.assign(frm.doc, {
+			custom_customer_entry: message.customer_name,
+			custom_customer_phone: frm.doc.contact_mobile || message.phone,
+			custom_customer_address: message.address,
+		});
+		frm.refresh_fields([
+			"custom_customer_entry",
+			"custom_customer_phone",
+			"custom_customer_address",
+		]);
+		return;
+	}
+	const previous = frm._setting_inline_customer;
+	frm._setting_inline_customer = true;
+	try {
+		frm.fields_dict.custom_customer_entry.set_data([]);
+		await frm.set_value({
+			custom_customer_entry: message.customer_name,
+			custom_customer_phone: message.phone,
+			custom_customer_address: message.address,
+		});
+	} finally {
+		frm._setting_inline_customer = previous;
+	}
+}

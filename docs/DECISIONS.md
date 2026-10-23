@@ -2,6 +2,18 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-23 — Enter and find invoice customers inline
+
+**Decision:** Add a Customer Name autocomplete plus optional Phone and Address to Sales Invoice. Keep the native Customer Link behind the form and resolve new names during `before_validate`, inside the invoice transaction. Use native Customer, Contact, Address, party defaults, and invoice accounting. Search permitted customers by name/ID or any linked Contact phone. Reuse a unique exact name; require explicit selection for duplicate display names. Preserve existing primary records when adding different details.
+
+**Reason:** Counter sales should not require opening three separate master forms. Deferring creation until invoice save avoids abandoned masters and lets failed saves roll back the new records.
+
+**Consequence:** Normal master permissions apply; no elevated creation or separate commits are used. Customer creation defaults to Individual. The invoice client permits item entry with a new name and defers receivable-account/due-date requirements to native server defaults. Existing customer-specific pricing still uses native customer selection. Freeform invoice addresses store the supplied text without inventing a city; a hidden Address flag allows only these addresses to omit City, while a server hook preserves the requirement for regular addresses. Country comes from the invoice company or the site default. New primary selectors are filled where the user has Customer write permission. Existing primary contact/address records are not overwritten.
+
+**Decision:** Capture the second development site's 16 hidden Customer fields/tabs (including its naming-series override), add the hidden Address & Contact tab, and move the existing primary address/contact section into Details with the native linked-record cards. Reapply visibility and the Individual default after install/migration.
+
+**Consequence:** These Customer settings are app-owned and survive metadata synchronization. ERPNext source remains unchanged; other Customer properties remain outside the snapshot.
+
 ## 2026-10-23 — Open common records in full forms
 
 **Decision:** Disable Quick Entry for Item, Customer, Supplier, Sales Invoice, Material Request, and Mode of Payment using DocType Property Setters applied on installation and migration. Disable it in the standard JSON for the app-owned Item Size DocType.

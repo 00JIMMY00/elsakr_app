@@ -42,6 +42,18 @@ Property Setters used by Customize Form. Ten selected fields/sections/tabs are
 hidden and five remain visible. The snapshot lives in
 `elsakr_app/sales_invoice_visibility.py`; ERPNext source is not edited.
 
+Sales Invoice also supports inline Customer Name autocomplete, optional Phone, and optional
+Address. Existing customers can be found by name/ID or linked Contact phone; selection
+loads their details. The controller resolves new Individual customers and linked native
+Contact/Address records during `before_validate`, with normal permissions and rollback
+inside the invoice save transaction. Exact unambiguous names are reused. Freeform
+invoice addresses may omit City through a scoped hidden Address flag; ordinary addresses
+retain the City requirement through client metadata and a validation hook. Country uses
+the company/site default. The native Customer Link, party defaults, and accounting remain
+in use. `customer_setup.py` installs these fields, captures the development Customer
+Hidden settings and Individual default, and `public/js/customer.js` moves primary
+address/contact details into Details while hiding the old tab.
+
 Quick Entry is disabled for Item, Customer, Supplier, Sales Invoice, Material
 Request, and Mode of Payment through app-managed DocType Property Setters after
 install/migration. The app's own Item Size DocType also has Quick Entry disabled.

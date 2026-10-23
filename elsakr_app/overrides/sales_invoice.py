@@ -4,6 +4,11 @@ from frappe.utils import cint
 
 
 class ElsakrSalesInvoice(SalesInvoice):
+	def before_validate(self):
+		from elsakr_app.invoice_customer import prepare_invoice_customer
+
+		prepare_invoice_customer(self)
+
 	def set_pos_fields(self, for_validate=False):
 		pos = super().set_pos_fields(for_validate)
 		if not cint(self.is_pos) or self.pos_profile or for_validate or not self.company:

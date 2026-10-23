@@ -113,3 +113,25 @@ tab is hidden. These 15 visibility settings are stored in the app and reapplied
 after installation/migration. To change them permanently, update
 `elsakr_app/sales_invoice_visibility.py`. Reload Desk after updating.
 Production deployment is pending.
+
+## Enter a customer directly on Sales Invoice
+
+In **Customer Name**, search by name or phone and select an existing customer to
+fill Phone and Address. For a new customer, type the name and optionally enter
+Phone and Address, add the invoice items, then Save. The app creates an
+**Individual** Customer, a linked Contact when a phone is supplied, and a linked
+Address when an address is supplied. No separate master forms are needed.
+Only the customer name is required for this customer entry; normal invoice
+requirements and master permissions still apply. Duplicate customer names must
+be selected explicitly from the suggestions. Failed invoice saves roll back new
+master records. Different supplied contact/address details add linked records
+without overwriting existing primary records.
+
+The simplified Customer form is preserved by the app, with primary address and
+contact details in **Details** and the **Address & Contact** tab hidden. New
+Customer forms default to **Individual**. App migration reapplies the captured
+Customer Hidden settings from `elsakr_app/customer_setup.py`. Freeform invoice
+addresses use the company's country (or site default) and need no separate City;
+regular Address forms still require City. Reload Desk after updating.
+
+This is applied on `elsakr-dev2.arab-erp.com`; production deployment is pending.
