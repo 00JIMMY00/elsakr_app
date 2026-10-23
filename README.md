@@ -24,6 +24,8 @@ and invoices, and stock records and reports. It uses existing ERPNext permission
 and syncs during installation or migration. It is activated on the second local
 development site; production deployment is pending.
 
+The **Operations Dashboard** child Workspace (`/app/operations-dashboard`) shows top-selling Items, daily income and expenses, and total customer/supplier balances. Select a company and From/To dates; the initial range is month start through today. Customer and supplier balances are as of the end date. It is activated on the second local development site; production deployment is pending.
+
 Items now support an optional **المقاس** (size) Link to the one-field **Item Size**
 master, labelled **المقاس** in Arabic. Stock Balance and Stock Ledger include a
 size filter that restricts their native calculations to matching Items. The
@@ -92,3 +94,18 @@ Saving a variant generates its display name from the template name plus all
 full attribute values, replacing abbreviation-based names. Item codes remain
 unchanged. The reported Colour/White Item was repaired on the second development
 site; other existing variants update on save.
+
+## Sales Invoice visibility in both editors
+
+On the second development site, **Edit DocType** now matches the existing
+**Customize Form** Hidden settings for Sales Invoice: ten hidden fields/sections/
+tabs, including Accounting Dimensions, Taxes, Tax Breakup, Pricing Rule Details,
+Time Sheets, Payments and More Info tabs, Company Tax ID, Is Debit Note, and
+Additional Discount Account. Five existing explicit visible settings remain:
+Scan Barcode, Tax ID, In Words, Rounded Total, and Base Rounded Total.
+
+POS payment methods remain available in **Details** even though the old Payments
+tab is hidden. These 15 visibility settings are stored in the app and reapplied
+after installation/migration. To change them permanently, update
+`elsakr_app/sales_invoice_visibility.py`. Reload Desk after updating.
+Production deployment is pending.

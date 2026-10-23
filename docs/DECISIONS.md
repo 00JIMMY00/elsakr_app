@@ -2,6 +2,22 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-23 — Put the dashboard in a child Workspace with shared date filters
+
+**Decision:** Ship a public child Workspace under Operations with two Custom HTML Blocks and one read-only API. Use posted GL Entries for income, expenses, receivables, and payables; use submitted Sales Invoice Items for the ten top sellers. The selected date range applies to activity and sales, while customer and supplier balances are measured through the end date. Scope all figures to one permitted company and its currency.
+
+**Reason:** Frappe v15 Workspace chart widgets have separate date controls, while the requested dashboard needs one From/To filter across every section. A custom block can render the shared controls and charts inside the Workspace.
+
+**Consequence:** Users need read access to GL Entry, Sales Invoice, Company, and the public Custom HTML Blocks. The API checks those permissions and applies Frappe match conditions to the queried records. The date range defaults to month start through today. Blocks are recreated or updated by install/migration hooks; direct edits to those two blocks are overwritten by a later migration.
+
+## 2026-10-23 — Mirror requested Sales Invoice visibility in both editors
+
+**Decision:** Ship an explicit snapshot of the 15 Sales Invoice Hidden overrides from the second development site's Customize Form: ten hidden and five visible. Apply these flags to both database DocFields (Edit DocType) and Property Setters (effective form metadata) after installation and migration. Update database field flags directly without saving/exporting ERPNext's standard DocType.
+
+**Reason:** Edit DocType reads the standard field definitions and does not show Property Setter overrides as native field settings. The user requested the same Hidden settings in both editors.
+
+**Consequence:** ERPNext source files remain untouched. An upstream metadata sync can reset the database flags, so the app reapplies the snapshot after migration. These 15 Hidden settings become app-maintained defaults; changes intended to survive migration need an update to the snapshot. Other customization properties, including print and mandatory settings, are preserved. Hiding is presentation only and grants/revokes no permissions.
+
 ## 2026-10-23 — Support single-attribute variants and full display names
 
 **Decision:** Recognize `Item Size`, `Size`, and `المقاس` as size attributes. For a variant with exactly one attribute, use its value as size regardless of attribute name. Build variant display names from the template display name and all full attribute values during validation; preserve Item codes.

@@ -1,0 +1,18 @@
+<div class="elsakr-dashboard" dir="rtl">
+  <div class="dashboard-toolbar">
+    <div><h2>لوحة متابعة العمليات</h2><p>ملخص المبيعات والمصروفات والأرصدة</p></div>
+    <div class="dashboard-filters">
+      <label>الشركة <select data-field="company"></select></label>
+      <label>من تاريخ <input data-field="from_date" type="date"></label>
+      <label>إلى تاريخ <input data-field="to_date" type="date"></label>
+      <button type="button" data-action="refresh">تحديث</button>
+    </div>
+  </div>
+  <div class="dashboard-status" role="status"></div>
+  <div class="dashboard-kpis">
+    <div class="kpi"><span>الإيرادات خلال الفترة</span><strong data-value="revenue">—</strong></div>
+    <div class="kpi"><span>المصروفات خلال الفترة</span><strong data-value="expenses">—</strong></div>
+    <div class="kpi"><span>مديونية العملاء حتى تاريخ النهاية</span><strong data-value="receivables">—</strong></div>
+    <div class="kpi"><span>مستحقات الموردين حتى تاريخ النهاية</span><strong data-value="payables">—</strong></div>
+  </div>
+</div>

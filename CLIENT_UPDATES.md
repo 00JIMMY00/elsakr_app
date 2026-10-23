@@ -65,6 +65,12 @@ for a manufacturing DocType. A pre-model-sync patch renames the app's older
 Workspace before the new JSON is synced. The rename keeps its saved layout and
 shortcuts; reload Desk and use `/app/operations` after updating.
 
+## Operations dashboard
+
+Under **Operations**, open **Operations Dashboard** at `/app/operations-dashboard`. Select the company and dates and click **تحديث**. It opens from the first day of the current month through today. The top cards show posted revenue and expenses during that range, plus customer debt and supplier dues as of the ending date. The charts show daily revenue/expenses and the ten highest-selling Items by quantity from submitted Sales Invoices. Values use the selected company currency.
+
+The dashboard is active on `elsakr-dev2.arab-erp.com` after local synchronization. Production deployment has not been performed. The user needs read permission for GL Entry, Sales Invoice, Company, and Custom HTML Block. Reload Desk after updating the app.
+
 ## Item sizes and stock report filters
 
 On the second development site, open `/app/item-size` (Arabic: **المقاس**) to
@@ -175,3 +181,18 @@ Saving a variant generates its display name from the template name plus all
 full attribute values, replacing abbreviation-based names. Item codes remain
 unchanged. The reported Colour/White Item was repaired on the second development
 site; other existing variants update on save.
+
+## Sales Invoice visibility in both editors
+
+On the second development site, **Edit DocType** now matches the existing
+**Customize Form** Hidden settings for Sales Invoice: ten hidden fields/sections/
+tabs, including Accounting Dimensions, Taxes, Tax Breakup, Pricing Rule Details,
+Time Sheets, Payments and More Info tabs, Company Tax ID, Is Debit Note, and
+Additional Discount Account. Five existing explicit visible settings remain:
+Scan Barcode, Tax ID, In Words, Rounded Total, and Base Rounded Total.
+
+POS payment methods remain available in **Details** even though the old Payments
+tab is hidden. These 15 visibility settings are stored in the app and reapplied
+after installation/migration. To change them permanently, update
+`elsakr_app/sales_invoice_visibility.py`. Reload Desk after updating.
+Production deployment is pending.

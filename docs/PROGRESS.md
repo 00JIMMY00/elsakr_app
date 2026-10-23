@@ -2,6 +2,18 @@
 
 Add the newest update first. Each entry should state the change, the checks performed, and remaining work. Use **Local**, **Deployed**, or **Unverified** to make release status clear. Mark **Deployed** only after checking the production workflow and live site.
 
+## 2026-10-23 — Add Operations dashboard child Workspace (Local)
+
+- Changed: Added `Operations Dashboard` under `Operations` with two app-managed HTML blocks, shared company/From/To controls, revenue and expense totals, customer receivables and supplier payables, a daily income/expense chart, and a top-ten sales quantity chart. The default dates are the first of the current month through today. The balances use all entries through the selected end date. Applied the blocks and Workspace to `elsakr-dev2.arab-erp.com`.
+- Checked: Python compilation, JavaScript syntax, and `git diff --check` passed. The local API returned figures and eight selling Items for 2026-10-01 through 2026-10-23, and empty activity/sales for 2026-09-01 through 2026-09-30. Confirmed the Workspace is a child of Operations, both public blocks exist, the Desk page API returns both blocks, the sidebar lists the new Workspace, and the dashboard JavaScript asset returns HTTP 200. Reapplying the block setup succeeded.
+- Remaining: Visual browser review could not be completed because the saved development Administrator credential was rejected by the login endpoint; no password was changed. No production deployment was performed.
+
+## 2026-10-23 — Match Edit DocType to Customize Form Hidden flags (Local)
+
+- Changed: Added an explicit 15-field Sales Invoice visibility snapshot: ten hidden and five visible, matching the second development site's existing Hidden Property Setters. Installation/migration now updates both the database DocFields and corresponding Property Setters, preserving other customization properties and avoiding ERPNext source exports. Applied it twice on `elsakr-dev2.arab-erp.com`.
+- Checked: Compared all 15 raw DocField flags, effective metadata flags, and Hidden Property Setters; all match with no duplicate setters. Temporarily reset one database flag to mimic upstream metadata sync, verified setup restored it, and rolled back the simulation. Headless Chrome opened Edit DocType and confirmed the requested field flags. Rechecked POS payments in Details, 760 px desktop / 303 px mobile layout, toggle off/on, 400/600 allocation with EGP 1,000 paid and zero outstanding, and the retained submitted invoice. Ruff lint/format, Python compilation, and `git diff --check` passed.
+- Remaining: No production deployment was performed. Reload Desk to load the updated metadata. Future permanent changes to these Hidden flags must update the app snapshot because migration reapplies it.
+
 ## 2026-10-23 — Move POS payments into Details with a narrower table (Local)
 
 - Changed: Moved the existing Sales Invoice payment section into Details, immediately below the customer/invoice header. Updated its field-to-tab references so navigation and validation target Details. Limited the native grid to 760 px, with full available width on smaller screens; refreshes reuse the same grid.

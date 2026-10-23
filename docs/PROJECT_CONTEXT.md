@@ -4,6 +4,8 @@
 
 `elsakr_app` is the Frappe app for Elsakr-specific changes. The repository also defines the app list and Docker deployment for the single production site, `elsakr.arab-erp.com`. The app includes a standard public `Operations` Workspace in the Elsakr App module, with Arabic sections for customers, suppliers, accounts, and stock. Its 21 shortcuts open existing ERPNext records and reports under the user's existing permissions. `hooks.py` requires ERPNext, installs the Item size Link field after installation/migration, overrides the Report controller for size filtering in Stock Balance/Stock Ledger, and extends those reports' scripts through the `get_script` endpoint override. `patches.txt` includes a pre-model-sync patch to rename the original `Operation` Workspace, whose route conflicts with ERPNext's manufacturing Operation DocType. Standard Workspace JSON is synced on app installation and migration.
 
+The app also includes a public `Operations Dashboard` child Workspace under Operations. Two app-managed Custom HTML Blocks show company/date filters, four summary amounts, and charts for daily income/expenses and the ten best-selling Items. A read-only API uses submitted Sales Invoice Items and non-cancelled GL Entries, scoped to a permitted company. The default range is the first of the current month through today; receivables/payables are balances as of the end date. The blocks are installed after app install/migration and the standard Workspace JSON is synced with the app.
+
 The app also defines the `Item Size` master (Arabic label «المقاس») with one
 required, unique `size` field, and the optional Item Link `custom_size`. Stock
 Balance and Stock Ledger display a size Link column after Item Name and accept the same optional Link filter. The column uses the current Item size and is also included in the server report output for export. Report execution
@@ -33,6 +35,12 @@ table is capped at 760 px and fits narrower screens. Payment allocation and ledg
 remain native. The explicit `elsakr_app.payment_demo.create_payment_demo` helper
 is restricted to the second development site and retains synthetic accounting
 examples without stock movements; migration never invokes it.
+
+The app also reapplies 15 selected Sales Invoice Hidden settings after install
+and migration, keeping database DocFields used by Edit DocType aligned with
+Property Setters used by Customize Form. Ten selected fields/sections/tabs are
+hidden and five remain visible. The snapshot lives in
+`elsakr_app/sales_invoice_visibility.py`; ERPNext source is not edited.
 
 ## Source of truth
 

@@ -8,8 +8,12 @@ app_license = "mit"
 from elsakr_app.setup import TRANSACTION_DOCTYPES
 
 required_apps = ["erpnext"]
-after_install = "elsakr_app.setup.setup_item_size"
-after_migrate = "elsakr_app.setup.setup_item_size"
+after_install = [
+	"elsakr_app.setup.setup_item_size",
+	"elsakr_app.sales_invoice_visibility.setup_sales_invoice_visibility",
+	"elsakr_app.dashboard_setup.setup_operations_dashboard",
+]
+after_migrate = after_install
 doc_events = {
 	doctype: {"validate": "elsakr_app.transactions.set_item_sizes"} for doctype in TRANSACTION_DOCTYPES
 }
