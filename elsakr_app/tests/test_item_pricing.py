@@ -74,15 +74,36 @@ class TestItemPricing(unittest.TestCase):
 			doc.save()
 		self.assertEqual(price_context(doc).rate, 250)
 
-	def test_zero_and_negative_price(self):
+	def test_saved_price_must_be_positive(self):
+		for rate in (None, "", 0, -1):
+			with self.subTest(rate=rate):
+				doc = self.load()
+				doc.standard_rate = rate
+				with self.assertRaisesRegex(frappe.ValidationError, "greater than zero"):
+					doc.save()
+		self.assertEqual(price_context(self.item).rate, 125)
+
+	def test_new_price_must_be_positive(self):
+		for rate in (None, "", 0, -1):
+			with self.subTest(rate=rate):
+				doc = frappe.copy_doc(self.item)
+				doc.item_code = f"_Required Price {uuid4().hex[:8]}"
+				doc.standard_rate = rate
+				with self.assertRaisesRegex(frappe.ValidationError, "greater than zero"):
+					doc.insert()
+
+	def test_missing_price_cannot_be_saved_unchanged(self):
+		frappe.delete_doc("Item Price", price_context(self.item).name)
 		doc = self.load()
-		doc.standard_rate = 0
-		doc.save()
-		self.assertEqual(price_context(doc).rate, 0)
-		doc = self.load()
-		doc.standard_rate = -1
-		with self.assertRaises(frappe.ValidationError):
+		with self.assertRaisesRegex(frappe.ValidationError, "greater than zero"):
 			doc.save()
+
+	def test_non_saleable_item_does_not_require_a_selling_price(self):
+		doc = frappe.copy_doc(self.item)
+		doc.item_code = f"_Non Selling {uuid4().hex[:8]}"
+		doc.is_sales_item = 0
+		doc.standard_rate = 0
+		doc.insert()
 
 	def test_missing_price_is_created_on_edit(self):
 		frappe.delete_doc("Item Price", price_context(self.item).name)

@@ -230,7 +230,8 @@ The Operations Dashboard opens independently of Operations. It uses the single c
 ## Selling price on saved Items and variants
 
 Open a saleable Item or size variant and edit **Selling Price** (**سعر البيع**),
-then **Save**. The field remains visible after saving. It shows the current
+then **Save**. Selling Price is required and must be greater than zero on new
+and saved saleable Items and variants. The field remains visible after saving. It shows the current
 selling Item Price, with its price list, currency, and stock unit beside it.
 The list comes from the single Item Defaults price list when specified,
 otherwise Selling Settings. Templates have no single selling price.

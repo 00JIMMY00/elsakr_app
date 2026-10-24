@@ -3,3 +3,4 @@ Operations Dashboard,لوحة العمليات
 Customer has an unpaid balance,العميل لديه مبلغ غير مسدد
 Unpaid balance owed to supplier,رصيد غير مسدد مستحق للمورد
 Selling Price,سعر البيع
+Selling Price is required and must be greater than zero.,سعر البيع مطلوب ويجب أن يكون أكبر من صفر.

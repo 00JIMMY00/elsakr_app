@@ -12,11 +12,8 @@ def setup_item_pricing():
 	for prop, value, kind in (
 		("label", "Selling Price", "Data"),
 		("depends_on", "eval:!doc.has_variants && doc.is_sales_item", "Data"),
-		(
-			"description",
-			"Save the Item to update its selling Item Price. Customer prices and pricing rules may change the invoice rate.",
-			"Text",
-		),
+		("mandatory_depends_on", "eval:!doc.has_variants && doc.is_sales_item", "Data"),
+		("description", "", "Text"),
 	):
 		make_property_setter("Item", "standard_rate", prop, value, kind)
 	frappe.clear_cache(doctype="Item")
@@ -64,15 +61,17 @@ def load_selling_price(doc, method=None):
 
 
 def validate_selling_price(doc, method=None):
-	if doc.is_new() or doc.has_variants or not doc.is_sales_item:
+	if doc.has_variants or not doc.is_sales_item:
+		return
+	if not math.isfinite(flt(doc.standard_rate)) or flt(doc.standard_rate) <= 0:
+		frappe.throw(_("Selling Price is required and must be greater than zero."))
+	if doc.is_new():
 		return
 	baseline = (doc.get("__onload") or {}).get("selling_price")
 	previous = doc.get_doc_before_save()
 	old_rate = baseline.get("rate") if baseline else previous.standard_rate
 	if flt(doc.standard_rate) == flt(old_rate):
 		return
-	if not math.isfinite(flt(doc.standard_rate)) or flt(doc.standard_rate) < 0:
-		frappe.throw(_("Selling Price must be zero or greater."))
 	context = price_context(doc)
 	if context.error:
 		frappe.throw(context.error)

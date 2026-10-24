@@ -1,5 +1,12 @@
 # Progress
 
+## 2026-10-25 — Require positive Selling Price and remove its caption (Local)
+
+- Changed: Made Selling Price conditionally mandatory for saleable Items and variants and enforced a finite value greater than zero on the server for both creation and later saves, including unchanged empty/zero values. Templates and non-saleable Items remain exempt. Removed the explanatory caption from both new and saved forms, retaining list/currency/UOM context on saved Items. Applied metadata setup and cleared cache on `elsakr-dev2.arab-erp.com`; updated user/operator and project documentation.
+- Checked: All 11 focused pricing tests passed, including blank/zero/negative rejection for new and saved Items, missing-price rejection on unchanged save, non-saleable exemption, template/variant creation, and existing pricing regressions. Test fixtures were rolled back. Development HTTPS browser checks confirmed the required marker and absence of the caption on a saved variant and a new Item; no browser records were created. Ruff lint/format, Python compilation, JavaScript syntax, and diff whitespace checks passed.
+- Remaining: Reload Desk for the updated field metadata and script. Existing unpriced saleable Items need a positive price on their next save. No production deployment was performed.
+
+
 ## 2026-10-25 — Keep selling prices visible and editable on saved Items (Local)
 
 - Changed: Exposed native Standard Selling Rate as Selling Price (سعر البيع) on saleable Items and saved variants, hiding it on templates. Added Item onload/validation/update hooks to display the current general stock-UOM Item Price and save explicit edits to the native price record within the Item transaction. Added price list/currency/UOM context, stale-edit checks, normal Item Price permissions, and guidance for multiple/quantity-specific prices. Installation/migration manages the field metadata; applied setup twice on `elsakr-dev2.arab-erp.com`. Updated user/operator and architecture documentation.

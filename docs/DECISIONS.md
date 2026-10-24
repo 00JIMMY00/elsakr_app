@@ -2,6 +2,14 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-25 — Require a positive selling price
+
+**Decision:** Require Selling Price greater than zero for both new and saved saleable Items and variants, using a conditional mandatory field and server validation before the unchanged-value check. Templates and non-saleable Items are exempt. Remove the explanatory caption while retaining price list, currency, and UOM context.
+
+**Reason:** Item entry must specify a usable selling price, including when saving an existing Item with no price.
+
+**Consequence:** Blank, zero, negative, and non-finite values cannot be saved through the Item flow. Existing unpriced saleable Items require a positive price on their next save; no existing records are backfilled. Native Item Price and invoice pricing behavior otherwise remain as recorded below.
+
 ## 2026-10-25 — Edit native selling prices from saved Items
 
 **Decision:** Keep the native `standard_rate` control visible as Selling Price for saleable Items and variants, excluding templates. Load its value from the currently applicable general stock-UOM Item Price. Use the unique Item Defaults price list when present, otherwise Selling Settings (with Standard Selling fallback). On an explicit price edit, update/create the native Item Price in the Item save transaction with normal permissions. Show the list, currency, and UOM beside the control.

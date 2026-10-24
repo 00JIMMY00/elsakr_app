@@ -28,7 +28,10 @@ unchanged. `elsakr_app.variant_demo.create_variant_demo` is an explicit,
 development-only retained example and is never invoked by migration.
 
 Saved saleable Items and variants expose the native `standard_rate` control as
-Selling Price. `item_pricing.py` loads the applicable general stock-UOM Item Price
+Selling Price. It is mandatory and must be greater than zero for new and saved
+saleable Items and variants; templates and non-saleable Items are exempt.
+The form retains list/currency/UOM context without the explanatory caption.
+`item_pricing.py` loads the applicable general stock-UOM Item Price
 for today, using the unique Item Defaults price list or the Selling Settings
 list (Standard Selling fallback). Explicit edits update/create Item Price during
 the Item save transaction with normal permissions and stale-edit protection.
