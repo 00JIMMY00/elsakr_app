@@ -1,5 +1,12 @@
 # Progress
 
+## 2026-10-25 — Keep selling prices visible and editable on saved Items (Local)
+
+- Changed: Exposed native Standard Selling Rate as Selling Price (سعر البيع) on saleable Items and saved variants, hiding it on templates. Added Item onload/validation/update hooks to display the current general stock-UOM Item Price and save explicit edits to the native price record within the Item transaction. Added price list/currency/UOM context, stale-edit checks, normal Item Price permissions, and guidance for multiple/quantity-specific prices. Installation/migration manages the field metadata; applied setup twice on `elsakr-dev2.arab-erp.com`. Updated user/operator and architecture documentation.
+- Checked: Eight transaction-backed tests passed for saved-price updates and native invoice price lookup, external price changes/unrelated saves, stale edits, zero/negative values, missing-price creation, multiple active prices, saved variants, and permission denial. Test fixtures were rolled back. Development HTTPS browser checks confirmed the field's label and list/currency/unit context, an edit from 123 to 234 persisting after Save and reload, mobile visibility at 390 px, and visibility/current price on an existing saved tyre variant; no JavaScript errors were reported. Both temporary browser Items and their Item Prices were removed; retained demo records were not edited. Repeated setup, Ruff lint/format, Python compilation, JavaScript syntax, and diff whitespace checks passed.
+- Remaining: Reload Desk to load updated scripts/metadata. Sales Invoice still uses native customer/POS price-list selection, dated prices, units, and pricing rules; existing invoices are not repriced. No production deployment was performed.
+
+
 ## 2026-10-25 — Keep new Sales Invoices at the header and fix customer-entry warning (Local)
 
 - Changed: Removed the Sales Invoice POS handler's automatic scroll to Payments. Added a form-scoped guard for native Customer Address changes when both Customer and Customer Address are empty, clearing the address display without starting a party-dependent tax lookup. Existing customer/address handling remains native. Cleared cache on `elsakr-dev2.arab-erp.com` and updated user/operator instructions.

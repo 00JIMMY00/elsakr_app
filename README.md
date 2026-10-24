@@ -226,3 +226,20 @@ Total Taxes and Charges. These form settings are active on the second developmen
 site; reload Desk. Production receives them through migration.
 
 The Operations Dashboard opens independently of Operations. It uses the single company automatically; there is no company selector or introductory header copy.
+
+## Selling price on saved Items and variants
+
+Open a saleable Item or size variant and edit **Selling Price** (**سعر البيع**),
+then **Save**. The field remains visible after saving. It shows the current
+selling Item Price, with its price list, currency, and stock unit beside it.
+The list comes from the single Item Defaults price list when specified,
+otherwise Selling Settings. Templates have no single selling price.
+
+Sales Invoices use this Item Price as the base rate when they use the same
+list, date, and unit. Customer/POS price lists, special customer prices, and
+pricing rules can produce a different final Rate. Existing invoices keep their
+rates. Multiple active general prices or quantity-specific prices must be
+managed under **Item Price**. Normal Item Price permissions apply.
+
+Applied on `elsakr-dev2.arab-erp.com`; reload Desk to load the field changes.
+Production deployment is pending; installation/migration applies the metadata.

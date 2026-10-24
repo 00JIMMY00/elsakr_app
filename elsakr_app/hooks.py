@@ -10,6 +10,7 @@ from elsakr_app.setup import TRANSACTION_DOCTYPES
 required_apps = ["erpnext"]
 after_install = [
 	"elsakr_app.setup.setup_item_size",
+	"elsakr_app.item_pricing.setup_item_pricing",
 	"elsakr_app.full_form.setup_full_form",
 	"elsakr_app.customer_setup.setup_customer_flow",
 	"elsakr_app.supplier_setup.setup_supplier_flow",
@@ -25,9 +26,14 @@ doc_events = {
 doc_events["Supplier"] = {"before_save": "elsakr_app.supplier_phone.sync_supplier_phone"}
 doc_events["Customer"] = {"before_save": "elsakr_app.customer_phone.sync_customer_phone"}
 doc_events["Address"] = {"validate": "elsakr_app.customer_setup.validate_address_city"}
-doc_events["Item"] = {"validate": "elsakr_app.item_variants.set_variant_size"}
+doc_events["Item"] = {
+	"onload": "elsakr_app.item_pricing.load_selling_price",
+	"validate": ["elsakr_app.item_variants.set_variant_size", "elsakr_app.item_pricing.validate_selling_price"],
+	"on_update": "elsakr_app.item_pricing.save_selling_price",
+}
 
 doctype_js = {
+	"Item": "public/js/item.js",
 	"Sales Invoice": "public/js/sales_invoice.js",
 	"Customer": "public/js/customer.js",
 	"Purchase Invoice": "public/js/purchase_invoice.js",

@@ -2,6 +2,14 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-25 — Edit native selling prices from saved Items
+
+**Decision:** Keep the native `standard_rate` control visible as Selling Price for saleable Items and variants, excluding templates. Load its value from the currently applicable general stock-UOM Item Price. Use the unique Item Defaults price list when present, otherwise Selling Settings (with Standard Selling fallback). On an explicit price edit, update/create the native Item Price in the Item save transaction with normal permissions. Show the list, currency, and UOM beside the control.
+
+**Reason:** Upstream `standard_rate` is a creation shortcut hidden after insertion; Sales Invoices resolve Item Price records. Merely exposing the stored shortcut would display stale prices and would not update invoicing.
+
+**Consequence:** Existing Item Prices remain authoritative. Unrelated saves preserve prices; stale price edits are rejected. Multiple active general prices or quantity-specific prices require the Item Price editor. Native customer/POS price-list selection, dates, UOM conversion, and pricing rules still determine final invoice rates; existing invoices are not repriced. New Item creation retains native price creation. No upstream source or invoice pricing engine is changed.
+
 ## 2026-10-25 — Use native site settings for the landing redirect and release popups
 
 **Decision:** Manage a root-only HTTP 302 redirect to `/app/operations-dashboard` in Website Settings, and enable `disable_system_update_notification` and `disable_change_log_notification` in System Settings through installation/migration setup.
