@@ -122,6 +122,12 @@ Production deployment is pending.
 
 ## Enter a customer directly on Sales Invoice
 
+New Sales Invoices keep the page at the customer header while the default POS
+payment table opens below it. Typing a new Customer Name or replacing a selected
+customer no longer raises the empty-address "Lead / Customer / Supplier" warning.
+Reload Desk to load these fixes on the second development site; production
+deployment is pending.
+
 In **Customer Name**, search by name or phone and select an existing customer to
 fill Phone and Address. Click the open icon beside a selected customer to open
 the Customer record; after submission, the displayed Customer Name itself is

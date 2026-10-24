@@ -28,9 +28,6 @@ frappe.ui.form.on("Sales Invoice", {
 	},
 	is_pos(frm) {
 		position_pos_payments(frm);
-		if (frm.doc.is_pos && frm.doc.company && !frm.doc.docstatus) {
-			frm.scroll_to_field("payments", false);
-		}
 	},
 });
 
@@ -66,6 +63,15 @@ frappe.ui.form.on("Sales Invoice", {
 		$("<span class='link-btn'>").append(field.$customer_link).appendTo(field.input_area);
 		field.df.ignore_validation = true;
 		field.get_query = () => ({ query: "elsakr_app.invoice_customer.search_customers" });
+		const customer_address = frm.cscript.customer_address;
+		frm.cscript.customer_address = function (...args) {
+			// Empty Link validation also fires on a new name, before a Customer exists.
+			// Clear the display without asking the native tax lookup for a missing party.
+			if (!frm.doc.customer && !frm.doc.customer_address) {
+				return frm.set_value("address_display", "");
+			}
+			return customer_address.apply(this, args);
+		};
 		const validate_party = frm.cscript.validate_company_and_party;
 		frm.cscript.validate_company_and_party = function (...args) {
 			if (frm.doc.company && !frm.doc.customer && frm.doc.custom_customer_entry?.trim()) {

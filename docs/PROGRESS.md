@@ -1,5 +1,11 @@
 # Progress
 
+## 2026-10-25 — Keep new Sales Invoices at the header and fix customer-entry warning (Local)
+
+- Changed: Removed the Sales Invoice POS handler's automatic scroll to Payments. Added a form-scoped guard for native Customer Address changes when both Customer and Customer Address are empty, clearing the address display without starting a party-dependent tax lookup. Existing customer/address handling remains native. Cleared cache on `elsakr-dev2.arab-erp.com` and updated user/operator instructions.
+- Checked: Reproduced both issues in the development HTTPS browser before the fix, including the empty Customer Address handler's mandatory-party exception. After the fix, desktop browser checks confirmed a new POS invoice starts at scroll position zero, new and replacement customer names produce no warning, replacement clears linked details, existing customers load native receivable defaults and invoke native address tax handling, and POS toggling retains one visible payment grid without scrolling. A separate 390 px phone browser check confirmed scroll position zero on opening and no mandatory-party warning after entering a new name. JavaScript syntax, ESLint, and diff whitespace checks passed. Browser checks used unsaved invoices and did not create customer or invoice records.
+- Remaining: Reload Desk to load the updated script. No production deployment was performed.
+
 ## 2026-10-25 — Open the dashboard from the site root and disable release popups (Local)
 
 - Changed: Added installation/migration setup for a native Website Settings root redirect (HTTP 302 to `/app/operations-dashboard`) and enabled both native System Settings flags that disable update-available and change-log notifications. Setup updates an existing root redirect, removes duplicate root rules, and preserves other redirects. Applied to `elsakr-dev2.arab-erp.com`.
