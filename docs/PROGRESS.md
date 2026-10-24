@@ -1,5 +1,11 @@
 # Progress
 
+## 2026-10-25 — Open the dashboard from the site root and disable release popups (Local)
+
+- Changed: Added installation/migration setup for a native Website Settings root redirect (HTTP 302 to `/app/operations-dashboard`) and enabled both native System Settings flags that disable update-available and change-log notifications. Setup updates an existing root redirect, removes duplicate root rules, and preserves other redirects. Applied to `elsakr-dev2.arab-erp.com`.
+- Checked: Repeated setup twice successfully; confirmed exactly one root rule, both persisted flags and their Desk defaults, unchanged login routing, and no message from the disabled update-popup endpoint. External development HTTPS returned 302 from `/` to the dashboard; following redirects reached HTTP 200 at login with the dashboard as the return destination. Python compilation and diff whitespace checks passed. Ruff was unavailable in PATH and the Bench environment.
+- Remaining: Reload existing Desk sessions to load notification preferences. Visual authenticated browser confirmation is pending. No production deployment was performed.
+
 ## 2026-10-23 — Simplify dashboard and make its Workspace independent (Local)
 
 - Changed: Removed the introductory Arabic header and company selector, kept date filters, and made Operations Dashboard a standalone public Workspace with no parent. The existing API chooses the permitted default company automatically. Updated operator and project documentation. Applied blocks, reloaded the standard Workspace, and cleared cache on the second development site.

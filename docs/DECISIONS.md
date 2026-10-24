@@ -2,6 +2,14 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-25 — Use native site settings for the landing redirect and release popups
+
+**Decision:** Manage a root-only HTTP 302 redirect to `/app/operations-dashboard` in Website Settings, and enable `disable_system_update_notification` and `disable_change_log_notification` in System Settings through installation/migration setup.
+
+**Reason:** The site should open the operations overview and avoid repeated version announcements. Frappe already supports these behaviors without upstream edits or client overrides.
+
+**Consequence:** Guests retain native login with the dashboard return destination. Other routes and permissions remain native. Migration reapplies these app preferences on sites using this app; permanent changes require updating `site_setup.py`. The 302 response avoids a permanently cached landing destination. Software updates continue through the existing release process.
+
 ## 2026-10-23 — Make the dashboard standalone and remove company selection
 
 **Decision:** Clear the Operations Dashboard Workspace parent, remove the introductory header and company selector, and retain only date controls. Let the existing API select the permitted default company, retaining the returned company for subsequent requests.

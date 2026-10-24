@@ -126,3 +126,5 @@ The app is in a Bench workspace. The local Bench contains `elsakr-dev.arab-erp.c
 The local machine's Cloudflare Tunnel forwards development hostnames, including `elsakr-dev2.arab-erp.com`, to the Bench on `http://localhost:8000`. Cloudflare's authoritative DNS resolves the new hostname, and its external HTTPS route returned HTTP 200 on 2026-10-23.
 
 The Operations Dashboard opens independently of Operations. It uses the single company automatically; there is no company selector or introductory header copy.
+
+`site_setup.py` manages native site preferences after installation/migration: the root URL redirects with HTTP 302 to `/app/operations-dashboard`, and System Settings disables update-available and change-log popups. These preferences were applied to the second development site on 2026-10-25. Guests reach native login with the dashboard return destination; production application remains pending.

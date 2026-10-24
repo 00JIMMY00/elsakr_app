@@ -16,6 +16,7 @@ after_install = [
 	"elsakr_app.sales_invoice_setup.setup_sales_invoice_defaults",
 	"elsakr_app.sales_invoice_visibility.setup_sales_invoice_visibility",
 	"elsakr_app.dashboard_setup.setup_operations_dashboard",
+	"elsakr_app.site_setup.setup_site_preferences",
 ]
 after_migrate = after_install
 doc_events = {
