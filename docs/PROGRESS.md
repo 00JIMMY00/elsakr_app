@@ -1,5 +1,35 @@
 # Progress
 
+## 2026-10-25 — Remove informal Operations captions (Local)
+
+- Changed: Removed all descriptive captions beneath the four quick actions and six card headings, including the informal expense caption. Removed unused subtitle data and CSS, retained concise action/group labels, and changed loading/error messages to formal Arabic. Refreshed the managed block/cache on `elsakr-dev2.arab-erp.com`; aligned README, operator instructions, and current context.
+- Checked: Development HTTPS Chrome confirmed no action captions or card descriptions, six cards, 25 links, four actions, and the Sales Invoice list route. Layout fit at 1440/390/320 px with no JavaScript page errors or saved records. JavaScript syntax, ESLint, Prettier, and diff whitespace checks passed.
+- Remaining: Reload Desk for the updated script and block. No production deployment was performed.
+
+## 2026-10-25 — Remove Operations footer slogan (Local)
+
+- Changed: Removed the footer slogan and divider lines, deleted their unused CSS, and refreshed the managed block/cache on `elsakr-dev2.arab-erp.com`. Updated README and operator instructions.
+- Checked: Read back the stored Custom HTML Block and confirmed it ends after the navigation section with no footer. Prettier and diff whitespace checks passed.
+- Remaining: Reload the workspace to load the updated block. No production deployment was performed.
+
+## 2026-10-25 — Enlarge Operations text and reduce card spacing (Local)
+
+- Changed: Increased tool/quick-action labels from 12 px to 16 px and group titles from 14 px to 18 px, with larger supporting text and report badges. Reduced card header/action padding, navigation insets, corner radii, icon containers, and gaps. Trimmed Frappe's widget/content padding only around the Operations block instance. Refreshed the managed block and cleared cache on `elsakr-dev2.arab-erp.com`; updated README, operator instructions, and current context.
+- Checked: Development HTTPS Chrome confirmed 16 px labels and 18 px headings, six cards, 25 links, four actions, and no reintroduced banner/search/filter controls. Verified no horizontal overflow in the block or action/card/link containers at 1440/768/390/320 px and reviewed the desktop screenshot. No JavaScript page errors or saved business records. JavaScript syntax, ESLint, Prettier, and diff whitespace checks passed.
+- Remaining: Reload Desk for the updated block CSS and JavaScript. No production deployment was performed.
+
+## 2026-10-25 — Simplify Operations to quick actions and cards (Local)
+
+- Changed: Removed the introductory banner/illustration, both section headings and their captions, search box, and category filter buttons at the user's request. Removed their unused JavaScript handlers and CSS. Retained the four permission-aware quick actions, six navigation cards, and native shortcut routing/access/loading/error/retry handling. Updated README, operator instructions, current context, and the design decision. Refreshed the managed block and cleared cache on `elsakr-dev2.arab-erp.com`.
+- Checked: Development HTTPS Chrome confirmed six cards, all 25 links, four actions, and absence of the removed sections. Verified the Sales Invoice list link, visible quick actions, and no horizontal overflow at 1440/390/320 px. The browser reported no JavaScript page errors and saved no records. JavaScript syntax, ESLint, Prettier, and diff whitespace checks passed.
+- Remaining: Reload Desk to load the refreshed block and JavaScript. No production deployment was performed.
+
+## 2026-10-25 — Redesign Operations as an automotive shop hub (Local)
+
+- Changed: Replaced the flat Operations shortcut layout with an app-managed Custom HTML Block: Arabic RTL charcoal/amber header, original inline tire/oil/battery illustration, four permission-aware creation actions, Arabic/English search, category filters, and six colored navigation cards. Retained all 25 existing shortcut definitions and their native views, using Frappe's permission-filtered Workspace endpoint and route generator. Added responsive/dark-theme styling, keyboard focus, and loading/empty/error/retry states. Added install/migrate setup and updated the architecture, decision, README, and operator documentation. Applied the block and Workspace to `elsakr-dev2.arab-erp.com` and cleared cache.
+- Checked: Development HTTPS Chrome checks rendered six cards, 25 links, and four creation actions; Arabic/English search, no-result reset, and category filtering passed. Verified no horizontal overflow at 320/390/768/1440 px and reviewed desktop, phone, and dark-theme screenshots. Actual navigation opened native Stock Balance, Item Group tree, and new Sales Invoice, Purchase Invoice, Expense Entry, and Stock Entry forms. Simulated restricted/read-only responses hid unavailable links and creation actions; empty access, request failure, and retry recovery passed. A temporary Sales User received a proper subset of native shortcuts and could read the public block; its fixture was rolled back and absence confirmed. Repeated block setup retained all 25 destinations/views. Browser checks saved no business records and reported no JavaScript page errors. JavaScript syntax, ESLint, Prettier, Python compilation, Ruff lint/new-module formatting, JSON consistency, and diff whitespace checks passed.
+- Remaining: Reload Desk and open `/app/operations` on the second development site. Production deployment has not been performed; the normal release must sync the Workspace, managed block, and JavaScript asset.
+
 ## 2026-10-25 — Require positive Selling Price and remove its caption (Local)
 
 - Changed: Made Selling Price conditionally mandatory for saleable Items and variants and enforced a finite value greater than zero on the server for both creation and later saves, including unchanged empty/zero values. Templates and non-saleable Items remain exempt. Removed the explanatory caption from both new and saved forms, retaining list/currency/UOM context on saved Items. Applied metadata setup and cleared cache on `elsakr-dev2.arab-erp.com`; updated user/operator and project documentation.

@@ -18,11 +18,16 @@ that image and updates its containerized Frappe stack. A failed rollout restores
 the previous image and the pre-migration database and files backup.
 
 
-The **Operations** Workspace (`/app/operations`) groups 21 shortcuts into four
-Arabic sections: customers and receivables, suppliers and payables, accounts
-and invoices, and stock records and reports. It uses existing ERPNext permissions
-and syncs during installation or migration. It is activated on the second local
-development site; production deployment is pending.
+The **Operations** Workspace (`/app/operations`) is a compact Arabic shop hub with
+four quick creation actions and six grouped navigation cards: sales/customers, purchases/suppliers,
+stock movement, items/sizes, accounts/profit, and expenses. All 25 existing
+shortcuts remain available under native ERPNext permissions; creation actions
+also require Create permission. The responsive layout uses 16 px tool/action labels, 18 px card headings,
+tighter card spacing, and dark mode. Actions and card headings use concise labels without descriptive captions.
+The workspace ends after the cards, without a footer slogan.
+Installation/migration syncs the standard Workspace and its app-managed HTML
+block. It is activated on the second local development site; production
+deployment is pending.
 
 The **Operations Dashboard** standalone Workspace (`/app/operations-dashboard`) shows top-selling Items, daily income and expenses, and total customer/supplier balances. The phone-first Arabic layout includes a navy financial overview (revenue minus expenses), four balance/activity cards, and named product ranking bars. Use Today, Last 7 Days, or This Month, or expand **التواريخ** for custom dates; the initial range is month start through today. Customer and supplier balances are as of the end date. It is activated on the second local development site; production deployment is pending.
 

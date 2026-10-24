@@ -52,18 +52,29 @@ and Item Size, **New** opens the full form without an **Edit Full Form** step.
 This is active on `elsakr-dev2.arab-erp.com`; reload Desk before trying it.
 Production receives the change through the normal migration.
 
-The app ships one public **Operations** Workspace at `/app/operations` with Arabic
-sections for customers, suppliers, accounts, and stock. Its 21 shortcuts include
-receivables/payables and their summaries, Trial Balance, Gross Profit, Stock
-Balance, Stock Ledger, invoices, master records, Stock Entry, and Stock
-Reconciliation. Tree shortcuts open accounts, warehouses, and master groups.
-Access follows the user's existing ERPNext permissions.
+The public **Operations** Workspace at `/app/operations` opens directly with
+quick actions for new sales invoices, purchase invoices, expenses, and stock
+movements when the user has the matching read/create permissions. Six cards
+organize all 25 existing shortcuts into sales/customers, purchases/suppliers,
+stock movement, items/sizes, accounts/profit, and expenses. The introductory
+banner, section headings, search box, category filters, and footer slogan have been removed.
+Quick actions and card headings show concise labels without descriptive captions.
+Loading/error messages use formal Arabic. Tree and report links retain their
+native views and existing ERPNext permissions.
+Tool and quick-action labels use 16 px text and card headings use 18 px.
+Reduced card padding, smaller gaps, and trimmed native block spacing give the
+labels more room. The layout adapts to phones and the selected Desk light/dark theme.
 
 The Workspace is activated on `elsakr-dev2.arab-erp.com`. Refresh Desk and select
 **Operations**, or open `https://elsakr-dev2.arab-erp.com/app/operations`.
-Standard Workspace JSON is synced by installation and `bench --site <site> migrate`;
-the production rollout already runs migration. Production has not been deployed
-for this change; use the normal release process above.
+Standard Workspace JSON and the **Elsakr Operations Hub** Custom HTML Block are
+synced by installation and `bench --site <site> migrate`; the production rollout
+already runs migration. The block's HTML/CSS/script loader are managed by
+`elsakr_app.operations_workspace.setup_operations_workspace`; direct block edits
+are overwritten by migration. The Workspace's Shortcuts table remains the
+navigation registry; the app groups its permission-filtered response. Edit the
+app sources for lasting layout changes. Production has not been deployed for
+this change; use the normal release process above.
 
 The Workspace uses **Operations** because ERPNext already reserves **Operation**
 for a manufacturing DocType. A pre-model-sync patch renames the app's older

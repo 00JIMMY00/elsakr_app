@@ -2,6 +2,32 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-25 — Use concise, formal Operations copy
+
+**Decision:** Show action labels and card headings without descriptive captions. Use formal Arabic for loading and error messages.
+
+**Reason:** The user requested a professional workspace and removal or formalization of informal captions.
+
+**Consequence:** Future Operations copy should remain concise and formal. This changes presentation only; native routes and permissions remain unchanged.
+
+## 2026-10-25 — Open Operations directly with actions and cards
+
+**Decision:** Remove the introductory banner and illustration, section headings, search input, and category filters from Operations. Keep the permission-aware quick actions and all six navigation groups, with native links and loading/access/error/retry handling.
+
+**Reason:** The user requested a compact workspace without the introductory or search/filter sections.
+
+**Consequence:** Available tools appear immediately. Search/filter rendering, listeners, and unused visual styles are removed; installation/migration refreshes the managed block. The underlying shortcut registry and permissions remain unchanged. This supersedes the banner and search/filter portions of the earlier shop-hub design.
+
+## 2026-10-25 — Render Operations as a permission-aware shop hub
+
+**Decision:** Keep the standard Operations Workspace and its 25 native shortcut definitions, rendering navigation in one app-managed Custom HTML Block with six Arabic groups, search/category filters, and four creation actions. Use Frappe's native `get_desktop_page` response for permitted shortcuts and its route generator for list/tree/report/new-form links. Gate creation actions on native Create permissions as well as shortcut availability. Install/migration updates the block's HTML/CSS/loader; custom visual assets are inline SVG and scoped shadow-root CSS.
+
+**Reason:** The shop needs a recognizable tire/oil/battery identity and clearer daily navigation while preserving ERPNext's permission checks, forms, and reports. Frappe's supported Custom HTML Block provides layout control without changing upstream code or globally restyling Desk.
+
+**Consequence:** The Workspace Shortcuts table remains the navigation registry, with group membership maintained in the app JavaScript; unfamiliar targets appear under additional tools. The native endpoint makes one extra navigation request when mounting the block. No counts, financial figures, or business-data writes are added. Direct edits to the managed block are replaced by migration; lasting visual changes belong in app sources. The existing standalone Operations Dashboard and site landing preference retain their separate roles. Production requires the normal migration and asset update.
+
+Design references: [Frappe Workspaces](https://docs.frappe.io/framework/user/en/desk/workspace), the installed Frappe v15 Workspace/Custom Block/Shortcut implementations, and [Carbon navigation tiles](https://www.carbondesignsystem.com/building-blocks/core/components/tile/guidelines) for grouping, full-link targets, and keyboard focus.
+
 ## 2026-10-25 — Require a positive selling price
 
 **Decision:** Require Selling Price greater than zero for both new and saved saleable Items and variants, using a conditional mandatory field and server validation before the unchanged-value check. Templates and non-saleable Items are exempt. Remove the explanatory caption while retaining price list, currency, and UOM context.
