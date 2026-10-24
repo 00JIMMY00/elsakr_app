@@ -1,5 +1,11 @@
 # Progress
 
+## 2026-10-25 — Default Operations Dashboard to Today (Local)
+
+- Changed: Set the initial date range and selected preset to Today, including the stored summary block's initial button state and the API's omitted-date defaults. Kept explicit presets/custom dates and session selections. Refreshed dashboard blocks/cache on `elsakr-dev2.arab-erp.com`; updated README, operator instructions, context, and decisions.
+- Checked: Development HTTPS Chrome confirmed Today selected, both dates set to today, and successful initial data loading. A no-argument API call returned today's start/end dates. Switching to Month and back to Today worked without page errors or writes. JavaScript syntax, ESLint, Python compilation, Ruff lint, and diff whitespace checks passed.
+- Remaining: Reload Desk for the new initial range. No production deployment was performed.
+
 ## 2026-10-25 — Remove informal Operations captions (Local)
 
 - Changed: Removed all descriptive captions beneath the four quick actions and six card headings, including the informal expense caption. Removed unused subtitle data and CSS, retained concise action/group labels, and changed loading/error messages to formal Arabic. Refreshed the managed block/cache on `elsakr-dev2.arab-erp.com`; aligned README, operator instructions, and current context.

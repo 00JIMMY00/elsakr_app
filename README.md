@@ -29,7 +29,7 @@ Installation/migration syncs the standard Workspace and its app-managed HTML
 block. It is activated on the second local development site; production
 deployment is pending.
 
-The **Operations Dashboard** standalone Workspace (`/app/operations-dashboard`) shows top-selling Items, daily income and expenses, and total customer/supplier balances. The phone-first Arabic layout includes a navy financial overview (revenue minus expenses), four balance/activity cards, and named product ranking bars. Use Today, Last 7 Days, or This Month, or expand **التواريخ** for custom dates; the initial range is month start through today. Customer and supplier balances are as of the end date. It is activated on the second local development site; production deployment is pending.
+The **Operations Dashboard** standalone Workspace (`/app/operations-dashboard`) shows top-selling Items, daily income and expenses, and total customer/supplier balances. The phone-first Arabic layout includes a navy financial overview (revenue minus expenses), four balance/activity cards, and named product ranking bars. Use Today, Last 7 Days, or This Month, or expand **التواريخ** for custom dates; the initial range is Today (both dates set to today). Customer and supplier balances are as of the end date. It is activated on the second local development site; production deployment is pending.
 
 Opening `https://elsakr-dev2.arab-erp.com/` now redirects to Operations Dashboard,
 with login first when needed. Version update and release change-log popups are

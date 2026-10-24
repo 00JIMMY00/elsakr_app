@@ -46,7 +46,7 @@ window.elsakrOperationsDashboard = window.elsakrOperationsDashboard || (() => {
 		const toDate = root.querySelector('[data-field="to_date"]');
 		const status = root.querySelector(".dashboard-status");
 		const today = frappe.datetime.get_today();
-		fromDate.value = filters?.from_date || `${today.slice(0, 7)}-01`;
+		fromDate.value = filters?.from_date || today;
 		toDate.value = filters?.to_date || today;
 		root.querySelector("details").open = window.matchMedia("(min-width: 800px)").matches;
 		let current = 0;

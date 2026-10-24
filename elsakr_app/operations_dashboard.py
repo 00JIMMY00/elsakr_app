@@ -3,7 +3,7 @@
 import frappe
 from frappe import _
 from frappe.desk.reportview import get_match_cond
-from frappe.utils import get_first_day, getdate, nowdate
+from frappe.utils import getdate, nowdate
 
 
 @frappe.whitelist()
@@ -13,7 +13,7 @@ def get_dashboard(from_date=None, to_date=None, company=None):
 		frappe.has_permission(doctype, "read", throw=True)
 
 	today = getdate(nowdate())
-	start = getdate(from_date) if from_date else get_first_day(today)
+	start = getdate(from_date) if from_date else today
 	end = getdate(to_date) if to_date else today
 	if start > end:
 		frappe.throw(_("From Date cannot be after To Date"))

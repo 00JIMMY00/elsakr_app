@@ -2,6 +2,14 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-25 — Default Operations Dashboard to Today
+
+**Decision:** Initialize the dashboard with Today selected and both dates set to today. Use today for omitted API date arguments. Keep manual presets/custom dates and an explicitly selected range within the open Desk session.
+
+**Reason:** The user wants daily figures as the initial dashboard view.
+
+**Consequence:** This supersedes the previous month-to-date default. Activity and sales initially cover today only; receivables/payables remain balances through the ending date. Existing permissions and calculations are unchanged.
+
 ## 2026-10-25 — Use concise, formal Operations copy
 
 **Decision:** Show action labels and card headings without descriptive captions. Use formal Arabic for loading and error messages.
