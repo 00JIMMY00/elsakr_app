@@ -8,6 +8,7 @@ app_license = "mit"
 from elsakr_app.setup import TRANSACTION_DOCTYPES
 
 required_apps = ["erpnext"]
+home_page = "app/operations"
 app_logo_url = "/assets/elsakr_app/branding/tire-logo.svg"
 app_include_css = "/assets/elsakr_app/css/branding.css?v=20261025-3"
 web_include_css = "/assets/elsakr_app/css/branding.css?v=20261025-3"
@@ -35,6 +36,7 @@ doc_events = {
 }
 doc_events["Supplier"] = {"before_save": "elsakr_app.supplier_phone.sync_supplier_phone"}
 doc_events["Customer"] = {"before_save": "elsakr_app.customer_phone.sync_customer_phone"}
+doc_events["User"] = {"validate": "elsakr_app.site_setup.set_user_home_workspace"}
 doc_events["Address"] = {"validate": "elsakr_app.customer_setup.validate_address_city"}
 doc_events["Item"] = {
 	"onload": "elsakr_app.item_pricing.load_selling_price",

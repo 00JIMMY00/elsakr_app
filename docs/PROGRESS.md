@@ -1,6 +1,12 @@
 # Progress
 
 
+## 2026-10-25 — Make Operations the default landing workspace (Local)
+
+- Changed: Root redirect now targets `/app/operations`; the app home-page hook points there too. Setup sets native Default Workspace to Operations for current System Users, and a User validation hook retains the default for future Desk users and later saves after native user-type calculation. Applied preferences on `elsakr-dev2.arab-erp.com`; updated current documentation and the lasting choice.
+- Checked: Repeated setup retained exactly one root HTTP 302 redirect and the expected home hook/System User defaults. Focused checks verified the User hook registration and System User behavior while preserving Website User preferences. Development HTTPS Chrome verified the guest login return destination, authenticated root and `/app` and `/app/` opening Operations, logo navigation from Operations Dashboard and Customer list, and refreshing Operations. Explicit dashboard/Customer links remained accessible; no page JavaScript errors occurred. Python compilation and diff whitespace checks passed. Temporary verification session was removed.
+- Remaining: Reload existing Desk sessions to receive the new native default. No production deployment was performed.
+
 ## 2026-10-25 — Switch loaders to the supplied rotating WebP (Local)
 
 - Changed: Startup and native blocking-request loaders now use the supplied `tire-loader.webp`. Kept its existing centered rotation without adding a second CSS rotation. Updated the splash setting, CSS cache version, current documentation, and decision; reapplied branding on `elsakr-dev2.arab-erp.com`.

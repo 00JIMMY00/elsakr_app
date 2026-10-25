@@ -152,4 +152,9 @@ The local machine's Cloudflare Tunnel forwards development hostnames, including 
 
 The Operations Dashboard opens independently of Operations. It uses the single company automatically; there is no company selector or introductory header copy.
 
-`site_setup.py` manages native site preferences after installation/migration: the root URL redirects with HTTP 302 to `/app/operations-dashboard`, and System Settings disables update-available and change-log popups. These preferences were applied to the second development site on 2026-10-25. Guests reach native login with the dashboard return destination; production application remains pending.
+`site_setup.py` manages native site preferences after installation/migration: the root URL redirects with HTTP 302 to `/app/operations`, and System Settings disables update-available and change-log popups. These preferences were applied to the second development site on 2026-10-25. Guests reach native login with the Operations return destination; production application remains pending.
+The app `home_page` hook points to `app/operations`. Setup applies the native
+User `default_workspace=Operations` to current System Users; a User validation
+hook runs after native user-type calculation to retain this default for future
+Desk users and later saves. Native login and logo/empty Desk routing use that
+default without client router overrides. Explicit deep links remain available.

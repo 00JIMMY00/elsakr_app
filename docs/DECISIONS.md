@@ -2,6 +2,14 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-25 — Make Operations the site and Desk home
+
+**Decision:** Redirect the root URL to `/app/operations` with HTTP 302, use the app `home_page` hook for the website home, and set native User Default Workspace to Operations for all current System Users after installation/migration. Reapply the workspace during User validation, after the native controller resolves user type, for future Desk users and later saves. Leave Website User preferences intact.
+
+**Reason:** The user wants Operations when loading the site, entering Desk, signing in normally, or clicking the logo. Frappe already routes logo/empty Desk links and normal login through Default Workspace. Website Settings rejects Desk subroutes as its home-page field, so use the supported hook there.
+
+**Consequence:** This supersedes the earlier dashboard landing choice. System User Default Workspace is app-managed; migration and User saves restore Operations. Existing direct links, workspace navigation, permissions, and the separate Operations Dashboard remain available. No client router or upstream template override is required.
+
 ## 2026-10-25 — Use the supplied animated WebP as the loader
 
 **Decision:** Point native startup and blocking-request loaders at the supplied `tire-loader.webp`, preserving it byte-for-byte. Use its existing 40-frame, looping rotation with no additional CSS rotation. Keep the stationary SVG fallback for reduced-motion preferences and retain the current logo/favicon.

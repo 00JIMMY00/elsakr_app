@@ -51,8 +51,10 @@ deployment is pending.
 
 The **Operations Dashboard** standalone Workspace (`/app/operations-dashboard`) shows top-selling Items, daily income and expenses, and total customer/supplier balances. The phone-first Arabic layout includes a navy financial overview (revenue minus expenses), four balance/activity cards, and named product ranking bars. Use Today, Last 7 Days, or This Month, or expand **التواريخ** for custom dates; the initial range is Today (both dates set to today). Customer and supplier balances are as of the end date. It is activated on the second local development site; production deployment is pending.
 
-Opening `https://elsakr-dev2.arab-erp.com/` now redirects to Operations Dashboard,
-with login first when needed. Version update and release change-log popups are
+Opening `https://elsakr-dev2.arab-erp.com/` now redirects to Operations (`/app/operations`),
+with login first when needed. The logo and normal Desk/login entry open Operations
+through the native Default Workspace setting for current and future System Users.
+Direct links to forms/reports and Operations Dashboard remain available. Version update and release change-log popups are
 disabled site-wide. Reload open Desk sessions to load these preferences.
 Installation/migration reapplies them; production deployment is pending.
 

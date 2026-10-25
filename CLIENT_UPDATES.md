@@ -104,8 +104,11 @@ shortcuts; reload Desk and use `/app/operations` after updating.
 ## Operations dashboard
 
 Opening `https://elsakr-dev2.arab-erp.com/` redirects to
-`/app/operations-dashboard` (HTTP 302). Logged-out users sign in first and then
-return to the dashboard. Both **Disable System Update Notification** and
+`/app/operations` (HTTP 302). Logged-out users sign in first and then
+return to Operations. The logo, `/app`, and normal login use Operations as the
+native Default Workspace for every current and future System User. Migration
+reapplies this default; the User validation hook keeps it on later user saves.
+Direct links to other workspaces, forms, and reports still work. Both **Disable System Update Notification** and
 **Disable Change Log Notification** are enabled in System Settings. Reload open
 Desk sessions to load these preferences. This is applied on the second
 development site; production deployment is pending. Installation/migration
