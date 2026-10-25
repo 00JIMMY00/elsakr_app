@@ -1,5 +1,15 @@
 # Elsakr App
 
+On 2026-10-25, the missing production **Operations Dashboard** Workspace was
+restored and verified in an authenticated browser at
+[/app/operations-dashboard](https://elsakr.arab-erp.com/app/operations-dashboard).
+Its definition had existed only in the development database. The standard
+Workspace JSON is now included locally at
+`elsakr_app/elsakr_app/workspace/operations_dashboard/operations_dashboard.json`
+so app installation/migration can create it. Commit and push this fix to include
+it in future production images. This was a live Workspace repair, not a new
+image deployment; earlier pending-deployment notes below describe prior checks.
+
 This is the Frappe app for changes specific to the Elsakr client. The single
 production site is `elsakr.arab-erp.com`.
 

@@ -1,5 +1,15 @@
 # Elsakr client updates
 
+On 2026-10-25, production's missing **Operations Dashboard** Workspace was
+restored from the same standard JSON now added to the local app source.
+Authenticated Chrome verified both blocks and successful data loading at
+`https://elsakr.arab-erp.com/app/operations-dashboard`. Reload Desk to refresh
+the sidebar. Commit and push the source fix so future images include
+`elsakr_app/elsakr_app/workspace/operations_dashboard/operations_dashboard.json`;
+normal installation/migration then creates a missing Workspace automatically.
+The existing setup hook manages its HTML blocks separately. This repair did
+not deploy a new image; earlier pending-deployment notes reflect prior checks.
+
 The production site is `elsakr.arab-erp.com`. Its stack runs in Docker on
 `ssh hassan`; Cloudflare Tunnel points to `127.0.0.1:8000`.
 

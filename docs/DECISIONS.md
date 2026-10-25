@@ -2,6 +2,14 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-25 — Verify dashboard Workspace creation from standard source
+
+**Decision:** Keep the standalone Operations Dashboard definition in standard Workspace JSON, alongside Operations. Verify that Frappe can create a missing Workspace from that file and expose its two blocks and sidebar entry. Keep the existing block installation/migration hook.
+
+**Reason:** The development database contained the Workspace while Git contained only its blocks and assets; a successful production migration therefore left the route missing.
+
+**Consequence:** New installations and migrations can create the dashboard without copying development database customization. Workspace layout changes must include this JSON in Git; block setup alone is insufficient. Production's immediate repair used the exact same definition through the native API.
+
 ## 2026-10-25 — Default Operations Dashboard to Today
 
 **Decision:** Initialize the dashboard with Today selected and both dates set to today. Use today for omitted API date arguments. Keep manual presets/custom dates and an explicitly selected range within the open Desk session.

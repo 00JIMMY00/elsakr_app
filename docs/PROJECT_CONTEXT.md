@@ -118,6 +118,8 @@ The normal New action for these records opens the full form directly.
 
 ## Source of truth
 
+The standalone dashboard definition is `elsakr_app/elsakr_app/workspace/operations_dashboard/operations_dashboard.json`. It was missing from Git despite existing in the development database. On 2026-10-25 the definition was exported into the app and the missing production Workspace was restored from that same JSON through the native API. Authenticated production browser/API checks passed. This source fix still needs committing and pushing; no new production image was deployed for the repair. Standard Workspace sync creates it on installation/migration; `dashboard_setup.py` maintains its two HTML blocks.
+
 - `elsakr_app/`: Python app, hooks, modules, and patches.
 - `apps.yaml`: installed apps, repository branches, and Frappe branch. Currently Frappe v15, ERPNext `version-15`, `arab_erp_theme` `develop`, and this app at the workflow commit.
 - `.github/workflows/ci.yml`: builds and publishes an image on every push to `main` or manual dispatch, then deploys it through the client machine's self-hosted runner.

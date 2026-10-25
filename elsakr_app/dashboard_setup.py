@@ -1,9 +1,8 @@
-"""Install the HTML blocks used by the standard Operations child Workspace."""
+"""Install the HTML blocks used by the standalone Operations Dashboard Workspace."""
 
 from pathlib import Path
 
 import frappe
-
 
 BLOCKS = {
 	"Elsakr Operations Summary": ("operations_summary.html", "mountSummary"),

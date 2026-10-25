@@ -1,5 +1,13 @@
 # Progress
 
+## 2026-10-25 — Restore missing dashboard Workspace source (Local + production repair)
+
+- Cause: Production had both dashboard HTML blocks and the JavaScript asset, but `Workspace/Operations Dashboard` returned HTTP 404. The latest workflow for commit `56eba0589434949f63c05176f7b0e04d23b95f73` completed both image and deploy jobs successfully. The Workspace existed in the development database but its standard JSON was absent from Git; the block setup hook does not create Workspaces.
+- Changed: Exported the standalone public Workspace to `elsakr_app/elsakr_app/workspace/operations_dashboard/operations_dashboard.json`, including both block references and the layout. Added a regression check that deletes the database Workspace inside a rolled-back transaction, imports the source through Frappe's standard importer, reapplies block setup twice, and checks Desk/sidebar availability. Corrected the setup module description.
+- Checked locally: Regression check passed; full migration on `elsakr-dev2.arab-erp.com` completed. Ruff lint/format, Python compilation, JSON validation, and diff whitespace checks passed.
+- Production repair: Created only the missing Workspace through the authenticated native resource API using the same source JSON. Verified persisted layout/properties/block references, both blocks in the Desk page API, sidebar visibility, dashboard API HTTP 200, and route HTTP 200. An authenticated headless Chrome visit rendered exactly one summary and one charts block, loaded dashboard data with HTTP 200, and reported no page JavaScript errors. No financial records were changed.
+- Remaining: Commit and push the source changes so future images include the Workspace. This was a verified live metadata repair, not a new image deployment. The repository fix has not yet run through the production workflow.
+
 ## 2026-10-25 — Default Operations Dashboard to Today (Local)
 
 - Changed: Set the initial date range and selected preset to Today, including the stored summary block's initial button state and the API's omitted-date defaults. Kept explicit presets/custom dates and session selections. Refreshed dashboard blocks/cache on `elsakr-dev2.arab-erp.com`; updated README, operator instructions, context, and decisions.
