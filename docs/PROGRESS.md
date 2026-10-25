@@ -1,5 +1,24 @@
 # Progress
 
+
+## 2026-10-25 — Switch loaders to the supplied rotating WebP (Local)
+
+- Changed: Startup and native blocking-request loaders now use the supplied `tire-loader.webp`. Kept its existing centered rotation without adding a second CSS rotation. Updated the splash setting, CSS cache version, current documentation, and decision; reapplied branding on `elsakr-dev2.arab-erp.com`.
+- Checked: Confirmed the repository WebP is byte-identical to the supplied file, loops indefinitely, contains 40 changing frames, and has identical centered visible bounds in every frame. Development HTTPS Chrome checks passed for WebP asset responses, startup/native blocking-loader references, reduced-motion still-image fallbacks, nested freeze/unfreeze cleanup, login at 1440/390/320 px, and existing logo/favicon, with no page JavaScript errors. Python compilation and diff whitespace checks passed. Removed the temporary development verification session.
+- Remaining: Reload open sessions for the WebP loader. No production deployment was performed.
+
+## 2026-10-25 — Replace custom graphics with supplied tire files (Local)
+
+- Changed: Replaced the newly drawn logo/loader/favicon with the user's supplied tire artwork. Copied `tire-loader.svg`, `.gif`, and `.webp` unchanged into public branding assets. Native startup and blocking loaders use the already animated SVG; logo uses a still SVG derivative, and favicon uses that same artwork at four icon sizes. Removed the custom wordmark, wheel, and warm login palette, adjusted square logo sizing, and updated cache versions/settings and current documentation. Applied to `elsakr-dev2.arab-erp.com`.
+- Checked: All three source copies are byte-identical. Chrome over development HTTPS verified the supplied SVG's changing rotation, reduced-motion animation suppression, stationary logo, login layout at 1440/390/320 px, Desk identity, favicon references, asset HTTP 200 responses, native nested freeze/unfreeze cleanup, and reduced-motion loader images. No page JavaScript errors occurred. Inspected the phone login screenshot and full favicon source render; verified favicon 16/32/48/64 px sizes. Python compilation and diff whitespace checks passed. Temporary development verification session was removed.
+- Remaining: Reload open sessions to load the supplied artwork. No production deployment was performed.
+
+## 2026-10-25 — Add Elsakr identity and spinning tire loader (Local)
+
+- Changed: Added original charcoal/amber SVG Elsakr logo, tire emblem, and multi-resolution ICO favicon. Added shared Desk/website CSS for the logo, warm login styling, rotating startup tire, and native blocking-request loader, with reduced-motion support. Installation/migration applies native Website/Navbar Settings; versioned CSS avoids stale proxy caches. Applied branding twice on `elsakr-dev2.arab-erp.com`.
+- Checked: Development HTTPS Chrome verified login at 1440/390/320 px without horizontal overflow, Desk logo, native favicon references, all three image assets returning HTTP 200, startup tire animation, reduced-motion suppression, and nested freeze/unfreeze cleanup. No page JavaScript errors occurred. Inspected login/loader screenshots and confirmed computed amber button/background styles after resolving shared-theme CSS precedence. Python compilation and diff whitespace checks passed.
+- Remaining: Reload open sessions for the new identity. Production deployment has not been performed. Branding is app-managed and reapplied during migration; future asset edits should update the CSS version when needed.
+
 ## 2026-10-25 — Restore missing dashboard Workspace source (Local + production repair)
 
 - Cause: Production had both dashboard HTML blocks and the JavaScript asset, but `Workspace/Operations Dashboard` returned HTTP 404. The latest workflow for commit `56eba0589434949f63c05176f7b0e04d23b95f73` completed both image and deploy jobs successfully. The Workspace existed in the development database but its standard JSON was absent from Git; the block setup hook does not create Workspaces.

@@ -8,6 +8,14 @@ app_license = "mit"
 from elsakr_app.setup import TRANSACTION_DOCTYPES
 
 required_apps = ["erpnext"]
+app_logo_url = "/assets/elsakr_app/branding/tire-logo.svg"
+app_include_css = "/assets/elsakr_app/css/branding.css?v=20261025-3"
+web_include_css = "/assets/elsakr_app/css/branding.css?v=20261025-3"
+website_context = {
+	"favicon": "/assets/elsakr_app/branding/tire-favicon.ico?v=20261025-2",
+	"splash_image": "/assets/elsakr_app/branding/tire-loader.webp",
+}
+
 after_install = [
 	"elsakr_app.setup.setup_item_size",
 	"elsakr_app.item_pricing.setup_item_pricing",
@@ -19,6 +27,7 @@ after_install = [
 	"elsakr_app.dashboard_setup.setup_operations_dashboard",
 	"elsakr_app.operations_workspace.setup_operations_workspace",
 	"elsakr_app.site_setup.setup_site_preferences",
+	"elsakr_app.branding.setup_branding",
 ]
 after_migrate = after_install
 doc_events = {

@@ -2,6 +2,30 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-25 — Use the supplied animated WebP as the loader
+
+**Decision:** Point native startup and blocking-request loaders at the supplied `tire-loader.webp`, preserving it byte-for-byte. Use its existing 40-frame, looping rotation with no additional CSS rotation. Keep the stationary SVG fallback for reduced-motion preferences and retain the current logo/favicon.
+
+**Reason:** The user explicitly selected WebP and requested that the tire rotate around itself. Its animation already spins the wheel in place within a fixed 280 × 280 canvas.
+
+**Consequence:** This supersedes the SVG loader selection. Versioned CSS refreshes cached loader references; migration reapplies the WebP splash setting. Native loading messages/counting/cleanup remain intact.
+
+## 2026-10-25 — Use the supplied tire artwork for branding
+
+**Decision:** Replace the newly drawn graphics with the user's `tire-loader.svg`, GIF, and WebP files. Use the SVG unchanged for loading animations and retain the other supplied formats unchanged. Derive the stationary logo by removing only animation metadata from the supplied SVG, and rasterize that artwork for the favicon. Use the stationary image for reduced-motion loading states.
+
+**Reason:** The user clarified that their existing artwork must be used rather than newly designed graphics.
+
+**Consequence:** This supersedes the custom artwork and warm login palette from the earlier branding change. No additional CSS rotation is applied to the already animated SVG. Native branding settings and Frappe loading lifecycles remain in use; filenames and versioned URLs refresh previously cached graphics.
+
+## 2026-10-25 — Own Elsakr branding through native settings and scoped CSS
+
+**Decision:** Store the logo and tire as app-owned SVG assets and the favicon as a multi-resolution ICO. Apply Website/Navbar branding settings after installation/migration, overriding shared theme identity. Use CSS for the native startup splash and blocking-request loader; keep Frappe's loading lifecycle and messages intact. Disable rotation for reduced-motion users.
+
+**Reason:** The tire business needs a consistent Elsakr identity on login, Desk, browser tabs, and loading screens without upstream template or JavaScript changes.
+
+**Consequence:** Migration reapplies this site's branding; lasting branding changes belong in this app. Shared theme defaults preserve the site-owned asset paths. Shared login CSS uses sufficient specificity to survive theme ordering, and its URL is versioned for proxy caches. Other application controls retain native styling and behavior.
+
 ## 2026-10-25 — Verify dashboard Workspace creation from standard source
 
 **Decision:** Keep the standalone Operations Dashboard definition in standard Workspace JSON, alongside Operations. Verify that Frappe can create a missing Workspace from that file and expose its two blocks and sidebar entry. Keep the existing block installation/migration hook.

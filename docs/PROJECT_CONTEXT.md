@@ -116,6 +116,17 @@ Request, and Mode of Payment through app-managed DocType Property Setters after
 install/migration. The app's own Item Size DocType also has Quick Entry disabled.
 The normal New action for these records opens the full form directly.
 
+`branding.py` manages the Elsakr Website/Navbar identity after installation and
+migration, overriding shared theme defaults with the user-supplied `tire-loader.webp`
+animation, a still SVG derivative for the logo, and an ICO favicon derived from
+the supplied SVG artwork. Supplied GIF/SVG alternatives are retained unchanged.
+The WebP has 40 frames and rotates in place without additional CSS rotation. `public/css/branding.css` is included on Desk
+and website pages, sizes the login identity, and displays the supplied animation in the native startup
+splash and blocking-request wheel without replacing Frappe's loading lifecycle.
+Reduced-motion preferences select the still tire. CSS URLs carry a version for proxy
+cache refreshes. Applied and browser-verified on the second development site;
+production deployment remains pending.
+
 ## Source of truth
 
 The standalone dashboard definition is `elsakr_app/elsakr_app/workspace/operations_dashboard/operations_dashboard.json`. It was missing from Git despite existing in the development database. On 2026-10-25 the definition was exported into the app and the missing production Workspace was restored from that same JSON through the native API. Authenticated production browser/API checks passed. This source fix still needs committing and pushing; no new production image was deployed for the repair. Standard Workspace sync creates it on installation/migration; `dashboard_setup.py` maintains its two HTML blocks.

@@ -1,5 +1,15 @@
 # Elsakr App
 
+Elsakr uses the supplied tire artwork for its logo and browser favicon, with
+`tire-loader.webp` providing startup and blocking-request animations. Its
+existing animation spins the tire around its center. The supplied SVG and GIF
+alternatives are included unchanged. The logo/favicon use a still
+version of the same artwork; reduced-motion users see the still tire in loaders.
+This is active on [the second development site](https://elsakr-dev2.arab-erp.com).
+Reload open sessions to see it. Production deployment is pending. Normal
+installation/migration reapplies Website/Navbar branding settings.
+
+
 On 2026-10-25, the missing production **Operations Dashboard** Workspace was
 restored and verified in an authenticated browser at
 [/app/operations-dashboard](https://elsakr.arab-erp.com/app/operations-dashboard).
