@@ -1,5 +1,12 @@
 # Progress
 
+## 2026-10-26 — Add Expense Entry Report to Operations (Local)
+
+- Changed: Added the existing Expense Entry Report to the standard Operations shortcut registry and the المصروفات card as تقرير قيود المصروفات. Reused the existing report link, badge, RTL layout, and native permission filtering. Synced the Workspace on `elsakr-dev2.arab-erp.com`, cleared cache, and aligned README, client instructions, and current context.
+- Checked: Confirmed the development report is an enabled Script Report for Expense Entry. The native Workspace endpoint returns 26 shortcuts, including the report exactly once with query-report routing. Node rendering checks confirmed the report is in the expenses card with its encoded link and report badge, and omitted when excluded from the permission-filtered response. JavaScript syntax, JSON parsing, and diff whitespace checks passed.
+- Remaining: Reload Desk to load the new shortcut and script. Visual browser review and production deployment were not performed; the normal release must sync the Workspace and JavaScript asset.
+
+
 
 ## 2026-10-25 — Make Operations the default landing workspace (Local)
 

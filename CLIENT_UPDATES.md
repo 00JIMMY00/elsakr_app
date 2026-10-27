@@ -75,12 +75,16 @@ Production receives the change through the normal migration.
 The public **Operations** Workspace at `/app/operations` opens directly with
 quick actions for new sales invoices, purchase invoices, expenses, and stock
 movements when the user has the matching read/create permissions. Six cards
-organize all 25 existing shortcuts into sales/customers, purchases/suppliers,
+organize all 26 shortcuts into sales/customers, purchases/suppliers,
 stock movement, items/sizes, accounts/profit, and expenses. The introductory
 banner, section headings, search box, category filters, and footer slogan have been removed.
 Quick actions and card headings show concise labels without descriptive captions.
 Loading/error messages use formal Arabic. Tree and report links retain their
 native views and existing ERPNext permissions.
+Under **المصروفات**, select **تقرير قيود المصروفات** to open **Expense Entry Report**.
+The link uses the same styling and report badge as other reports and is visible
+only when native report permissions allow it. Applied on the second development
+site; reload Desk. Production deployment is pending.
 Tool and quick-action labels use 16 px text and card headings use 18 px.
 Reduced card padding, smaller gaps, and trimmed native block spacing give the
 labels more room. The layout adapts to phones and the selected Desk light/dark theme.

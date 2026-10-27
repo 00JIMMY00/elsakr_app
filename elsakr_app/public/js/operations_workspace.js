@@ -77,7 +77,7 @@
 			title: "المصروفات",
 			icon: "expense",
 			tone: "rose",
-			items: ["Expense Entry", "Expense Entry Type"],
+			items: ["Expense Entry", "Expense Entry Type", "Expense Entry Report"],
 		},
 	];
 	const actions = [
