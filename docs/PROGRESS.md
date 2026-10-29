@@ -1,5 +1,11 @@
 # Progress
 
+## 2026-10-29 — Enable production Server Scripts (Live configuration)
+
+- Changed: Enabled `server_script_enabled=true` in production's common Bench configuration and cleared the site cache. Added the same command to both the server's Compose configurator and `deploy/compose.yaml` for future deployments. Saved the previous common config and server Compose file under `/home/hassan/elsakr/config-backups/` with restricted access.
+- Checked: Frappe's `is_safe_exec_enabled()` returned true and restricted Python evaluated a harmless arithmetic script successfully, with the verification transaction rolled back. Production HTTPS `/api/method/ping` returned `{"message":"pong"}`. The updated server Compose passed `docker compose config --quiet`.
+- Release scope: Applied directly to the running production configuration; no image build, migration, or GitHub deployment was run. The repository commit deliberately uses `[skip ci]`; future normal releases include the configurator change. Reload Desk and use a System Manager account to create Server Scripts.
+
 ## 2026-10-26 — Add Expense Entry Report to Operations (Local)
 
 - Changed: Added the existing Expense Entry Report to the standard Operations shortcut registry and the المصروفات card as تقرير قيود المصروفات. Reused the existing report link, badge, RTL layout, and native permission filtering. Synced the Workspace on `elsakr-dev2.arab-erp.com`, cleared cache, and aligned README, client instructions, and current context.

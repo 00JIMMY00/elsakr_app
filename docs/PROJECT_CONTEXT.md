@@ -140,6 +140,13 @@ The standalone dashboard definition is `elsakr_app/elsakr_app/workspace/operatio
 
 ## Deployment flow
 
+Server Scripts are enabled in production's common Bench configuration as of
+2026-10-29. The `sites` Docker volume persists the flag, and the Compose
+configurator reapplies `bench set-config -g server_script_enabled true` on future
+deployments. The flag is Bench-wide; this stack remains dedicated to Elsakr.
+The initial change was applied directly without an image build or migration;
+its source/documentation commit skips CI.
+
 The build fetches the latest commits from the refs in `apps.yaml`, packages the apps into a GHCR image, and passes its digest to the deployment job. The client machine runs the Docker stack; its frontend listens on `127.0.0.1:8000` behind Cloudflare Tunnel. The rollout script pulls the image, backs up the existing site, installs any newly listed apps, migrates, syncs assets, and checks the site. On a failed update, it attempts to restore the previous image and site backup. A first install has no previous release to restore.
 
 The repository documents the deployment mechanism; it does not itself prove the current production image or site health. Confirm those in GitHub Actions and on the live site before recording a release as deployed.

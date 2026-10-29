@@ -42,6 +42,7 @@ services:
     command:
       - >-
         ls -1 apps > sites/apps.txt;
+        bench set-config -g server_script_enabled true;
         bench set-config -g db_host db;
         bench set-config -gp db_port 3306;
         bench set-config -g redis_cache redis://redis-cache:6379;

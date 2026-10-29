@@ -1,5 +1,21 @@
 # Elsakr App
 
+## Server Scripts
+
+Server Scripts were enabled directly on production on 2026-10-29 using
+`docker exec elsakr-backend-1 bench set-config -g server_script_enabled true`,
+followed by `bench --site elsakr.arab-erp.com clear-cache` inside the backend.
+The installed Frappe 15.124.0 checks the common Bench configuration for this flag.
+The `sites` Docker volume preserves it across image updates; the Compose
+configurator reapplies it on future deployments. Deleting/replacing that volume
+requires restoring the site/configuration. This is a Bench-wide setting; keep this
+deployment dedicated to Elsakr. System Managers can create scripts at
+`/app/server-script`. Keep substantial business logic in the versioned app.
+
+The live change required no image build or migration. Its repository commit uses
+`[skip ci]` to avoid an unrelated release; the next normal image deployment
+includes the updated configurator.
+
 Elsakr uses the supplied tire artwork for its logo and browser favicon, with
 `tire-loader.webp` providing startup and blocking-request animations. Its
 existing animation spins the tire around its center. The supplied SVG and GIF

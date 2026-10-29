@@ -2,6 +2,14 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-29 — Enable Server Scripts in persistent Bench configuration
+
+**Decision:** Enable `server_script_enabled=true` in the common Bench configuration for the dedicated Elsakr production stack and reapply it through the Compose configurator.
+
+**Reason:** The user requested Server Scripts and persistence across new Docker images. The installed Frappe 15.124.0 checks the common config directly; a site-only flag is insufficient.
+
+**Consequence:** The setting persists in the shared `sites` volume and is recreated by future deployments. It applies to every site in this Bench, so keep this stack dedicated to Elsakr. Existing System Manager permissions govern script editing. Keep substantial business logic in the versioned app. The initial live configuration change does not require a new image; its source/documentation commit skips CI to avoid an unrelated release.
+
 ## 2026-10-25 — Make Operations the site and Desk home
 
 **Decision:** Redirect the root URL to `/app/operations` with HTTP 302, use the app `home_page` hook for the website home, and set native User Default Workspace to Operations for all current System Users after installation/migration. Reapply the workspace during User validation, after the native controller resolves user type, for future Desk users and later saves. Leave Website User preferences intact.
