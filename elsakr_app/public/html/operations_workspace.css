@@ -196,6 +196,13 @@
 	line-height: 1.6;
 	transition: background 0.16s, color 0.16s;
 }
+.ops-report-start {
+	border-top: 1px solid var(--ops-line);
+	border-start-start-radius: 0;
+	border-start-end-radius: 0;
+	margin-top: 6px;
+	padding-top: 10px;
+}
 .ops-link:hover {
 	background: var(--ops-tint);
 	color: var(--ops-accent);

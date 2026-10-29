@@ -390,3 +390,49 @@ managed under **Item Price**. Normal Item Price permissions apply.
 
 Applied on `elsakr-dev2.arab-erp.com`; reload Desk to load the field changes.
 Production deployment is pending; installation/migration applies the metadata.
+
+## Simplified stock and sales reports
+
+Operations now links **البحث عن مخزون المقاسات** (Stock Size Search) in the
+stock card and **تقرير المبيعات اليومي** (Daily Sales Summary) in the sales card.
+Stock Size Search shows Item, Item Name, Size, Warehouse, current Stock Quantity,
+and Stock UOM. Leave Warehouse blank to search all permitted warehouses in the
+selected/default company. Search accepts part of an item code, item name, or size;
+exact Size and Item filters can be combined. Zero balances are hidden; negative
+balances remain visible. This is current physical stock, not historical or
+reserved/available stock. Quantities in different units are not totaled.
+
+Daily Sales Summary shows Date, Invoice, Customer, Customer Name, Invoice Total,
+Outstanding Amount, and Status. Both dates default dynamically to today. Use the
+Today button to reset them, or select a custom range, customer, status, or
+Sales/Returns filter. Four summary cards and a teal daily-sales chart accompany
+the invoice links and colored status/amounts. Only submitted invoices are
+included; returns reduce sales. Net Sales excludes taxes; Invoice Total includes
+taxes. All amounts use company currency. Outstanding is the current balance of
+these invoices, not a historical receivables balance. Native report export and
+print remain available. Existing report, company, and record permissions apply.
+
+The reports and Operations shortcuts are synchronized on the second local
+development site. Reload Desk after updating. Standard report/Workspace JSON is
+synced during installation/migration; serve the updated Operations JavaScript
+asset too. Production deployment has not been performed.
+
+## Purchasing report and organized Operations cards
+
+Each Operations card now lists records first, then reports at the bottom with a
+subtle divider. The ordering uses the native permission-filtered links, so only
+permitted reports appear.
+
+In **المشتريات والموردين**, open **تقرير المشتريات اليومي** (Daily Purchase Summary).
+It matches the sales report: Date, Purchase Invoice, Supplier, Supplier Name,
+Invoice Total, Outstanding Amount, and Status; company/date/supplier/status and
+Purchases/Returns filters; today defaults and a Today reset; four summary cards,
+colored amounts/statuses, and a blue daily chart. Only submitted invoices count;
+returns reduce purchases. Net Purchases excludes taxes, Invoice Total includes
+taxes, and current outstanding follows the native party-account currency rules.
+All displayed amounts use company currency. Export and print remain native.
+
+Applied on `elsakr-dev2.arab-erp.com`; reload Desk. Production deployment remains
+pending. Installation/migration must sync the report and Workspace, refresh the
+managed Operations HTML Block for its divider CSS, and serve the updated
+Operations JavaScript asset.

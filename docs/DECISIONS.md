@@ -2,6 +2,22 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-10-29 — Group reports last and mirror sales in purchasing
+
+**Decision:** In each Operations card, stably group native permitted record links before Report links, including unfamiliar targets in the additional-tools card. Add a divider only between visible record and report groups. Add Daily Purchase Summary as the purchasing counterpart of Daily Sales Summary, with supplier filters, submitted Purchase Invoices, signed returns, today defaults, native permission-aware listing, company-currency totals/current outstanding, and a blue daily chart.
+
+**Reason:** Reports should be easy to locate consistently, and purchasing needs the same concise daily view as sales.
+
+**Consequence:** Existing link order is preserved within each group; reports are no longer interleaved with records. The Workspace remains the shortcut registry and native permissions determine visibility. Migration must refresh the managed HTML Block CSS as well as sync the new report/Workspace and serve the JavaScript asset. Purchasing outstanding is current rather than a historical payable balance. Sales calculations remain unchanged.
+
+## 2026-10-29 — Keep operational reports compact and native
+
+**Decision:** Add standard Frappe Script Reports for current stock by item/size/warehouse and submitted sales by invoice. Use current Bin physical quantities with Item/Warehouse permission conditions for stock, and permission-aware Sales Invoice listing for sales. Scope each report to one permitted company. Default sales dates to today on the client and server; include signed returns and show company-currency totals/current outstanding. Use native summary cards, chart, table, export, and print. Register both reports in Operations.
+
+**Reason:** Staff need fast size lookup across warehouses and a concise daily sales view without the columns and historical calculations of full stock/accounting reports.
+
+**Consequence:** Stock is current rather than historical or available-to-promise; zero balances are hidden and negative balances remain. Mixed stock units have no grand total. Sales has one row per submitted invoice, including returns; outstanding reflects current invoice balances even for a past sales period. Draft/cancelled invoices are excluded. Existing report and record permissions remain required. Installation/migration syncs reports and Workspace metadata; the Operations asset must also be updated.
+
 ## 2026-10-29 — Enable Server Scripts in persistent Bench configuration
 
 **Decision:** Enable `server_script_enabled=true` in the common Bench configuration for the dedicated Elsakr production stack and reapply it through the Compose configurator.

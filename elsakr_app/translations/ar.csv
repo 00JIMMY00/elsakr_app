@@ -4,3 +4,12 @@ Customer has an unpaid balance,العميل لديه مبلغ غير مسدد
 Unpaid balance owed to supplier,رصيد غير مسدد مستحق للمورد
 Selling Price,سعر البيع
 Selling Price is required and must be greater than zero.,سعر البيع مطلوب ويجب أن يكون أكبر من صفر.
+Stock Size Search,البحث عن مخزون المقاسات
+Daily Sales Summary,تقرير المبيعات اليومي
+Search item or size,بحث بالصنف أو المقاس
+Sales Invoices / Returns,فواتير البيع / المرتجعات
+Submitted invoices only. Returns reduce sales. Amounts use company currency; outstanding balances are current.,الفواتير المعتمدة فقط. تخصم المرتجعات من المبيعات. المبالغ بعملة الشركة والأرصدة المستحقة حالية.
+Daily Purchase Summary,تقرير المشتريات اليومي
+Net Purchases,صافي المشتريات
+Purchase Invoices / Returns,فواتير الشراء / المرتجعات
+Submitted invoices only. Returns reduce purchases. Amounts use company currency; outstanding balances are current.,الفواتير المعتمدة فقط. تخصم المرتجعات من المشتريات. المبالغ بعملة الشركة والأرصدة المستحقة حالية.

@@ -2,7 +2,7 @@
 
 ## Purpose and scope
 
-`elsakr_app` is the Frappe app for Elsakr-specific changes. The repository also defines the app list and Docker deployment for the single production site, `elsakr.arab-erp.com`. The app includes a standard public `Operations` Workspace in the Elsakr App module. Its app-managed **Elsakr Operations Hub** Custom HTML Block renders a compact Arabic RTL layout with permission-aware creation actions and six navigation cards. Actions and card headings have no descriptive captions; loading/error messages use formal Arabic. The introductory banner, section headings, search, and category filters were removed at the user's request. The Workspace's 26 shortcuts remain the registry for existing ERPNext records and reports; the client uses the native `frappe.desk.desktop.get_desktop_page` permission-filtered response and route generator. The expenses card includes Expense Entry Report (تقرير قيود المصروفات), using the existing report styling and native report access checks. Create actions also check native boot Create permissions. The block has scoped shadow-root CSS with 16 px tool/action labels and 18 px card headings, tighter card padding/gaps, and reduced native wrapper padding scoped to its own block instance. It supports responsive and dark-theme layouts, and loading/empty/error/retry states; it adds no financial queries or business-data writes. `operations_workspace.py` updates the managed block after installation/migration. `hooks.py` requires ERPNext, installs the Item size Link field after installation/migration, overrides the Report controller for size filtering in Stock Balance/Stock Ledger, and extends those reports' scripts through the `get_script` endpoint override. `patches.txt` includes a pre-model-sync patch to rename the original `Operation` Workspace, whose route conflicts with ERPNext's manufacturing Operation DocType. Standard Workspace JSON is synced on app installation and migration.
+`elsakr_app` is the Frappe app for Elsakr-specific changes. The repository also defines the app list and Docker deployment for the single production site, `elsakr.arab-erp.com`. The app includes a standard public `Operations` Workspace in the Elsakr App module. Its app-managed **Elsakr Operations Hub** Custom HTML Block renders a compact Arabic RTL layout with permission-aware creation actions and six navigation cards. Each card places record links first and reports last, with a subtle divider only when both kinds are visible. Actions and card headings have no descriptive captions; loading/error messages use formal Arabic. The introductory banner, section headings, search, and category filters were removed at the user's request. The Workspace's 29 shortcuts remain the registry for existing ERPNext records and reports; the client uses the native `frappe.desk.desktop.get_desktop_page` permission-filtered response and route generator. The expenses card includes Expense Entry Report (تقرير قيود المصروفات), using the existing report styling and native report access checks. Create actions also check native boot Create permissions. The block has scoped shadow-root CSS with 16 px tool/action labels and 18 px card headings, tighter card padding/gaps, and reduced native wrapper padding scoped to its own block instance. It supports responsive and dark-theme layouts, and loading/empty/error/retry states; it adds no financial queries or business-data writes. `operations_workspace.py` updates the managed block after installation/migration. `hooks.py` requires ERPNext, installs the Item size Link field after installation/migration, overrides the Report controller for size filtering in Stock Balance/Stock Ledger, and extends those reports' scripts through the `get_script` endpoint override. `patches.txt` includes a pre-model-sync patch to rename the original `Operation` Workspace, whose route conflicts with ERPNext's manufacturing Operation DocType. Standard Workspace JSON is synced on app installation and migration.
 
 The app also includes a public standalone `Operations Dashboard` Workspace. Two app-managed Custom HTML Blocks show company/date filters, a phone-first RTL overview (revenue minus expenses), four summary amounts, a daily income/expense chart, and named ranking bars for the ten best-selling Items. Quick Today/Last 7 Days/This Month presets and collapsible date controls share a single data request across both blocks. Currency labels are separated from amounts; a single activity date uses grouped bars instead of a line. The activity chart is responsive SVG with an expandable daily-values table. A read-only API uses submitted Sales Invoice Items and non-cancelled GL Entries, scoped to a permitted company. The default range is today only in the UI and when API dates are omitted; receivables/payables are balances as of the end date. The blocks are installed after app install/migration and the standard Workspace JSON is synced with the app.
 
@@ -126,6 +126,23 @@ splash and blocking-request wheel without replacing Frappe's loading lifecycle.
 Reduced-motion preferences select the still tire. CSS URLs carry a version for proxy
 cache refreshes. Applied and browser-verified on the second development site;
 production deployment remains pending.
+
+The app owns three standard Script Reports under `elsakr_app/elsakr_app/report`:
+`Stock Size Search` reads current Bin quantities, joins current Item sizes, and
+applies Item/Warehouse match conditions within a permitted company. It hides zero
+balances and avoids summing different stock units. `Daily Sales Summary` reads
+submitted Sales Invoices with permission-aware `frappe.get_list`, includes signed
+returns, and presents invoice totals/current outstanding in company currency,
+four summary cards, and a daily bar chart. Both sales dates default to today in
+the browser and server. Company/date/status/customer/type filters are native
+report controls. Standard JSON installs the reports and adds their links to the
+stock and sales Operations cards. `Daily Purchase Summary` mirrors the sales report
+for Purchase Invoices and suppliers, with a blue chart, today defaults, signed
+returns, company-currency totals, and current outstanding. It uses native
+Purchase Invoice permissions; its shortcut sits in the purchasing card. Report
+links are grouped after records for every card, including additional tools.
+The managed HTML Block CSS supplies the divider and is refreshed on migration.
+No business records are written by reports.
 
 ## Source of truth
 

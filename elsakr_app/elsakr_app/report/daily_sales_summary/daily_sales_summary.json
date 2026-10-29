@@ -1,0 +1,31 @@
+{
+ "doctype": "Report",
+ "name": "Daily Sales Summary",
+ "report_name": "Daily Sales Summary",
+ "module": "Elsakr App",
+ "ref_doctype": "Sales Invoice",
+ "report_type": "Script Report",
+ "is_standard": "Yes",
+ "disabled": 0,
+ "prepared_report": 0,
+ "add_total_row": 0,
+ "roles": [
+  {
+   "role": "Sales User"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Accounts Manager"
+  }
+ ],
+ "creation": "2026-10-29 12:00:00.000000",
+ "modified": "2026-10-29 12:00:00.000000",
+ "owner": "Administrator",
+ "modified_by": "Administrator",
+ "apply_user_permissions": 1
+}

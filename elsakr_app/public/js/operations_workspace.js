@@ -20,6 +20,7 @@
 			tone: "teal",
 			items: [
 				"Sales Invoice",
+				"Daily Sales Summary",
 				"Customer",
 				"Accounts Receivable",
 				"Accounts Receivable Summary",
@@ -34,6 +35,7 @@
 			items: [
 				"Purchase Invoice",
 				"Supplier",
+				"Daily Purchase Summary",
 				"Accounts Payable",
 				"Accounts Payable Summary",
 				"Supplier Group",
@@ -45,6 +47,7 @@
 			icon: "stock",
 			tone: "amber",
 			items: [
+				"Stock Size Search",
 				"Stock Balance",
 				"Stock Ledger",
 				"Stock Entry",
@@ -90,6 +93,10 @@
 		`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${
 			paths[name] || paths.catalog
 		}</svg>`;
+	const reportsLast = (items) => [
+		...items.filter((item) => item.type !== "Report"),
+		...items.filter((item) => item.type === "Report"),
+	];
 	const escape = (value) => frappe.utils.escape_html(String(value));
 
 	function href(item) {
@@ -121,7 +128,9 @@
 			const available = groups
 				.map((group) => ({
 					...group,
-					links: group.items.map((name) => byTarget.get(name)).filter(Boolean),
+					links: reportsLast(
+						group.items.map((name) => byTarget.get(name)).filter(Boolean)
+					),
 				}))
 				.filter((group) => group.links.length);
 			const known = new Set(groups.flatMap((group) => group.items));
@@ -132,7 +141,7 @@
 					title: "أدوات إضافية",
 					icon: "catalog",
 					tone: "violet",
-					links: extra,
+					links: reportsLast(extra),
 				});
 			directory.innerHTML = available
 				.map(
@@ -145,8 +154,14 @@
 					).padStart(2, "0")}</span></header>
 					<nav aria-label="${group.title}">${group.links
 						.map(
-							(item) =>
-								`<a class="ops-link" href="${escape(href(item))}"><span>${escape(
+							(item, index) =>
+								`<a class="ops-link${
+									item.type === "Report" &&
+									index > 0 &&
+									group.links[index - 1].type !== "Report"
+										? " ops-report-start"
+										: ""
+								}" href="${escape(href(item))}"><span>${escape(
 									item.label
 								)}</span><span class="ops-link-end">${
 									item.type === "Report" ? "<small>تقرير</small>" : ""
