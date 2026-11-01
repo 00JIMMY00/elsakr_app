@@ -1,5 +1,18 @@
 # Progress
 
+## 2026-11-01 — Arabic EGP symbol and stock purchasing/selling prices (Local)
+
+- Changed: Added repeatable installation/migration setup for EGP's `ج.م` symbol and visible currency symbols, preserving currency codes. Applied setup on `elsakr-dev2.arab-erp.com`. Stock Size Search now keeps Item Name without the Item code column, shows current warehouse Bin valuation rate as Purchasing Price (MA) in company currency, and shows today's general stock-UOM selling price in its list currency. Added an optional selling-list override, 240/220 px price columns, Arabic purchasing label, and blank display for unavailable selling prices. Updated user/operator documentation and the lasting decision.
+- Checked: Five focused database tests passed, covering report filters, positive/negative/zero stock, warehouse permissions, distinct warehouse costs, foreign-currency selling prices, date/UOM/party/batch/packing exclusions, ambiguous/missing prices, denied price access, Guest/company denial, and repeated symbol setup preserving currencies. Test records were rolled back. The development site's native valuation default is Moving Average. Authenticated development HTTPS Chrome confirmed seven columns with no Item code column, `ج.م`, and full `12,345,678.90` / `98,765,432.10` amounts inside their price cells using temporary browser-only sample values. Desktop and 390 px phone screenshots were reviewed; the native table scrolls horizontally. No page JavaScript errors occurred. Ruff lint/format, Python compilation, JavaScript syntax, CSV validation, and diff whitespace checks passed. Removed the temporary review session.
+- Remaining: Production deployment has not been performed. The normal app release/migration applies the symbol and report source; reload Desk afterward. Purchasing cost uses the configured native valuation method and represents current warehouse cost rather than historical invoice COGS. Missing or ambiguous selling prices require maintenance in Item Price.
+
+
+## 2026-10-31 — Add Payment Entry to Operations (Local)
+
+- Changed: Added the native `Payment Entry` shortcut, labelled «قيد الدفع», to the الحسابات والأرباح card in the managed Operations Workspace. Updated the source Workspace timestamp so standard migration imports the new shortcut, and aligned the README, client instructions, project context, and decisions.
+- Checked locally: JSON parsing, JavaScript syntax, and `git diff --check` passed. Migration completed successfully on `elsakr-dev2.arab-erp.com`; the stored Workspace has exactly 30 shortcuts and one Payment Entry shortcut with List view and the expected Arabic label. The stored Custom HTML Block still loads the Operations JavaScript asset. Production deployment has not been performed.
+- Remaining: Reload the open Desk page to display the new shortcut. Production requires the normal source release and migration.
+
 ## 2026-10-29 — Organize Operations reports and add purchasing summary (Local)
 
 - Changed: Grouped record links before reports in every Operations card, preserving each group's order and native permission filtering, with a subtle divider when both groups are visible. Added Daily Purchase Summary / تقرير المشتريات اليومي to the purchasing card (29 shortcuts total), matching the sales report's essential columns, supplier/date/status/type filters, today defaults/reset, four summary cards, colored statuses/amounts, and a blue daily chart. Submitted Purchase Invoices and signed returns use company-currency totals/current outstanding with native party-account currency handling. Synced the report/Workspace and refreshed the managed HTML Block on `elsakr-dev2.arab-erp.com`. Updated README, client instructions, context, and decisions.

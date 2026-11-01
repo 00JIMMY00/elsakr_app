@@ -16,6 +16,13 @@ frappe.query_reports["Stock Size Search"] = {
 		},
 		{ fieldname: "item_code", label: __("Item"), fieldtype: "Link", options: "Item" },
 		{
+			fieldname: "selling_price_list",
+			label: __("Selling Price List"),
+			fieldtype: "Link",
+			options: "Price List",
+			get_query: () => ({ filters: { selling: 1, enabled: 1 } }),
+		},
+		{
 			fieldname: "warehouse",
 			label: __("Warehouse"),
 			fieldtype: "Link",
@@ -26,6 +33,9 @@ frappe.query_reports["Stock Size Search"] = {
 		},
 	],
 	formatter(value, row, column, data, default_formatter) {
+		if (column.fieldname === "selling_price" && data?.selling_price == null) {
+			return "";
+		}
 		const formatted = default_formatter(value, row, column, data);
 		if (column.fieldname === "actual_qty" && data) {
 			return `<span class="text-${

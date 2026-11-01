@@ -1,6 +1,7 @@
 """Database checks for compact report calculations, filters, and permissions."""
 
 import unittest
+from unittest.mock import patch
 from uuid import uuid4
 
 import frappe
@@ -148,13 +149,65 @@ class TestOperationsReports(unittest.TestCase):
 					"item_code": item.name,
 					"warehouse": warehouse.name,
 					"actual_qty": qty,
+					"valuation_rate": 1234567.89 + index,
 					"stock_uom": "Nos",
 				}
 			).db_insert()
 		filters = {"company": self.company, "custom_size": size.name}
 		columns, rows = stock(filters)
 		self.assertEqual(sorted(r.actual_qty for r in rows), [-2, 7])
-		self.assertEqual(len(columns), 6)
+		self.assertEqual(len(columns), 7)
+		self.assertNotIn("item_code", [c["fieldname"] for c in columns])
+		self.assertTrue(all(c["width"] >= 220 for c in columns if c["fieldtype"] == "Currency"))
+		self.assertEqual({r.buying_currency for r in rows}, {self.currency})
+		self.assertEqual(sorted(r.buying_price for r in rows), [1234567.89, 1234568.89])
+		price_list = frappe.get_doc(
+			{
+				"doctype": "Price List",
+				"price_list_name": self.prefix,
+				"selling": 1,
+				"enabled": 1,
+				"currency": self.foreign_currency,
+			}
+		).insert()
+
+		def price(**values):
+			doc = frappe.get_doc(
+				{
+					"doctype": "Item Price",
+					"price_list": price_list.name,
+					"item_code": item.name,
+					"uom": "Nos",
+					"currency": self.foreign_currency,
+					"price_list_rate": 9876543.21,
+					**values,
+				}
+			)
+			doc.db_insert()
+			return doc
+
+		active = price(valid_from=nowdate())
+		price(valid_from=add_days(nowdate(), 1), price_list_rate=999)
+		price(valid_upto=add_days(nowdate(), -1), price_list_rate=888)
+		price(uom="Box", price_list_rate=777)
+		price(customer=self.prefix, price_list_rate=666)
+		price(batch_no=self.prefix, price_list_rate=555)
+		price(packing_unit=10, price_list_rate=444)
+		priced_filters = {**filters, "selling_price_list": price_list.name}
+		priced = stock(priced_filters)[1]
+		self.assertEqual([r.selling_price for r in priced], [9876543.21, 9876543.21])
+		self.assertEqual({r.selling_currency for r in priced}, {self.foreign_currency})
+		duplicate = price()
+		self.assertTrue(all(r.selling_price is None for r in stock(priced_filters)[1]))
+		frappe.db.delete("Item Price", {"name": duplicate.name})
+		with patch("frappe.has_permission", wraps=frappe.has_permission) as permission:
+			original = permission._mock_wraps
+			permission.side_effect = lambda dt, *args, **kwargs: (
+				False if dt == "Item Price" else original(dt, *args, **kwargs)
+			)
+			self.assertTrue(all(r.selling_price is None for r in stock(priced_filters)[1]))
+		frappe.db.delete("Item Price", {"name": active.name})
+		self.assertTrue(all(r.selling_price is None for r in stock(priced_filters)[1]))
 		self.assertEqual(stock({**filters, "warehouse": warehouses[0]})[1][0].actual_qty, 7)
 		self.assertEqual(len(stock({"company": self.company, "search": self.prefix})[1]), 2)
 		self.assertEqual(stock({**filters, "item_code": "missing"})[1], [])

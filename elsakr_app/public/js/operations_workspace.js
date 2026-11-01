@@ -69,6 +69,7 @@
 			tone: "blue",
 			items: [
 				"Journal Entry",
+				"Payment Entry",
 				"Account",
 				"Trial Balance",
 				"Gross Profit",

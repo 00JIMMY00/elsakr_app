@@ -56,10 +56,11 @@ the previous image and the pre-migration database and files backup.
 
 The **Operations** Workspace (`/app/operations`) is a compact Arabic shop hub with
 four quick creation actions and six grouped navigation cards: sales/customers, purchases/suppliers,
-stock movement, items/sizes, accounts/profit, and expenses. All 29
+stock movement, items/sizes, accounts/profit, and expenses. All 30
 shortcuts remain available under native ERPNext permissions; creation actions
 also require Create permission. The responsive layout uses 16 px tool/action labels, 18 px card headings,
 tighter card spacing, and dark mode. Actions and card headings use concise labels without descriptive captions.
+The accounts card includes **Payment Entry** as **قيد الدفع**, using the native DocType route and permissions.
 The expenses card includes **Expense Entry Report** as **تقرير قيود المصروفات**,
 with the existing report badge and native permissions. This link is applied on
 the second development site; production deployment is pending.
@@ -295,8 +296,16 @@ Production deployment is pending; installation/migration applies the metadata.
 
 Operations now links **البحث عن مخزون المقاسات** (Stock Size Search) in the
 stock card and **تقرير المبيعات اليومي** (Daily Sales Summary) in the sales card.
-Stock Size Search shows Item, Item Name, Size, Warehouse, current Stock Quantity,
-and Stock UOM. Leave Warehouse blank to search all permitted warehouses in the
+Stock Size Search shows Item Name, Size, Warehouse, current Stock Quantity,
+Stock UOM, Purchasing Price (MA), and Selling Price. The Item code column is removed;
+code search and the Item filter remain available. Purchasing Price (MA) is the current
+warehouse Bin valuation rate per stock unit in company currency, reflecting moving-average
+cost when that valuation method is configured. It is not a historical invoice COGS value.
+Selling Price uses today's general stock-unit Item Price from Selling Settings
+(Standard Selling fallback), or the report's Selling Price List selection, in that
+list's currency. Missing, ambiguous, or inaccessible selling prices remain blank;
+party/batch/packing-specific and other-unit prices are excluded. Price columns are
+240/220 px wide. These report changes are verified locally; production release is pending. Leave Warehouse blank to search all permitted warehouses in the
 selected/default company. Search accepts part of an item code, item name, or size;
 exact Size and Item filters can be combined. Zero balances are hidden; negative
 balances remain visible. This is current physical stock, not historical or
@@ -336,3 +345,12 @@ Applied on `elsakr-dev2.arab-erp.com`; reload Desk. Production deployment remain
 pending. Installation/migration must sync the report and Workspace, refresh the
 managed Operations HTML Block for its divider CSS, and serve the updated
 Operations JavaScript asset.
+
+## Egyptian pound display
+
+Installation/migration sets the native EGP currency symbol to **ج.م** and enables
+currency-symbol display in Global Defaults. EGP remains the accounting currency
+code; company and transaction currency codes are preserved. This is app-managed
+and reapplied on migration, without editing the production Currency DocType.
+Applied on `elsakr-dev2.arab-erp.com`; production release is pending. Reload Desk
+after deployment to refresh cached currency symbols.

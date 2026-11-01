@@ -3,6 +3,7 @@ Operations Dashboard,لوحة العمليات
 Customer has an unpaid balance,العميل لديه مبلغ غير مسدد
 Unpaid balance owed to supplier,رصيد غير مسدد مستحق للمورد
 Selling Price,سعر البيع
+Purchasing Price (MA),سعر الشراء (متوسط التكلفة)
 Selling Price is required and must be greater than zero.,سعر البيع مطلوب ويجب أن يكون أكبر من صفر.
 Stock Size Search,البحث عن مخزون المقاسات
 Daily Sales Summary,تقرير المبيعات اليومي

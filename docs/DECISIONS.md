@@ -2,6 +2,22 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-11-01 — Native EGP symbol and current stock costs/prices
+
+**Decision:** Set EGP's native Currency symbol to `ج.م` and Global Defaults currency-symbol visibility to No (do not hide) after installation/migration. Preserve all currency codes. In Stock Size Search replace the Item code column with purchasing cost and selling price columns, retaining Item Name and code filtering.
+
+**Reason:** Production DocType editing is unavailable, and the user requested Arabic currency display and moving-average COGS alongside selling prices.
+
+**Consequence:** Migration reapplies the display preference. Purchasing Price (MA) reads current warehouse Bin valuation rate per stock unit in company currency; the native configured valuation method remains authoritative and historical transaction COGS is not reconstructed. Selling price reads one permitted general stock-UOM Item Price valid today from the selected selling list or Selling Settings/Standard Selling fallback. Party/batch/packing-specific, expired/future, other-unit, ambiguous, and inaccessible prices are excluded. Selling amounts retain their price-list currency. Item Price and Price List permissions are retained; stock quantities and warehouse restrictions remain unchanged. Currency columns use 240/220 px widths.
+
+## 2026-10-31 — Add native Payment Entry to Operations
+
+**Decision:** Register ERPNext's native `Payment Entry` DocType in the Operations accounts card as the Arabic shortcut «قيد الدفع», using the List view and the existing Workspace permission filtering and route generation.
+
+**Reason:** Users need direct access to payment postings from the same accounts area without introducing a custom payment flow.
+
+**Consequence:** Operations now has 30 shortcuts. Payment Entry visibility and behavior remain controlled by native permissions and ERPNext; installation/migration syncs the updated Workspace source.
+
 ## 2026-10-29 — Group reports last and mirror sales in purchasing
 
 **Decision:** In each Operations card, stably group native permitted record links before Report links, including unfamiliar targets in the additional-tools card. Add a divider only between visible record and report groups. Add Daily Purchase Summary as the purchasing counterpart of Daily Sales Summary, with supplier filters, submitted Purchase Invoices, signed returns, today defaults, native permission-aware listing, company-currency totals/current outstanding, and a blue daily chart.

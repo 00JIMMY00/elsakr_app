@@ -28,6 +28,7 @@ after_install = [
 	"elsakr_app.dashboard_setup.setup_operations_dashboard",
 	"elsakr_app.operations_workspace.setup_operations_workspace",
 	"elsakr_app.site_setup.setup_site_preferences",
+	"elsakr_app.currency_setup.setup_currency_display",
 	"elsakr_app.branding.setup_branding",
 ]
 after_migrate = after_install
@@ -40,7 +41,10 @@ doc_events["User"] = {"validate": "elsakr_app.site_setup.set_user_home_workspace
 doc_events["Address"] = {"validate": "elsakr_app.customer_setup.validate_address_city"}
 doc_events["Item"] = {
 	"onload": "elsakr_app.item_pricing.load_selling_price",
-	"validate": ["elsakr_app.item_variants.set_variant_size", "elsakr_app.item_pricing.validate_selling_price"],
+	"validate": [
+		"elsakr_app.item_variants.set_variant_size",
+		"elsakr_app.item_pricing.validate_selling_price",
+	],
 	"on_update": "elsakr_app.item_pricing.save_selling_price",
 }
 
