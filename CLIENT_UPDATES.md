@@ -455,3 +455,12 @@ code; company and transaction currency codes are preserved. This is app-managed
 and reapplied on migration, without editing the production Currency DocType.
 Applied on `elsakr-dev2.arab-erp.com`; production release is pending. Reload Desk
 after deployment to refresh cached currency symbols.
+
+## Expense Entry inline rows
+
+In **Expense Entry**, click Expense Entry Type or Amount in the Expenses table
+to edit directly in the row. The separate row editor button is hidden; the
+fetched Expense Entry Account remains read-only. Normal draft/submission and
+accounting permissions still apply. Installation/migration maintains these
+settings through app-owned Property Setters. Applied on
+`elsakr-dev2.arab-erp.com`; reload Desk. Production deployment is pending.

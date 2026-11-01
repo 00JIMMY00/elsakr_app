@@ -187,3 +187,9 @@ default without client router overrides. Explicit deep links remain available.
 in Global Defaults after installation/migration. It preserves currency codes and
 company currencies. Applied on the second development site on 2026-11-01;
 production deployment remains pending. Existing Desk sessions need a reload.
+
+`expense_entry_setup.py` uses native Property Setters after installation/migration
+to enable inline editing on Expense Entry Detail and in-place editing on the
+parent Expenses table, hiding the expanded row editor button. The fetched
+account remains read-only. It skips sites without the expense child DocType.
+Applied on the second development site; production deployment is pending.

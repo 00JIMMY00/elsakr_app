@@ -1,5 +1,12 @@
 # Progress
 
+## 2026-11-01 — Edit Expense Entry rows directly (Local)
+
+- Changed: Enabled native editable-grid metadata for Expense Entry Detail and in-place editing for Expense Entry's Expenses table through app-managed installation/migration Property Setters. Row clicks edit directly and the expanded-row button is hidden. The fetched account remains read-only. Applied on `elsakr-dev2.arab-erp.com`; updated README, client instructions, context, and decision.
+- Checked: Repeated setup preserved both effective settings with exactly one setter per property and unchanged read-only account metadata. Authenticated development HTTPS Chrome confirmed clicking Amount opens an inline input, entering 123.45 updates the unsaved child model, and clicking Expense Entry Type exposes its inline Link input. No expanded row or row-editor button appeared; no JavaScript page errors occurred. Reviewed the desktop screenshot. No expense was saved. Ruff lint/format, Python compilation, and diff whitespace checks passed. Removed the temporary browser review session.
+- Remaining: Reload Desk on the second development site. Production deployment has not been performed; the normal source release/migration applies these settings. Mobile interaction verification remains pending: the native grid requires horizontal touch scrolling to reach offscreen columns, which the automated check did not complete.
+
+
 ## 2026-11-01 — Arabic EGP symbol and stock purchasing/selling prices (Local)
 
 - Changed: Added repeatable installation/migration setup for EGP's `ج.م` symbol and visible currency symbols, preserving currency codes. Applied setup on `elsakr-dev2.arab-erp.com`. Stock Size Search now keeps Item Name without the Item code column, shows current warehouse Bin valuation rate as Purchasing Price (MA) in company currency, and shows today's general stock-UOM selling price in its list currency. Added an optional selling-list override, 240/220 px price columns, Arabic purchasing label, and blank display for unavailable selling prices. Updated user/operator documentation and the lasting decision.

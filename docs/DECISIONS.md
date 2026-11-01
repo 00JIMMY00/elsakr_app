@@ -2,6 +2,14 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-11-01 — Edit expense child rows inline
+
+**Decision:** Use app-managed Property Setters for `Expense Entry Detail.editable_grid=1` and `Expense Entry.expenses.in_place_edit=1`, reapplied after installation/migration when the expense child DocType exists.
+
+**Reason:** Clicking an expense type or amount should edit the row directly without opening the expanded child editor.
+
+**Consequence:** Native grid controls handle entry and hide the row-editor button. The fetched account stays read-only; existing draft/submitted permissions and accounting behavior remain native. The shared theme source is unchanged. Sites without the optional expense DocType skip this setup.
+
 ## 2026-11-01 — Native EGP symbol and current stock costs/prices
 
 **Decision:** Set EGP's native Currency symbol to `ج.م` and Global Defaults currency-symbol visibility to No (do not hide) after installation/migration. Preserve all currency codes. In Stock Size Search replace the Item code column with purchasing cost and selling price columns, retaining Item Name and code filtering.

@@ -21,6 +21,7 @@ after_install = [
 	"elsakr_app.setup.setup_item_size",
 	"elsakr_app.item_pricing.setup_item_pricing",
 	"elsakr_app.full_form.setup_full_form",
+	"elsakr_app.expense_entry_setup.setup_expense_entry_grid",
 	"elsakr_app.customer_setup.setup_customer_flow",
 	"elsakr_app.supplier_setup.setup_supplier_flow",
 	"elsakr_app.sales_invoice_setup.setup_sales_invoice_defaults",
