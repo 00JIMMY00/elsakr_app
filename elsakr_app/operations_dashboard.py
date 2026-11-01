@@ -31,6 +31,16 @@ def get_dashboard(from_date=None, to_date=None, company=None):
 	gl_match = get_match_cond("GL Entry")
 	invoice_match = get_match_cond("Sales Invoice")
 	params = {"company": company, "from_date": start, "to_date": end}
+	purchases = None
+	if frappe.has_permission("Purchase Invoice", "read"):
+		purchases = (
+			frappe.get_list(
+				"Purchase Invoice",
+				filters={"company": company, "docstatus": 1, "posting_date": ["between", [start, end]]},
+				fields=["sum(base_grand_total) as total"],
+			)[0].total
+			or 0
+		)
 
 	activity = frappe.db.sql(
 		f"""
@@ -91,6 +101,7 @@ def get_dashboard(from_date=None, to_date=None, company=None):
 		"to_date": str(end),
 		"revenue": sum(row.revenue or 0 for row in activity),
 		"expenses": sum(row.expenses or 0 for row in activity),
+		"purchases": purchases,
 		"receivables": sum(max(row.balance or 0, 0) for row in balances if row.party_type == "Customer"),
 		"payables": sum(max(row.balance or 0, 0) for row in balances if row.party_type == "Supplier"),
 		"activity": activity,

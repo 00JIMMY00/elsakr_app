@@ -2,6 +2,26 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-11-01 — Restore the previous dashboard theme
+
+**Decision:** Restore the previous navy/teal palette, soft cards, gradient overview, and circular decoration. Remove the dashboard tire logo, tread motif, and charcoal/amber styling. Retain the new purchasing card, compact six-card grid, and phone layout.
+
+**Reason:** The user rejected the tire-shop theme and requested the previous theme.
+
+**Consequence:** Supersedes the visual-theme choice below. Purchasing calculations, permissions, date controls, and compact spacing remain as implemented. Refresh both managed dashboard blocks on migration.
+
+## 2026-11-01 — Compact tire-shop dashboard with purchasing totals
+
+**Decision:** Add a purchases total from submitted Purchase Invoice `base_grand_total`, including taxes and signed returns, filtered to the selected company and inclusive posting dates using permission-aware listing. Return an unavailable value when purchase read access is missing. Keep the existing net-result calculation (revenue minus GL expenses).
+
+**Reason:** The user needs interval purchasing alongside financial activity, without confusing inventory purchases, accounting expenses, and outstanding supplier balances.
+
+**Consequence:** The purchasing card refreshes through the existing shared request and retains native row restrictions. Its currency is company currency, regardless of invoice currency. It is a period invoice total, not cash paid or historical supplier dues; it is not subtracted a second time from net result.
+
+**Decision:** Present all six totals in one compact grid, with three columns on desktop and two on phones. Use charcoal/amber, the supplied tire logo, and a subtle CSS tread motif. Reduce panel/ranking spacing and only these blocks' native wrapper padding while retaining touch-sized date controls, RTL, dark mode, and exact daily values.
+
+**Consequence:** Supersedes the large navy overview/four-card layout. Native permissions, date presets, chart calculations, and the two managed-block architecture remain. Installation/migration must refresh both blocks' HTML/CSS and serve the updated JavaScript.
+
 ## 2026-11-01 — Edit expense child rows inline
 
 **Decision:** Use app-managed Property Setters for `Expense Entry Detail.editable_grid=1` and `Expense Entry.expenses.in_place_edit=1`, reapplied after installation/migration when the expense child DocType exists.

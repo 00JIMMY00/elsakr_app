@@ -69,7 +69,7 @@ Installation/migration syncs the standard Workspace and its app-managed HTML
 block. It is activated on the second local development site; production
 deployment is pending.
 
-The **Operations Dashboard** standalone Workspace (`/app/operations-dashboard`) shows top-selling Items, daily income and expenses, and total customer/supplier balances. The phone-first Arabic layout includes a navy financial overview (revenue minus expenses), four balance/activity cards, and named product ranking bars. Use Today, Last 7 Days, or This Month, or expand **التواريخ** for custom dates; the initial range is Today (both dates set to today). Customer and supplier balances are as of the end date. It is activated on the second local development site; production deployment is pending.
+The **Operations Dashboard** standalone Workspace (`/app/operations-dashboard`) shows top-selling Items, daily income and expenses, and total customer/supplier balances. The compact Arabic layout uses the previous navy/teal theme with soft cards. Six small cards show net result (revenue minus expenses), revenue, expenses, total purchases, customer debt, and supplier dues, with named product ranking bars below. Use Today, Last 7 Days, or This Month, or expand **التواريخ** for custom dates; the initial range is Today (both dates set to today). Customer and supplier balances are as of the end date. It is activated on the second local development site; production deployment is pending.
 
 Opening `https://elsakr-dev2.arab-erp.com/` now redirects to Operations (`/app/operations`),
 with login first when needed. The logo and normal Desk/login entry open Operations
@@ -363,3 +363,22 @@ fetched Expense Entry Account remains read-only. Normal draft/submission and
 accounting permissions still apply. Installation/migration maintains these
 settings through app-owned Property Setters. Applied on
 `elsakr-dev2.arab-erp.com`; reload Desk. Production deployment is pending.
+
+## Compact dashboard and purchasing total
+
+Operations Dashboard now shows six compact summary cards in three columns on
+desktop and two on phones, with the previous navy/teal colors and soft
+card styling. The tire-shop theme has been removed. Card, chart, ranking, and surrounding block spacing
+are reduced; date controls retain touch-sized buttons.
+
+**إجمالي المشتريات** totals submitted Purchase Invoices posted within the
+selected inclusive dates, including taxes and deducting returns, using company
+currency (`base_grand_total`). Drafts and cancellations are excluded. Native
+Purchase Invoice permissions and row restrictions apply; users without purchase
+read access see an unavailable indicator. This total is separate from supplier
+dues and is not deducted again from net result. The same date presets/custom
+range refresh all cards and charts.
+
+Applied on `elsakr-dev2.arab-erp.com`; reload Desk. Production deployment remains
+pending. Release the app source/assets and run normal migration to refresh both
+managed dashboard HTML blocks and their CSS.

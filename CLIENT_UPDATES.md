@@ -137,7 +137,7 @@ development site; production deployment is pending. Installation/migration
 reapplies these app-managed settings through `elsakr_app.site_setup.setup_site_preferences`.
 The existing software update/deployment process continues normally.
 
-Open the standalone **Operations Dashboard** Workspace at `/app/operations-dashboard`. Use **اليوم**, **آخر ٧ أيام**, or **هذا الشهر** to refresh immediately. For a custom range, expand **التواريخ** (collapsed initially on phones), select the dates, and click **تحديث البيانات**. It opens with **اليوم** selected and both dates set to today. The top cards show posted revenue and expenses during that range, plus customer debt and supplier dues as of the ending date. The navy overview shows revenue minus expenses, with currency labels separated from amounts. The daily chart compares revenue/expenses (grouped bars for a single activity date); **عرض القيم اليومية** expands an exact-values table for the activity chart; the ranked list shows the ten highest-selling Items by quantity from submitted Sales Invoices, with names and quantities together. Quantities use stock units, which may differ between Items. Values use the selected company currency.
+Open the standalone **Operations Dashboard** Workspace at `/app/operations-dashboard`. Use **اليوم**, **آخر ٧ أيام**, or **هذا الشهر** to refresh immediately. For a custom range, expand **التواريخ** (collapsed initially on phones), select the dates, and click **تحديث البيانات**. It opens with **اليوم** selected and both dates set to today. The six compact cards show net result, posted revenue, expenses, and total purchases during that range, plus customer debt and supplier dues as of the ending date. The previous navy/teal theme and soft card styling are restored. Net result remains revenue minus expenses; currency labels are separated from amounts. The daily chart compares revenue/expenses (grouped bars for a single activity date); **عرض القيم اليومية** expands an exact-values table for the activity chart; the ranked list shows the ten highest-selling Items by quantity from submitted Sales Invoices, with names and quantities together. Quantities use stock units, which may differ between Items. Values use the selected company currency.
 
 The dashboard is active on `elsakr-dev2.arab-erp.com` after local synchronization. Production deployment has not been performed. The user needs read permission for GL Entry, Sales Invoice, Company, and Custom HTML Block. Reload Desk after updating the app. For this dashboard redesign, installation/migration must refresh both managed HTML blocks as well as serving the updated app JavaScript; a script-only refresh does not update the stored HTML/CSS.
 
@@ -464,3 +464,22 @@ fetched Expense Entry Account remains read-only. Normal draft/submission and
 accounting permissions still apply. Installation/migration maintains these
 settings through app-owned Property Setters. Applied on
 `elsakr-dev2.arab-erp.com`; reload Desk. Production deployment is pending.
+
+## Compact dashboard and purchasing total
+
+Operations Dashboard now shows six compact summary cards in three columns on
+desktop and two on phones, with the previous navy/teal colors and soft
+card styling. The tire-shop theme has been removed. Card, chart, ranking, and surrounding block spacing
+are reduced; date controls retain touch-sized buttons.
+
+**إجمالي المشتريات** totals submitted Purchase Invoices posted within the
+selected inclusive dates, including taxes and deducting returns, using company
+currency (`base_grand_total`). Drafts and cancellations are excluded. Native
+Purchase Invoice permissions and row restrictions apply; users without purchase
+read access see an unavailable indicator. This total is separate from supplier
+dues and is not deducted again from net result. The same date presets/custom
+range refresh all cards and charts.
+
+Applied on `elsakr-dev2.arab-erp.com`; reload Desk. Production deployment remains
+pending. Release the app source/assets and run normal migration to refresh both
+managed dashboard HTML blocks and their CSS.

@@ -1,5 +1,19 @@
 # Progress
 
+## 2026-11-01 — Restore the previous dashboard theme (Local)
+
+- Changed: Restored the original navy/teal palette, gradient overview, soft rounded cards, and previous icon colors. Removed the tire-shop logo/tread and charcoal/amber styling. Retained purchasing totals, compact six-card sizing, three desktop columns, two phone columns, and tighter chart/ranking spacing. Refreshed both managed dashboard blocks on `elsakr-dev2.arab-erp.com` and aligned current documentation and the visual decision.
+- Checked: Authenticated development HTTPS Chrome verified six cards, purchasing value matching the API, Today reset, no card/panel overflow at 1440/800/390/320 px, and no page JavaScript errors. Reviewed the restored desktop screenshot; light/dark screenshots were captured. Diff whitespace checks passed. Removed the temporary review session. No business records were saved.
+- Remaining: Reload Desk on the development site. Production deployment has not been performed; normal release/migration must refresh both dashboard blocks and assets.
+
+
+## 2026-11-01 — Purchasing card and compact tire-shop dashboard (Local)
+
+- Changed: Added total purchasing for the selected inclusive interval from permission-filtered submitted Purchase Invoice company-currency grand totals, including taxes and signed returns. Missing purchase read access displays an unavailable state. Kept net result as revenue minus GL expenses. Replaced the large overview/four-card arrangement with six compact cards, three columns on desktop and two on phones. Added charcoal/amber styling, the supplied wheel identity, a CSS tread motif, tighter charts/rankings, and scoped native block padding. Retained 44 px date controls, presets, custom dates, RTL, dark mode, and shared fetching. Currency labels use the native configured symbol. Refreshed both managed blocks on `elsakr-dev2.arab-erp.com`; aligned user/operator/context documentation and decisions.
+- Checked: Four database tests passed, covering inclusive date boundaries, signed returns, draft/cancelled exclusions, company scope, company-currency totals including taxes, empty periods, absent purchase read permission, invalid dates/company, Guest denial, and dashboard Workspace creation/repeated block setup. Fixtures were rolled back. Authenticated development HTTPS Chrome confirmed six cards, one initial data request, purchasing total matching the API for an existing historical interval, Today reset, successful responses, and no page JavaScript errors. Card/panel overflow checks passed at 1440/800/390/320 px; reviewed desktop, phone, and dark-mode screenshots. The final six-card grid measured 235 px high at 1440 px and 299/311 px at 390/320 px. Ruff lint/format, ESLint, Prettier, JavaScript syntax, Python compilation, and diff whitespace checks passed. Removed the temporary review session; browser checks saved no business records.
+- Remaining: Reload Desk on the development site. Production deployment has not been performed. Normal release must serve the updated asset and migrate to refresh both managed HTML blocks and CSS. Purchasing is an invoice total rather than cash paid or an additional deduction from net result.
+
+
 ## 2026-11-01 — Edit Expense Entry rows directly (Local)
 
 - Changed: Enabled native editable-grid metadata for Expense Entry Detail and in-place editing for Expense Entry's Expenses table through app-managed installation/migration Property Setters. Row clicks edit directly and the expanded-row button is hidden. The fetched account remains read-only. Applied on `elsakr-dev2.arab-erp.com`; updated README, client instructions, context, and decision.

@@ -123,3 +123,41 @@
 .elsakr-dashboard [data-chart] > svg text { font-size: 15px; }
 @media (max-width: 550px) { .elsakr-dashboard [data-chart] > svg text { font-size: 22px; } }
 @media (max-width: 380px) { .elsakr-dashboard .kpi strong { font-size: 15px; } }
+
+/* Keep the original navy/teal theme with compact, responsive summary cards. */
+.elsakr-dashboard { padding: 2px 0; }
+.elsakr-dashboard .dashboard-status { min-height: 28px; padding: 5px 2px; }
+.elsakr-dashboard .dashboard-overview { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.elsakr-dashboard .dashboard-kpis { display: contents; }
+.elsakr-dashboard .dashboard-hero, .elsakr-dashboard .kpi { padding: 12px; min-height: 0; border-radius: 15px; }
+.elsakr-dashboard .dashboard-hero { justify-content: flex-start; }
+.elsakr-dashboard .dashboard-hero::after { width: 100px; height: 100px; left: 0; bottom: 0; box-shadow: inset 0 0 0 14px #ffffff03, inset 0 0 0 28px #ffffff03; }
+.elsakr-dashboard .dashboard-hero strong, .elsakr-dashboard .kpi strong { font-size: clamp(18px, 2vw, 25px); margin: 7px 0 4px; line-height: 1.3; }
+.elsakr-dashboard .dashboard-hero p { margin: 0; font-size: 10px; }
+.elsakr-dashboard .hero-icon { width: 30px; height: 30px; font-size: 18px; flex-shrink: 0; }
+.elsakr-dashboard .kpi-purchases .kpi-icon { background: #e6f3fa; color: #286d91; }
+.elsakr-dashboard .dashboard-panels { gap: 10px; }
+.elsakr-dashboard .dashboard-panel { padding: 14px; border-radius: 16px; }
+.elsakr-dashboard .panel-heading h3 { font-size: 17px; margin: 4px 0; }
+.elsakr-dashboard .dashboard-legend { margin-top: 10px; }
+.elsakr-dashboard .top-items { margin-top: 10px; }
+.elsakr-dashboard .top-items li { padding: 7px 0; gap: 8px; }
+.elsakr-dashboard .item-track { margin-top: 5px; }
+.elsakr-dashboard .dashboard-empty { min-height: 110px; padding: 14px; }
+.elsakr-dashboard .dashboard-source { margin-top: 6px; }
+@media (max-width: 800px) {
+  .elsakr-dashboard .dashboard-overview { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 550px) {
+  .elsakr-dashboard .dashboard-overview { gap: 6px; }
+  .elsakr-dashboard .dashboard-hero, .elsakr-dashboard .kpi { padding: 10px 8px; min-height: 0; border-radius: 12px; }
+  .elsakr-dashboard .dashboard-hero strong, .elsakr-dashboard .kpi strong { font-size: 18px; }
+  .elsakr-dashboard .hero-heading { font-size: 11px; }
+  .elsakr-dashboard .hero-icon { width: 24px; height: 24px; font-size: 15px; }
+  .elsakr-dashboard .dashboard-panel { padding: 12px; }
+}
+@media (max-width: 360px) {
+  .elsakr-dashboard .dashboard-hero strong, .elsakr-dashboard .kpi strong { font-size: 16px; }
+  .elsakr-dashboard .hero-icon, .elsakr-dashboard .kpi-icon { display: none; }
+  .elsakr-dashboard .kpi-heading { font-size: 10px; }
+}
