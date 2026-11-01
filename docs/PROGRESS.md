@@ -1,5 +1,14 @@
 # Progress
 
+## 2026-11-01 — Return retargeted stock-size report to its card (Local + live metadata repair)
+
+- Cause: Production's Operations shortcut retained the label البحث عن مخزون المقاسات but targeted Stock Size Search 2, a saved Custom Report referencing Stock Size Search. The live JavaScript matched the local source and grouped by exact target, sending the new target to additional tools.
+- Changed locally: Use the stable Arabic stock-search label to select the existing stock navigation slot, retaining the actual target for native routing. Other groups, report ordering, unknown shortcuts, and permission filtering retain their existing behavior. Updated current documentation and the lasting decision.
+- Production repair: Updated only the managed Elsakr Operations Hub block's script through the authenticated native resource API, embedding the corrected app source for immediate use. Readback confirmed the exact script and unchanged HTML, CSS, access flags, and roles. Workspace/report records and business data were not modified. The restricted local repair snapshot contains the previous block for rollback; no credentials or snapshot contents are included here.
+- Checked: Before applying, the production browser reproduced group `other`, and a browser-only corrected script put the link in group `stock`. After the saved repair, a fresh authenticated production HTTPS browser placed exactly one Stock Size Search 2 link immediately after جرد المخزون, with none under additional tools. Clicking opened the Stock Size Search 2 report route. Stock-card overflow checks passed at 1440/390 px; reviewed the desktop screenshot, with no page JavaScript errors during Workspace rendering. JavaScript syntax, Prettier, ESLint, and diff whitespace checks passed.
+- Remaining: Reload the production Operations page. No workflow/image deployment was run; this is a verified live metadata repair. Include the source JavaScript fix in the next release, because migration reapplies the managed block's normal external asset loader. The production saved report/target remain site-owned; the source Workspace default remains Stock Size Search.
+
+
 ## 2026-11-01 — Restore the previous dashboard theme (Local)
 
 - Changed: Restored the original navy/teal palette, gradient overview, soft rounded cards, and previous icon colors. Removed the tire-shop logo/tread and charcoal/amber styling. Retained purchasing totals, compact six-card sizing, three desktop columns, two phone columns, and tighter chart/ranking spacing. Refreshed both managed dashboard blocks on `elsakr-dev2.arab-erp.com` and aligned current documentation and the visual decision.

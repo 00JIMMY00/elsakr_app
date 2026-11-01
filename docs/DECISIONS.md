@@ -2,6 +2,14 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-11-01 — Keep the stock-size shortcut's slot when retargeted
+
+**Decision:** Classify a permitted Report shortcut labelled `البحث عن مخزون المقاسات` as the existing Stock Size Search navigation slot, independently of its `link_to`. Preserve its actual target for native routing. Keep existing grouping for all other targets and unknown shortcuts.
+
+**Reason:** The user changed the production shortcut to the saved Custom Report `Stock Size Search 2`; exact-target grouping treated it as unknown and moved it into additional tools.
+
+**Consequence:** This stock-search label is the stable slot identifier when retargeting; native permission-filtered shortcut visibility remains authoritative. The link stays after Stock Reconciliation in the stock card, while other stock reports keep their positions. The immediate production repair embeds the corrected source directly in the managed block; a normal source release must include the JavaScript fix before migration restores the external asset loader. No report definitions or business records are changed.
+
 ## 2026-11-01 — Restore the previous dashboard theme
 
 **Decision:** Restore the previous navy/teal palette, soft cards, gradient overview, and circular decoration. Remove the dashboard tire logo, tread motif, and charcoal/amber styling. Retain the new purchasing card, compact six-card grid, and phone layout.

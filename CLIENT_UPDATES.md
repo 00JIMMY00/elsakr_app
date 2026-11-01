@@ -483,3 +483,20 @@ range refresh all cards and charts.
 Applied on `elsakr-dev2.arab-erp.com`; reload Desk. Production deployment remains
 pending. Release the app source/assets and run normal migration to refresh both
 managed dashboard HTML blocks and their CSS.
+
+## Retargeting the stock-size shortcut
+
+In Operations, keep the shortcut label **البحث عن مخزون المقاسات** when changing
+its report target in Edit Workspace. This label identifies its stock-card slot;
+the selected target still determines which report opens. It remains immediately
+after **جرد المخزون**, before the other stock reports. Unknown shortcuts still
+appear under additional tools, and native permissions still control visibility.
+
+On 2026-11-01, production's target **Stock Size Search 2** (a saved Custom Report
+based on Stock Size Search) was restored to that slot through a script-only
+update of the managed Elsakr Operations Hub block. The live block temporarily
+contains the corrected app script directly; no image deployment was run. Include
+the JavaScript source fix in the next release so migration's normal asset loader
+also uses the corrected grouping. The source Workspace's default report target
+remains Stock Size Search; the saved report and its selected production target
+remain site-owned.

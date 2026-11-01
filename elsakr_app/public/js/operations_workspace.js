@@ -99,6 +99,11 @@
 		...items.filter((item) => item.type === "Report"),
 	];
 	const escape = (value) => frappe.utils.escape_html(String(value));
+	// Keep this navigation slot when its report is replaced by a saved Custom Report.
+	const groupTarget = (item) =>
+		item.type === "Report" && item.label === "البحث عن مخزون المقاسات"
+			? "Stock Size Search"
+			: item.link_to;
 
 	function href(item) {
 		const route = frappe.utils.generate_route({
@@ -124,7 +129,7 @@
 		const directory = el.querySelector(".ops-groups");
 
 		function render(items) {
-			const byTarget = new Map(items.map((item) => [item.link_to, item]));
+			const byTarget = new Map(items.map((item) => [groupTarget(item), item]));
 			// The standard Workspace remains the registry; Frappe filters its shortcuts by permission.
 			const available = groups
 				.map((group) => ({
@@ -135,7 +140,7 @@
 				}))
 				.filter((group) => group.links.length);
 			const known = new Set(groups.flatMap((group) => group.items));
-			const extra = items.filter((item) => !known.has(item.link_to));
+			const extra = items.filter((item) => !known.has(groupTarget(item)));
 			if (extra.length)
 				available.push({
 					id: "other",
