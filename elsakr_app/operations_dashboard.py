@@ -46,12 +46,12 @@ def get_dashboard(from_date=None, to_date=None, company=None):
 		f"""
 		SELECT `tabGL Entry`.posting_date AS day,
 			SUM(CASE WHEN account.root_type = 'Income' THEN `tabGL Entry`.credit - `tabGL Entry`.debit ELSE 0 END) AS revenue,
-			SUM(CASE WHEN account.root_type = 'Expense' THEN `tabGL Entry`.debit - `tabGL Entry`.credit ELSE 0 END) AS expenses
+			SUM(CASE WHEN account.account_type = 'Expense' THEN `tabGL Entry`.debit - `tabGL Entry`.credit ELSE 0 END) AS expenses
 		FROM `tabGL Entry`
 		JOIN `tabAccount` account ON account.name = `tabGL Entry`.account
 		WHERE `tabGL Entry`.company = %(company)s AND `tabGL Entry`.is_cancelled = 0
 			AND `tabGL Entry`.posting_date BETWEEN %(from_date)s AND %(to_date)s
-			AND account.root_type IN ('Income', 'Expense') {gl_match}
+			AND (account.root_type = 'Income' OR account.account_type = 'Expense') {gl_match}
 		GROUP BY `tabGL Entry`.posting_date ORDER BY `tabGL Entry`.posting_date
 		""",
 		params,

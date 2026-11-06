@@ -127,7 +127,7 @@ Reduced-motion preferences select the still tire. CSS URLs carry a version for p
 cache refreshes. Applied and browser-verified on the second development site;
 production deployment remains pending.
 
-The app owns three standard Script Reports under `elsakr_app/elsakr_app/report`:
+The app owns five standard Script Reports under `elsakr_app/elsakr_app/report`:
 `Stock Size Search` reads current Bin quantities, joins current Item sizes, and
 applies Item/Warehouse match conditions within a permitted company. It hides zero
 balances and avoids summing different stock units. It displays Item Name without an Item code column, current warehouse Bin valuation rate as Purchasing Price (MA) in company currency, and today's general stock-UOM selling Item Price in its price-list currency. The optional Selling Price List filter overrides Selling Settings (Standard Selling fallback). Prices use native read/row permissions; unavailable or ambiguous selling prices remain blank. Purchasing cost follows the native valuation method (Moving Average on the checked second development site). `Daily Sales Summary` reads
@@ -142,6 +142,14 @@ returns, company-currency totals, and current outstanding. It uses native
 Purchase Invoice permissions; its shortcut sits in the purchasing card. Report
 links are grouped after records for every card, including additional tools.
 The managed HTML Block CSS supplies the divider and is refreshed on migration.
+`Simple Receivable Summary` and `Simple Payable Summary` show only party name
+and positive net balance from non-cancelled receivable/payable GL entries through
+the chosen date, in company currency. Their only filters are Company, Date, and
+Customer/Supplier. Party listing and GL row conditions enforce native permissions;
+Company, GL Entry, party, and invoice read access are required. They replace the
+two native summary targets in Operations, retaining the Arabic shortcut labels.
+The native ERPNext report URLs remain available. The two reports and development
+Workspace shortcuts were synchronized on 2026-11-06; production deployment is pending.
 No business records are written by reports.
 
 ## Source of truth

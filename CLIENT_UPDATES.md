@@ -1,5 +1,15 @@
 # Elsakr client updates
 
+## 2026-11-06 — Linked print footer
+
+**Elsakr Sales Invoice** and **Elsakr Quotation** now end with
+**powered by [arab-erp.com](https://arab-erp.com/)**. Click the domain in the
+print preview to open the website. Refresh an open preview to load the change.
+
+Both live formats were updated through the native API and verified by reading
+them back and rendering unsaved synthetic previews. The shared app template/CSS
+also includes the footer for future migrations. No workflow/image release was run.
+
 ## 2026-11-03 — Delivery warehouse correction completed
 
 All **16 active correction Delivery Notes now use مخزن ال31 - S** on every item
@@ -533,6 +543,12 @@ settings through app-owned Property Setters. Applied on
 
 ## Compact dashboard and purchasing total
 
+Dashboard expenses include only GL accounts with `account_type = "Expense"`,
+excluding Cost of Goods Sold and other account types. The expense card, daily
+chart, and revenue-minus-expenses net result share this calculation. This
+2026-11-06 source change has not been deployed to production.
+
+
 Operations Dashboard now shows six compact summary cards in three columns on
 desktop and two on phones, with the previous navy/teal colors and soft
 card styling. The tire-shop theme has been removed. Card, chart, ranking, and surrounding block spacing
@@ -566,3 +582,22 @@ the JavaScript source fix in the next release so migration's normal asset loader
 also uses the corrected grouping. The source Workspace's default report target
 remains Stock Size Search; the saved report and its selected production target
 remain site-owned.
+
+## Simple customer and supplier balances
+
+The Operations shortcuts **ملخص مديونية العملاء** and **ملخص استحقاقات الموردين**
+now open **Simple Receivable Summary** and **Simple Payable Summary**. Each has
+only Name and Outstanding Amount columns, with Company, Date (today by default),
+and Customer/Supplier filters. Balances use posted, non-cancelled receivable or
+payable GL entries through the selected date in company currency. Payments,
+credits, and advances reduce the amount owed; zero and credit balances are omitted.
+Only permitted companies, parties, and GL rows are included. Accounting read
+permissions are required. These are net party balances, rather than invoice ageing.
+The original ERPNext reports remain available at their existing URLs.
+
+Applied to `elsakr-dev2.arab-erp.com` on 2026-11-06. Reload Desk and use the
+Operations shortcuts or `/app/query-report/Simple%20Receivable%20Summary` and
+`/app/query-report/Simple%20Payable%20Summary`. Production deployment is pending.
+Future installations use migration to sync the new reports and Workspace;
+serve the updated Workspace JavaScript and reload Desk. No bundle build was
+needed for the development synchronization.

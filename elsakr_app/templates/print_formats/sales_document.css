@@ -247,6 +247,56 @@
 	display: inline-block;
 	margin-right: 15px;
 }
+.elsakr-document .powered-by {
+	margin-top: 14px;
+	font-family: Arial, sans-serif;
+	font-size: 13px;
+	color: #737c88;
+	page-break-inside: avoid;
+}
+.elsakr-document .powered-by td {
+	border: 0;
+	padding: 0;
+	vertical-align: middle;
+}
+.elsakr-document .powered-by .provider-brand {
+	width: 280px;
+	padding: 0 14px;
+	text-align: center;
+	white-space: nowrap;
+}
+.elsakr-document .provider-rule div {
+	border-top: 1px solid #d9dee4;
+}
+.elsakr-document .provider-logo,
+.elsakr-document .provider-copy {
+	display: inline-block;
+	vertical-align: middle;
+}
+.print-format .elsakr-document .provider-logo img {
+	width: 64px;
+	height: 64px;
+	object-fit: contain;
+}
+.elsakr-document .provider-copy {
+	margin-left: 8px;
+	text-align: left;
+	line-height: 1.7;
+}
+.elsakr-document .powered-by a {
+	color: inherit;
+	text-decoration: none;
+}
+.elsakr-document .provider-website {
+	font-weight: 700;
+}
+.elsakr-document .provider-phone {
+	font-size: 12px;
+	letter-spacing: 1px;
+}
+.elsakr-document .powered-by a:hover {
+	text-decoration: underline;
+}
 @media print {
 	.print-format {
 		padding: 0 !important;

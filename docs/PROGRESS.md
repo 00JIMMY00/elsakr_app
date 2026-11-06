@@ -1,5 +1,58 @@
 # Progress
 
+## 2026-11-06 — Add linked attribution to customer prints (Live metadata and local source)
+
+- Changed: Added a centered English `powered by arab-erp.com` line at the end of
+  both managed print formats, with the domain linking to `https://arab-erp.com/`.
+  Updated shared HTML/CSS so migration preserves it, plus README and client notes.
+- Checked live: Both original formats matched the app sources before editing.
+  Native API updates and independent readbacks succeeded for Elsakr Sales Invoice
+  and Elsakr Quotation; other record fields were preserved. Native rendering of
+  unsaved synthetic documents returned HTTP 200 for both formats and confirmed
+  the footer text, link destination, and placement in the final document footer.
+  No business documents were created. Local diff whitespace checks passed.
+- Remaining: Refresh open print previews. Local source needs inclusion in the
+  next normal release. This was a direct live metadata update; no workflow/image
+  deployment was run. Browser and PDF visual verification were not performed.
+
+## 2026-11-06 — Simplify customer and supplier balance reports (Local development)
+
+- Changed: Added Simple Receivable Summary and Simple Payable Summary with Name
+  and Outstanding Amount columns; Company, Date, and Customer/Supplier filters;
+  today defaults; company-currency net GL balances; positive balances only; and
+  native company/party/GL permission checks. Repointed the two Operations summary
+  shortcuts while preserving Arabic labels, updated their JavaScript grouping,
+  and added Arabic report titles. Updated context, decisions, README, and client notes.
+- Applied locally: Imported both Report definitions, changed only the two targets
+  in the development Workspace, and cleared cache on `elsakr-dev2.arab-erp.com`.
+  No full migration or bundle build was needed for this targeted synchronization.
+- Checked: Three database regression tests passed for customers, suppliers, and
+  permissions. Fixtures exercised payment/credit offsets, cancellation, date and
+  company scope, account-type exclusion, missing/inaccessible parties, settled
+  and credit balances, and Guest/unpermitted-company rejection; all fixtures were
+  rolled back. Both installed reports executed successfully, returned exactly two
+  columns, loaded their report scripts, and appeared in the native permitted
+  Workspace response. The development HTTPS Workspace asset returned HTTP 200
+  with both new targets. Python compilation, JSON parsing, JavaScript syntax,
+  and diff whitespace checks passed.
+- Remaining: Reload Desk and open the Operations shortcuts or new report URLs.
+  Visual browser verification was not performed. Original ERPNext URLs still open
+  the full native reports. Production deployment has not been performed.
+
+## 2026-11-06 — Restrict dashboard expenses to Expense account type (Local)
+
+- Changed: The Operations Dashboard activity query now includes expenses only
+  when Account `account_type = "Expense"`, excluding Cost of Goods Sold, blank,
+  and other types previously included by the Expense root classification. The
+  expense card, daily chart, and revenue-minus-expenses net result share the
+  filtered figure. Updated README, client notes, and the calculation decision.
+- Checked locally: Executed the actual activity SQL against synthetic SQLite
+  rows and confirmed Expense debits less credits, unchanged revenue, exclusion
+  of COGS/blank/other types, company/date/cancelled filters, and an empty result
+  for a COGS-only range. Python compilation and diff whitespace checks passed.
+- Remaining: No Frappe/MariaDB integration or browser verification was performed.
+  Production deployment has not been performed.
+
 ## 2026-11-03 — Complete delivery warehouse corrections (Live data)
 
 - Changed: After production recovered, re-read both affected originals and

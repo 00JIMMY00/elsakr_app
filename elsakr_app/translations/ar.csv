@@ -14,3 +14,5 @@ Daily Purchase Summary,تقرير المشتريات اليومي
 Net Purchases,صافي المشتريات
 Purchase Invoices / Returns,فواتير الشراء / المرتجعات
 Submitted invoices only. Returns reduce purchases. Amounts use company currency; outstanding balances are current.,الفواتير المعتمدة فقط. تخصم المرتجعات من المشتريات. المبالغ بعملة الشركة والأرصدة المستحقة حالية.
+Simple Receivable Summary,ملخص مديونية العملاء
+Simple Payable Summary,ملخص استحقاقات الموردين

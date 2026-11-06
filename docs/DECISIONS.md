@@ -2,6 +2,36 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-11-06 — Provide compact party balance reports
+
+**Decision:** Add separate Simple Receivable Summary and Simple Payable Summary
+Script Reports and route Operations' Arabic summary shortcuts to them. Show only
+party name and outstanding amount, with Company, Date, and party filters.
+
+**Reason:** The user approved these columns and filters; the existing shortcuts
+opened ERPNext's full ageing summaries without any app simplification.
+
+**Consequence:** Calculate positive net amounts owed using non-cancelled GL entries
+through the selected date in company currency, offsetting payments/credits/advances.
+Omit settled and credit balances. Apply company/party listing permissions and GL
+row restrictions, and require accounting read access. These net balances can differ
+from invoice ageing totals. Keep native reports accessible by their original URLs.
+Migration syncs report/Workspace metadata; the Workspace asset must include the
+new targets. Development synchronization imports the two reports and updates
+only the two existing shortcut targets, preserving other site-owned shortcuts.
+
+## 2026-11-06 — Limit dashboard expenses to Expense account type
+
+**Decision:** Calculate dashboard expenses using only Account `account_type =
+"Expense"`, replacing the broader Expense root classification.
+
+**Reason:** The user requires expenses to exclude Cost of Goods Sold and every
+other account type, even when they belong to the Expense root.
+
+**Consequence:** The expense card and daily activity chart use the same filtered
+GL debit-minus-credit totals. Net result remains revenue minus those expenses.
+Company/date scopes, cancellation filters, and permissions remain in place.
+
 ## 2026-11-03 — Retain native negative-stock control for the delivery correction
 
 **Decision:** Use the user's enabled native Stock Settings.Allow Negative Stock
