@@ -87,20 +87,17 @@
 	</div>
 	{% if doc.get("terms") and frappe.utils.strip_html(doc.terms).strip() %}<div class="terms"><div class="section-label">الشروط والأحكام</div>{{ doc.terms | safe }}</div>{% endif %}
 	<div class="document-footer">
-		<strong>{{ doc.company | e }}</strong>
 		{% if company.phone_no %}<span>هاتف: <bdi dir="ltr">{{ company.phone_no | e }}</bdi></span>{% endif %}
 		{% if company.tax_id %}<span>الرقم الضريبي: <bdi>{{ company.tax_id | e }}</bdi></span>{% endif %}
-		<table class="powered-by" dir="ltr" lang="en" role="presentation">
+		<table class="powered-by" dir="rtl" lang="ar" role="presentation">
 			<tr>
-				<td class="provider-rule"><div></div></td>
 				<td class="provider-brand">
-					<a class="provider-logo" href="https://arab-erp.com/" aria-label="Arab ERP website"><img src="/files/arab_erp_logo.png" alt="Arab ERP"></a>
+					<a class="provider-logo" href="https://arab-erp.com/ar" aria-label="موقع عرب ERP"><img src="/files/arab_erp_logo.png" alt="عرب ERP"></a>
 					<div class="provider-copy">
-						<div>powered by <a class="provider-website" href="https://arab-erp.com/">arab-erp.com</a></div>
-						<a class="provider-phone" href="tel:01097072200">01097072200</a>
+						<div>بدعم من <a class="provider-website" href="https://arab-erp.com/ar" dir="ltr">Arab-ERP.com</a></div>
+						<a class="provider-contact" href="https://wa.me/201097072200" dir="rtl" lang="ar">تواصل معنا عبر واتساب</a>
 					</div>
 				</td>
-				<td class="provider-rule"><div></div></td>
 			</tr>
 		</table>
 	</div>

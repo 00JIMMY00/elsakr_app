@@ -20,8 +20,13 @@ details, items, optional sizes, quantities, prices, and totals. Quotations inclu
 validity and supplied terms; invoices include applicable payments and submitted
 outstanding balances. Drafts, cancellations, and credit notes are labelled.
 Native **Letter Head** visibility remains available in Print.
-Both formats end with **powered by [arab-erp.com](https://arab-erp.com/)**,
-applied and verified through the live API on 2026-11-06.
+Both formats end with the Arab ERP logo,
+**بدعم من [Arab-ERP.com](https://arab-erp.com/ar)** with a bold blue website link, and the grey
+**[تواصل معنا عبر واتساب](https://wa.me/201097072200)** link centered beneath the
+attribution, without side lines. The company name appears in the header only.
+The WhatsApp link opens a chat with 01097072200 using Egypt's country code.
+Applied and verified through the live API on 2026-11-06. The logo is the public
+site file `/files/arab_erp_logo.png`; retain it when moving/restoring the site.
 
 The shared HTML/CSS lives in `elsakr_app/templates/print_formats/`;
 `elsakr_app.print_formats.setup_print_formats` installs/updates both formats and

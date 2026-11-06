@@ -179,6 +179,16 @@ values. Live production formats/defaults were applied through the native API on
 2026-11-03 and verified with native rendering and an invoice PDF; no image release
 was run. Both formats are installed on the second development site. Local source
 still needs inclusion in a normal release for future migration management.
+Both customer formats now include a shared Arab ERP marketing footer with a
+logo and `بدعم من Arab-ERP.com` with a bold blue website link to
+`https://arab-erp.com/ar`, a grey Arabic
+WhatsApp contact label linked to `https://wa.me/201097072200`. Applied through
+the live API on 2026-11-06. The supplied provider logo is stored as the public
+site File `/files/arab_erp_logo.png`; retain/restore it with site files on other
+environments, separately from the existing Elsakr Letter Head.
+The marketing footer uses Arabic RTL text centered beneath the attribution,
+without side rules;
+the repeated company name is omitted from the bottom footer.
 
 The standalone dashboard definition is `elsakr_app/elsakr_app/workspace/operations_dashboard/operations_dashboard.json`. It was missing from Git despite existing in the development database. On 2026-10-25 the definition was exported into the app and the missing production Workspace was restored from that same JSON through the native API. Authenticated production browser/API checks passed. This source fix still needs committing and pushing; no new production image was deployed for the repair. Standard Workspace sync creates it on installation/migration; `dashboard_setup.py` maintains its two HTML blocks.
 

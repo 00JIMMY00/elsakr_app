@@ -3,12 +3,19 @@
 ## 2026-11-06 — Linked print footer
 
 **Elsakr Sales Invoice** and **Elsakr Quotation** now end with
-**powered by [arab-erp.com](https://arab-erp.com/)**. Click the domain in the
-print preview to open the website. Refresh an open preview to load the change.
+the Arab ERP logo, **بدعم من [Arab-ERP.com](https://arab-erp.com/ar)** with a bold
+blue website link, and **[تواصل معنا عبر واتساب](https://wa.me/201097072200)**
+centered beneath the attribution, without side lines. Click the logo/name to open
+the Arabic website or the Arabic WhatsApp label to message 01097072200.
+The repeated company name was removed from the bottom footer.
+Refresh an open preview to load the change.
 
 Both live formats were updated through the native API and verified by reading
 them back and rendering unsaved synthetic previews. The shared app template/CSS
-also includes the footer for future migrations. No workflow/image release was run.
+also includes the footer for future migrations. Headless Chrome previews loaded
+the logo and showed the footer without overflow at A4 width. The public logo
+file `/files/arab_erp_logo.png` must be retained with site files.
+No workflow/image release was run.
 
 ## 2026-11-03 — Delivery warehouse correction completed
 

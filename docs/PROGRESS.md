@@ -1,5 +1,85 @@
 # Progress
 
+## 2026-11-06 — Remove footer side lines and center contact text (Live metadata and local source)
+
+- Changed: Removed both decorative side-rule cells and their CSS, and centered
+  the Arabic WhatsApp text beneath the attribution in both customer formats.
+  Updated shared HTML/CSS, README, client notes, and context.
+- Checked live: Both API saves and independent readbacks matched the sources,
+  preserving other fields. Native synthetic rendering confirmed both side rules
+  were absent and the WhatsApp destination was retained.
+- Checked locally: Both A4-width Chrome previews confirmed centered contact text
+  (zero horizontal center offset), no side-rule elements, and no footer overflow.
+  Inspected the invoice footer screenshot. Diff whitespace checks passed.
+- Remaining: Refresh open print previews. Local source awaits a normal release;
+  no workflow/image deployment or business-record creation was performed.
+
+## 2026-11-06 — Show blue Arab-ERP.com attribution link (Live metadata and local source)
+
+- Changed: Both customer print footers now show `بدعم من Arab-ERP.com` with a
+  bold blue domain linking to the existing Arabic website destination. Updated
+  shared HTML/CSS, README, client notes, and context.
+- Checked live: Both format saves and independent readbacks passed, preserving
+  other fields. Native unsaved synthetic previews confirmed the new label and
+  `https://arab-erp.com/ar` destination.
+- Checked locally: Both A4-width Chrome previews rendered the link in blue
+  (`#2563eb`), weight 700, with no footer overflow. Inspected the invoice footer
+  screenshot. Diff whitespace checks passed.
+- Remaining: Refresh open print previews. Local source awaits a normal release;
+  no workflow/image deployment or business-record creation was performed.
+
+## 2026-11-06 — Translate attribution and align footer rules (Live metadata and local source)
+
+- Changed: Translated `powered by` to `بدعم من`, switched the branding row to
+  Arabic RTL, and removed the repeated company name from the bottom footer in
+  both shared formats. Centered both side rules by overriding native print-cell
+  alignment/padding. Retained website and WhatsApp links. Updated shared sources,
+  README, client notes, and context.
+- Checked live: Both API saves and independent readbacks matched the shared
+  sources with other fields preserved. Native synthetic previews verified Arabic
+  attribution, both side rules, unchanged WhatsApp destination, no company name
+  in the bottom footer, and the retained company name in the header.
+- Checked locally: Chrome previews at A4 width showed no branding overflow;
+  both rules align within 0.5 px of the branding center. Inspected the invoice
+  footer screenshot. Diff whitespace checks passed.
+- Remaining: Refresh open print previews. Local source awaits a normal release;
+  no workflow/image deployment or business-record creation was performed.
+
+## 2026-11-06 — Replace footer phone link with Arabic WhatsApp contact (Live metadata and local source)
+
+- Changed: Both formats now show `powered by عرب ERP` linking to the Arabic
+  website `/ar`, including the logo link. Replaced the phone number/calling link
+  with `تواصل معنا عبر واتساب`, matching the Arabic print layouts, linking to
+  `https://wa.me/201097072200` for the same Egyptian number. Removed phone digit
+  spacing from the contact style. Updated shared sources and operational notes.
+- Checked live: Both format updates and independent readbacks passed, preserving
+  other fields. Native rendering of unsaved synthetic previews verified the
+  Arabic name/contact label, website/WhatsApp destinations, and no `tel:` link.
+- Checked locally: Both A4-width Chrome previews had no footer overflow; inspected
+  the invoice screenshot. A generated Chromium PDF retained the Arabic website
+  and WhatsApp link destinations. Diff whitespace checks passed.
+- Remaining: Refresh open print previews. Local source awaits a normal release;
+  no workflow/image deployment or business-record creation was performed.
+
+## 2026-11-06 — Style Arab ERP print footer with logo and calling link (Live metadata and local source)
+
+- Changed: Enlarged footer text to 13 px, added the supplied Arab ERP logo linked
+  to the website, grey 12 px `01097072200` linked to `tel:01097072200`, and thin
+  grey rules on both sides. Updated shared HTML/CSS and both production formats.
+  Uploaded the original PNG as public site File `/files/arab_erp_logo.png`.
+  Updated README, client notes, and context with the site-file dependency.
+- Checked live: Public logo returned HTTP 200 with bytes matching the supplied
+  image. Both format API updates and independent readbacks passed, preserving
+  other fields. Native rendering of unsaved synthetic previews returned HTTP 200
+  and verified the image, website/phone links, and two side rules for each format.
+- Checked locally: Headless Chrome loaded both native-rendered previews with
+  their print-format wrapper at A4 width; logo decoding passed and the center
+  cell had no overflow. Inspected the invoice footer screenshot and generated
+  a Chromium A4 PDF. Diff whitespace checks passed.
+- Remaining: Refresh open print previews. Local source awaits the next normal
+  release; no workflow/image deployment was run. No business records were saved.
+  Launching a phone app depends on the viewing device's configured calling app.
+
 ## 2026-11-06 — Add linked attribution to customer prints (Live metadata and local source)
 
 - Changed: Added a centered English `powered by arab-erp.com` line at the end of
