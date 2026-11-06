@@ -1,5 +1,196 @@
 # Progress
 
+## 2026-11-03 — Complete delivery warehouse corrections (Live data)
+
+- Changed: After production recovered, re-read both affected originals and
+  confirmed no amendments existed. Created and submitted an amendment for the
+  already-cancelled original. Native cancellation of the other submitted note
+  was initially blocked because its source warehouse was disabled. Temporarily
+  enabled that warehouse for native cancellation, immediately restored and
+  verified its disabled state, then created/submitted the second amendment.
+  Both amendments use مخزن ال31 - S in the header and every item row, retaining
+  original invoice dates/times, item links, quantities, and rates. The other
+  fourteen deliveries were retained.
+- Checked live: All 16 active correction deliveries are submitted, fully billed
+  against the existing invoices, and use the requested warehouse on every item
+  row. Original dates and invoice delivered quantities match. The two originals
+  are cancelled with no active stock/GL entries; the replacement/retained notes
+  have 17 active Stock Ledger Entries matching their rows and 32 active GL Entries
+  balanced across all 16 vouchers. Bin changes match the warehouse corrections,
+  including reversing the remaining old-warehouse deduction. No negative Bin
+  balances remain for the corrected item codes, and no Repost Item Valuation
+  records were returned for the affected deliveries. Invoice totals, payments,
+  advances, outstanding amounts, submitted status, and Update Stock flags remain
+  unchanged. Restricted working snapshots and amendment mappings remain outside
+  the repository; no private document/customer data or credentials are logged.
+- Remaining: The warehouse correction is complete. Use the submitted amendments
+  when opening the two corrected deliveries; cancelled originals remain as the
+  native audit history. No default warehouse or negative-stock preference was
+  changed. Updated current operational/context documentation; diff whitespace
+  checks passed. No app code, image deployment, or workflow run was required.
+
+## 2026-11-03 — Inspect delivery warehouse correction (Pending live availability)
+
+- Requested: Use مخزن ال31 - S for the sales-stock correction deliveries.
+- Observed: The target is an enabled non-group Warehouse in the same company.
+  Fourteen original notes already use it. Two original notes contain a row from
+  another warehouse: one is still submitted and the other was already cancelled
+  when inspected, with no amendment and zero delivered quantity on its source
+  invoice. Prepared the native cancel/amend flow to retain original dates,
+  quantities, invoice/item links, and rates while assigning the target warehouse.
+- Blocker: Before any correction mutation, the production API returned HTTP 502
+  on the initial stock-balance read, followed by HTTP 530/Cloudflare Tunnel error
+  1033 on repeated availability checks. No cancellation, amendment, or warehouse
+  change was saved by this attempt. Restricted local inspection snapshots and
+  the prepared helper remain outside the repository.
+- Remaining: Restore production tunnel access, re-read current source/amendment
+  states, and correct the two affected notes using native cancellation/amendment.
+  Verify current stock/GL entries, invoice balances, and active delivery quantities
+  afterwards. No app deployment or workflow run was performed. Diff whitespace
+  checks passed.
+
+## 2026-11-03 — Finish stock correction after negative stock was enabled (Live data)
+
+- Changed: The user reported enabling negative stock and requested another
+  attempt. Confirmed production Stock Settings.Allow Negative Stock was enabled,
+  then submitted the same three existing linked draft Delivery Notes using native
+  submission. No new documents or validation bypasses were introduced. After an
+  interrupted response, checked the completed process and persisted results before
+  further work; all 16 correction deliveries are now submitted.
+- Checked live: Resource readback verified all 16 submitted notes, original
+  invoice posting dates, full billing against existing invoices, and matching
+  invoice-item delivered quantities. Their 17 active Stock Ledger Entries match
+  all delivered item/warehouse quantities; current Bin changes match the complete
+  correction. Their 32 active GL Entries balance across all 16 vouchers. No
+  Repost Item Valuation records were returned for these deliveries. Invoice
+  totals, payments, advances, outstanding amounts, submitted status, and Update
+  Stock flags remain unchanged. Two item/warehouse balances are now negative
+  under the user's setting. Updated current operational documentation; diff
+  whitespace checks passed.
+- Remaining: The requested delivery-note correction is complete; no correction
+  drafts remain. Negative inventory balances need reconciliation with actual
+  source stock records. The negative-stock setting remains site-owned. No app
+  deployment, source-code change, or workflow run was required.
+
+## 2026-11-03 — Correct production sales stock through linked deliveries (Live data)
+
+- Scope: The production API returned 19 Sales Invoices with Update Stock disabled:
+  16 submitted sales and three cancelled invoices, with no Delivery Notes. Native
+  invoice-to-delivery mapping found 17 stock-item rows on the submitted invoices,
+  with warehouse references and no prior deliveries, serials, batches, or
+  supplier-direct deliveries. The user chose each invoice's original posting date.
+- Changed: Created one native linked Delivery Note for each of the 16 submitted
+  invoices, retaining the original posting date/time and invoice-item references.
+  Submitted 13 through the native submit API. Three remain saved drafts because
+  native NegativeStockError rejected stock issues for two items with zero
+  recorded quantities. Negative-stock settings/validation were retained; cancelled
+  invoices were excluded. No invoice was cancelled or recreated.
+- Checked live: Readback verified all 16 document states, original dates, source
+  links, and submitted invoice delivered quantities. All 13 submitted Delivery
+  Notes are fully billed against their existing invoices. Their 13 active Stock
+  Ledger Entries exactly match the submitted item/warehouse quantities, and
+  current Bin changes match those movements. Their 26 active GL Entries balance
+  across all 13 vouchers. No Repost Item Valuation records were returned for
+  these deliveries. Invoice totals, payments, advances, outstanding amounts,
+  submitted status, and Update Stock flags remained unchanged; draft deliveries
+  have no active stock/accounting entries. Restricted local working snapshots
+  hold the source/result/verification data; no customer data, document contents,
+  or credentials are recorded here.
+- Remaining: Correct the missing recorded stock from the appropriate source
+  records before submitting the three linked draft deliveries. They have not
+  updated stock. Updated client/operator guidance; no application code, workflow,
+  or production image deployment was needed. Diff whitespace checks passed.
+
+## 2026-11-03 — Add Quotation to production Operations (Live metadata)
+
+- Changed: Added one native Quotation List shortcut labelled عروض الأسعار to
+  production Operations and registered Quotation immediately after Sales Invoice
+  in the المبيعات والعملاء card's existing inline block script. Retained all
+  existing shortcuts/targets, including the saved stock-size report, and retained
+  block HTML/CSS/access settings. Aligned current README/client/context status.
+- Checked: Production resource readback verified 31 shortcuts, exactly one
+  Quotation link, the script change, and preserved existing navigation/layout
+  properties. The native permission-filtered desktop API returned the Quotation
+  List shortcut. Authenticated production HTTPS Chrome confirmed exactly one
+  عروض الأسعار link in المبيعات والعملاء after Sales Invoice, no sales-card
+  overflow at 1440/390 px, and clicking opened the native Quotation List route
+  with no page JavaScript errors. Reviewed the desktop screenshot. JavaScript
+  syntax, Workspace JSON parsing, and diff whitespace checks passed. Saved
+  restricted local metadata snapshots before changing the records; no snapshot
+  contents or credentials are recorded here.
+- Availability: Initial writes/readback encountered HTTP 502, then Cloudflare
+  Tunnel error 1033 also affected SSH. On continuation, production returned HTTP
+  200 and still had no Quotation shortcut; the successful update was then applied.
+- Remaining: Refresh production Operations. No workflow/image deployment was run;
+  this is a live metadata update. Include the existing local Workspace JSON and
+  JavaScript changes in the next normal source release so migration retains the
+  same registration.
+
+## 2026-11-03 — Add Quotation to Operations sales navigation (Local)
+
+- Changed: Registered one native Quotation List shortcut labelled عروض الأسعار in
+  the standard Operations Workspace and placed it after Sales Invoice in the
+  المبيعات والعملاء card. Updated the Workspace source timestamp and current
+  README/client/context documentation to reflect 31 shortcuts. Existing native
+  permission filtering, routing, and reports-last grouping remain in use.
+- Applied: Synced the updated Workspace on `elsakr-dev2.arab-erp.com` and cleared
+  its cache. The stored Workspace has 31 shortcuts and exactly one Quotation
+  List link; the native permission-filtered desktop API returns that link.
+- Checked: JavaScript syntax, Prettier, JSON parsing, and diff whitespace checks
+  passed. Authenticated development HTTPS Chrome showed exactly one عروض الأسعار
+  link in المبيعات والعملاء immediately after Sales Invoice. The sales card
+  had no horizontal overflow at 1440/390 px; reviewed the screenshots. Clicking
+  opened the native Quotation List route with no page JavaScript errors. Removed
+  the temporary development review session.
+- Remaining: Refresh Operations on the second development site. No production
+  deployment or production metadata update was performed; a normal release must
+  include the updated Workspace JSON and JavaScript asset.
+
+## 2026-11-03 — Branded quotation and sales invoice prints (Local + live metadata)
+
+- Changed: Added shared Arabic RTL A4 HTML/CSS and repeatable setup for Elsakr
+  Quotation and Elsakr Sales Invoice, with native default Property Setters and
+  installation/migration registration. Layouts reference the existing enabled
+  elsakr logo Letter Head, display essential customer/item/size details and native
+  totals, and conditionally include contact information, validity/due dates,
+  discounts, tax, rounding, payments, submitted outstanding, and supplied terms.
+  Draft/cancelled/credit-note labels and native print permissions are retained.
+  Fixed logo sizing against native screen CSS and explicit total-amount contrast
+  against the production PDF stylesheet. Aligned user/operator/context documents
+  and recorded the maintenance decision.
+- Checked locally: Four transaction-backed native rendering tests passed for
+  repeatable setup/defaults, logo visibility, optional size columns, escaping,
+  quotation validity, discounts/tax/rounding, cash/change/advances/write-offs,
+  party-account currency, draft outstanding suppression, cancellations, signed
+  credit notes, zero values, and 70-item output. Fixtures were rolled back. Native
+  A4 PDFs generated for synthetic quotation/invoice and a 70-item quotation;
+  reviewed the single-page layout and repeated item headings on page two of the
+  five-page output. Both formats were then installed on the second development
+  site. Ruff lint/format, Python compilation, CSS Prettier, and diff whitespace
+  checks passed.
+- Production application: Created only the two custom Print Formats through the
+  authenticated native API and set their native defaults. Readback matched final
+  app sources and both default Property Setters. Existing Letter Head/File records
+  and business documents were retained. A restricted local metadata snapshot
+  holds the preceding format/default state; no credentials or snapshot contents
+  are recorded here.
+- Checked live: Native API rendering passed for an existing submitted invoice and
+  a synthetic unsaved quotation preview with the logo. The API returned no saved
+  production quotations, and the supplied new-document route is unsaved. Default
+  invoice rendering without an explicit format selected the new layout and logo;
+  the site's native Letter Head visibility was already enabled. The live PDF
+  endpoint generated a one-page A4 invoice; reviewed the final PDF including the
+  corrected total contrast. Chrome review of both live-rendered layouts confirmed
+  loaded, correctly proportioned logos, no horizontal content overflow, and no
+  page JavaScript errors. An authenticated production HTTPS visit to the native
+  invoice print page without an explicit format also returned HTTP 200, loaded
+  the logo/default layout, and had no content overflow or page JavaScript errors;
+  reviewed its screenshot.
+- Remaining: Refresh open production forms before printing. No workflow/image
+  deployment was run; this is a verified live metadata application. Commit and
+  release the local sources so later installations/migrations manage the same
+  layouts. The second development site's logo depends on its own Letter Head data.
+
 ## 2026-11-01 — Return retargeted stock-size report to its card (Local + live metadata repair)
 
 - Cause: Production's Operations shortcut retained the label البحث عن مخزون المقاسات but targeted Stock Size Search 2, a saved Custom Report referencing Stock Size Search. The live JavaScript matched the local source and grouped by exact target, sending the new target to additional tools.

@@ -31,6 +31,7 @@ after_install = [
 	"elsakr_app.site_setup.setup_site_preferences",
 	"elsakr_app.currency_setup.setup_currency_display",
 	"elsakr_app.branding.setup_branding",
+	"elsakr_app.print_formats.setup_print_formats",
 ]
 after_migrate = after_install
 doc_events = {

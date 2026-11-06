@@ -20,6 +20,7 @@
 			tone: "teal",
 			items: [
 				"Sales Invoice",
+				"Quotation",
 				"Daily Sales Summary",
 				"Customer",
 				"Accounts Receivable",

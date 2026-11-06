@@ -1,5 +1,34 @@
 # Elsakr App
 
+## Sales stock posting
+
+Sales without **Update Stock** require a linked submitted **Delivery Note** to
+post delivered stock. Use the native invoice-to-delivery action, retain the
+invoice/item references, and avoid duplicating already delivered quantities.
+Draft deliveries do not post stock. A production correction on 2026-11-03 created
+16 linked deliveries, initially all submitted after the user enabled negative stock.
+All 16 active deliveries now use مخزن ال31 - S after two native warehouse
+amendments; the corrected item codes have no remaining negative warehouse balances.
+See [CLIENT_UPDATES.md](CLIENT_UPDATES.md) for the operational status.
+
+## Customer print formats
+
+**Elsakr Quotation** and **Elsakr Sales Invoice** are the native default print
+formats on production as of 2026-11-03. Refresh the document and select **Print**.
+The Arabic A4 layouts use the existing **elsakr logo** Letter Head, with customer
+details, items, optional sizes, quantities, prices, and totals. Quotations include
+validity and supplied terms; invoices include applicable payments and submitted
+outstanding balances. Drafts, cancellations, and credit notes are labelled.
+Native **Letter Head** visibility remains available in Print.
+
+The shared HTML/CSS lives in `elsakr_app/templates/print_formats/`;
+`elsakr_app.print_formats.setup_print_formats` installs/updates both formats and
+their native defaults after installation/migration. Edit these sources for
+lasting changes; migration replaces direct edits to these two managed formats.
+The logo remains in the site's existing Letter Head/File records. This was a
+verified live metadata change through the native API, with no workflow/image
+deployment. Include the local source in the next normal release.
+
 ## Server Scripts
 
 Server Scripts were enabled directly on production on 2026-10-29 using
@@ -56,10 +85,14 @@ the previous image and the pre-migration database and files backup.
 
 The **Operations** Workspace (`/app/operations`) is a compact Arabic shop hub with
 four quick creation actions and six grouped navigation cards: sales/customers, purchases/suppliers,
-stock movement, items/sizes, accounts/profit, and expenses. All 30
+stock movement, items/sizes, accounts/profit, and expenses. All 31
 shortcuts remain available under native ERPNext permissions; creation actions
 also require Create permission. The responsive layout uses 16 px tool/action labels, 18 px card headings,
 tighter card spacing, and dark mode. Actions and card headings use concise labels without descriptive captions.
+The sales/customers card includes **عروض الأسعار** (Quotation), immediately after
+Sales Invoice and before the reports. Applied on the second development site
+and production on 2026-11-03; refresh Operations. Production was updated through
+the native API without a new image release.
 The accounts card includes **Payment Entry** as **قيد الدفع**, using the native DocType route and permissions.
 The expenses card includes **Expense Entry Report** as **تقرير قيود المصروفات**,
 with the existing report badge and native permissions. This link is applied on

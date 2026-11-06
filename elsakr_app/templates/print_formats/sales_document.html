@@ -1,0 +1,94 @@
+{% set invoice = doc.doctype == "Sales Invoice" %}
+{% set credit = invoice and doc.get("is_return") %}
+{% set title = "إشعار دائن" if credit else ("فاتورة مبيعات" if invoice else "عرض سعر") %}
+{% set company = frappe.db.get_value("Company", doc.company, ["tax_id", "phone_no"], as_dict=True) or {} %}
+{% set brand = frappe.db.get_value("Letter Head", {"name": "elsakr logo", "disabled": 0}, ["image", "content"], as_dict=True) or {} %}
+{% set sizes = namespace(show=false) %}
+{% for item in doc.get("items", []) %}{% if item.get("custom_size") %}{% set sizes.show = true %}{% endif %}{% endfor %}
+{% set total_field = "rounded_total" if not doc.get("disable_rounded_total") and doc.get("rounded_total") else "grand_total" %}
+{% macro money(value, field="grand_total", currency=doc.currency) -%}
+{{ frappe.utils.fmt_money(value or 0, precision=doc.precision(field), currency=currency) }}
+{%- endmacro %}
+
+<div class="elsakr-document" dir="rtl" lang="ar">
+	<table class="brand-header" role="presentation">
+		<tr>
+			<td class="document-heading">
+				<div class="eyebrow">{{ doc.company | e }}</div>
+				<h1>{{ title }}</h1>
+				<div class="english-title">{{ "CREDIT NOTE" if credit else ("SALES INVOICE" if invoice else "QUOTATION") }}</div>
+			</td>
+			<td class="brand-image">
+				{% if not no_letterhead %}
+					{% if brand.image %}<img src="{{ brand.image | e }}" alt="elsakr logo">
+					{% elif brand.content %}{{ brand.content | safe }}
+					{% elif letter_head %}{{ letter_head | safe }}{% endif %}
+				{% endif %}
+			</td>
+		</tr>
+	</table>
+	<div class="document-reference">
+		<span>رقم {{ "الإشعار" if credit else ("الفاتورة" if invoice else "العرض") }}</span>
+		<strong dir="ltr">{{ doc.name | e }}</strong>
+		{% if doc.docstatus == 0 %}<span class="state">مسودة / DRAFT</span>
+		{% elif doc.docstatus == 2 %}<span class="state cancelled">ملغي / CANCELLED</span>{% endif %}
+	</div>
+	<table class="details" role="presentation">
+		<tr>
+			<td class="customer-details">
+				<div class="section-label">{{ "إلى" if doc.get("quotation_to") == "Lead" else "العميل" }}</div>
+				<div class="customer-name">{{ (doc.get("customer_name") or doc.get("lead_name") or doc.get("custom_customer_entry") or doc.get("party_name") or doc.get("customer") or "—") | e }}</div>
+				{% set phone = doc.get("custom_customer_phone") or doc.get("contact_mobile") or doc.get("contact_phone") %}
+				{% if phone %}<div class="contact-line"><span>هاتف</span> <bdi dir="ltr">{{ phone | e }}</bdi></div>{% endif %}
+				{% if doc.get("custom_customer_address") %}<div class="address">{{ doc.custom_customer_address | e | replace("\n", "<br>") | safe }}</div>
+				{% elif doc.get("address_display") %}<div class="address">{{ doc.address_display | safe }}</div>{% endif %}
+				{% if doc.get("tax_id") %}<div class="contact-line">الرقم الضريبي: <bdi>{{ doc.tax_id | e }}</bdi></div>{% endif %}
+			</td>
+			<td class="date-details">
+				<div><span>التاريخ</span><strong>{{ doc.get_formatted("posting_date" if invoice else "transaction_date") }}</strong></div>
+				{% if not invoice and doc.get("valid_till") %}<div><span>ساري حتى</span><strong>{{ doc.get_formatted("valid_till") }}</strong></div>{% endif %}
+				{% if invoice and not credit and doc.get("due_date") %}<div><span>تاريخ الاستحقاق</span><strong>{{ doc.get_formatted("due_date") }}</strong></div>{% endif %}
+				{% if credit and doc.get("return_against") %}<div><span>الفاتورة الأصلية</span><strong dir="ltr">{{ doc.return_against | e }}</strong></div>{% endif %}
+				<div><span>العملة</span><strong>{{ doc.currency | e }}</strong></div>
+			</td>
+		</tr>
+	</table>
+	<table class="items-table">
+		<colgroup><col style="width: 5%"><col>{% if sizes.show %}<col style="width: 15%">{% endif %}<col style="width: 12%"><col style="width: 18%"><col style="width: 20%"></colgroup>
+		<thead><tr><th class="row-number">م</th><th>الصنف</th>{% if sizes.show %}<th>المقاس</th>{% endif %}<th class="numeric">الكمية</th><th class="numeric">السعر</th><th class="numeric">الإجمالي</th></tr></thead>
+		<tbody>
+			{% for item in doc.get("items", []) %}
+			<tr{% if item.get("page_break") %} class="item-page-break"{% endif %}>
+				<td class="row-number">{{ loop.index }}</td>
+				<td class="item-name">{{ (item.get("item_name") or item.get("item_code") or frappe.utils.strip_html(item.get("description") or "")) | e }}</td>
+				{% if sizes.show %}<td class="item-size"><bdi dir="ltr">{{ (item.get("custom_size") or "—") | e }}</bdi></td>{% endif %}
+				<td class="numeric"><bdi dir="ltr">{{ item.get_formatted("qty") }}</bdi>{% if item.get("uom") %}<small class="uom">{{ _(item.uom) | e }}</small>{% endif %}</td>
+				<td class="numeric"><bdi dir="ltr">{{ item.get_formatted("rate", doc) }}</bdi></td>
+				<td class="numeric item-amount"><bdi dir="ltr">{{ item.get_formatted("amount", doc) }}</bdi></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div class="totals-section">
+		<table class="totals">
+			{% if doc.get("discount_amount") %}<tr class="discount"><td>الخصم المطبق</td><td><bdi dir="ltr">{{ money(doc.discount_amount, "discount_amount") }}</bdi></td></tr>{% endif %}
+			<tr><td>{{ "الصافي بعد الخصم" if doc.get("discount_amount") else "صافي الأصناف" }}</td><td><bdi dir="ltr">{{ money(doc.net_total, "net_total") }}</bdi></td></tr>
+			{% if doc.get("total_taxes_and_charges") %}<tr><td>الضرائب والرسوم</td><td><bdi dir="ltr">{{ money(doc.total_taxes_and_charges, "total_taxes_and_charges") }}</bdi></td></tr>{% endif %}
+			{% if total_field == "rounded_total" and doc.get("rounding_adjustment") %}<tr><td>فرق التقريب</td><td><bdi dir="ltr">{{ money(doc.rounding_adjustment, "rounding_adjustment") }}</bdi></td></tr>{% endif %}
+			<tr class="grand-total"><td>{{ "إجمالي الإشعار" if credit else "الإجمالي النهائي" }}</td><td><bdi dir="ltr">{{ money(doc.get(total_field), total_field) }}</bdi></td></tr>
+			{% if invoice %}
+				{% if doc.get("paid_amount") %}<tr><td>المدفوع</td><td><bdi dir="ltr">{{ money(doc.paid_amount, "paid_amount") }}</bdi></td></tr>{% endif %}
+				{% if doc.get("change_amount") %}<tr><td>الباقي النقدي</td><td><bdi dir="ltr">{{ money(doc.change_amount, "change_amount") }}</bdi></td></tr>{% endif %}
+				{% if doc.get("total_advance") %}<tr><td>دفعات مقدمة</td><td><bdi dir="ltr">{{ money(doc.total_advance, "total_advance") }}</bdi></td></tr>{% endif %}
+				{% if doc.get("write_off_amount") %}<tr><td>تسوية</td><td><bdi dir="ltr">{{ money(doc.write_off_amount, "write_off_amount") }}</bdi></td></tr>{% endif %}
+				{% if doc.docstatus == 1 %}<tr class="outstanding"><td>{{ "رصيد الإشعار" if credit else "المتبقي" }}</td><td><bdi dir="ltr">{{ money(doc.outstanding_amount, "outstanding_amount", doc.get("party_account_currency") or doc.currency) }}</bdi></td></tr>{% endif %}
+			{% endif %}
+		</table>
+	</div>
+	{% if doc.get("terms") and frappe.utils.strip_html(doc.terms).strip() %}<div class="terms"><div class="section-label">الشروط والأحكام</div>{{ doc.terms | safe }}</div>{% endif %}
+	<div class="document-footer">
+		<strong>{{ doc.company | e }}</strong>
+		{% if company.phone_no %}<span>هاتف: <bdi dir="ltr">{{ company.phone_no | e }}</bdi></span>{% endif %}
+		{% if company.tax_id %}<span>الرقم الضريبي: <bdi>{{ company.tax_id | e }}</bdi></span>{% endif %}
+	</div>
+</div>

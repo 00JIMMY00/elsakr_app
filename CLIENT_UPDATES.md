@@ -1,5 +1,64 @@
 # Elsakr client updates
 
+## 2026-11-03 — Delivery warehouse correction completed
+
+All **16 active correction Delivery Notes now use مخزن ال31 - S** on every item
+row. Two affected originals were replaced by submitted native amendments; the
+other fourteen already used the correct warehouse. Open the amendments for the
+two corrected deliveries; cancelled originals remain in the audit history.
+Original dates, invoice links, quantities, and rates were retained. Invoice
+totals, payments, and outstanding balances were verified unchanged.
+
+Stock/accounting entries and warehouse balance changes were verified. The old
+warehouse's disabled setting was restored after native cancellation, and the
+corrected item codes have no remaining negative warehouse balances. No warehouse
+defaults or negative-stock preference were changed. This completed the correction
+that was previously blocked by production tunnel availability.
+
+## 2026-11-03 — Stock correction for invoices without Update Stock
+
+Production now has linked Delivery Notes for all 16 submitted invoices found
+with **Update Stock** unchecked. The user's selected original invoice dates and
+times were retained. **All 16 deliveries were submitted at the initial verification** and their stock
+movements and balanced accounting entries were verified. Three initially blocked
+notes were submitted after the user enabled native **Allow Negative Stock**;
+no correction drafts remain. The initial negative warehouse balances were
+resolved by the subsequent warehouse correction described above. Three cancelled
+invoices were excluded. Invoice totals, payments, and outstanding amounts were
+verified unchanged.
+
+For future sales, use either **Update Stock** on the Sales Invoice or a linked
+submitted **Delivery Note** for the delivered quantities. A draft Delivery Note
+does not post stock. Review existing linked deliveries before creating another.
+This correction used native document APIs and required no application deployment.
+
+## 2026-11-03 — Quotation and Sales Invoice printing
+
+Refresh an open Quotation or Sales Invoice, save the document, and select
+**Print**. Production now defaults to **Elsakr Quotation** or
+**Elsakr Sales Invoice**, respectively. They can also be selected in the print
+format menu. Keep **Letter Head** enabled to include the existing **elsakr logo**.
+
+Both Arabic A4 layouts show the customer, date/reference, items, sizes when
+present, quantities, prices, and totals. Discounts, taxes, rounding, contact
+details, and terms appear when applicable. Quotations show the validity date;
+invoices show applicable payments and the submitted invoice's remaining balance
+in its account currency. Draft/cancelled labels and credit-note headings retain
+native print permissions. Item headings repeat on additional pages.
+
+The formats and native defaults were applied directly through the production
+API. Live native rendering and an A4 invoice PDF were verified; no new production
+image or workflow deployment was run. The supplied quotation link was an unsaved
+form, so quotation verification used a synthetic unsaved preview without creating
+a business record. Both formats are also installed on the second development
+site; its logo depends on that site's Letter Head data.
+
+For lasting edits, change `elsakr_app/templates/print_formats/sales_document.html`
+and `sales_document.css`. Installation/migration runs
+`elsakr_app.print_formats.setup_print_formats`, replacing the two managed formats
+and reapplying their defaults. Other formats and the existing Letter Head/File
+records are retained. Include this local source in the next normal release.
+
 ## Server Scripts
 
 Server Scripts were enabled directly on production on 2026-10-29 using
@@ -91,12 +150,19 @@ Production receives the change through the normal migration.
 The public **Operations** Workspace at `/app/operations` opens directly with
 quick actions for new sales invoices, purchase invoices, expenses, and stock
 movements when the user has the matching read/create permissions. Six cards
-organize all 30 shortcuts into sales/customers, purchases/suppliers,
+organize all 31 shortcuts into sales/customers, purchases/suppliers,
 stock movement, items/sizes, accounts/profit, and expenses. The introductory
 banner, section headings, search box, category filters, and footer slogan have been removed.
 Quick actions and card headings show concise labels without descriptive captions.
 Loading/error messages use formal Arabic. Tree and report links retain their
 native views and existing ERPNext permissions.
+Under **المبيعات والعملاء**, select **عروض الأسعار** after Sales Invoice to open
+the native Quotation list at `/app/quotation`. Applied on the second development
+site and production on 2026-11-03; refresh Operations. The production change added
+only this shortcut and its sales-card registration through the native API,
+preserving existing shortcuts, including the saved stock-size report target. No
+workflow/image deployment was run; include the updated Workspace JSON and
+JavaScript source in the next release.
 Under **الحسابات والأرباح**, select **قيد الدفع** to open the native **Payment Entry** list.
 It is visible only when native Payment Entry permissions allow it.
 Under **المصروفات**, select **تقرير قيود المصروفات** to open **Expense Entry Report**.

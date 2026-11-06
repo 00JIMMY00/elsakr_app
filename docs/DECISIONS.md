@@ -2,6 +2,46 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-11-03 — Retain native negative-stock control for the delivery correction
+
+**Decision:** Use the user's enabled native Stock Settings.Allow Negative Stock
+setting to submit the three stock-correction deliveries that normal stock
+validation initially blocked. Reuse their existing invoice/item links and
+original dates. The app does not set or enforce this preference.
+
+**Reason:** The user explicitly enabled negative stock and requested completion
+of the pending sales-stock correction.
+
+**Consequence:** All 16 correction deliveries are submitted through native
+validation; two item/warehouse balances are negative. Production permits negative
+stock under its site-owned setting until an operator changes it. Reconcile these
+balances against actual stock source records. This is a one-time data correction,
+not installation/migration behavior or a change to invoice accounting logic.
+
+## 2026-11-03 — Manage customer print formats in the app
+
+**Decision:** Maintain Elsakr Quotation and Elsakr Sales Invoice as custom Jinja
+Print Format records populated from one app-owned HTML/CSS pair. Set native
+DocType defaults through Property Setters after installation/migration. Reference
+the enabled existing `elsakr logo` Letter Head and honor native letterhead
+visibility and print permissions. Preserve other formats and site-owned branding.
+
+**Reason:** The user requested concise, attractive quotation/invoice prints using
+the supplied logo. Self-contained native formats can be applied immediately to
+production through its API and later maintained by the versioned app without
+upstream edits or a new rendering dependency.
+
+**Consequence:** Migration replaces direct edits to these two managed formats and
+reapplies their defaults; lasting edits belong in the shared sources. Use Arabic
+RTL A4, restrained charcoal/gold styling, essential customer/item/size details,
+and native saved totals. Keep discounts, taxes, rounding, payments, and terms
+conditional. Outstanding appears only for submitted invoices and retains the
+party-account currency; returns remain signed and use a credit-note heading.
+Draft/cancelled labels supplement native print permission checks. Logo files
+remain site data, so another environment needs its own Letter Head/file records.
+The initial live metadata application runs no workflow/image release and does
+not save or submit business documents.
+
 ## 2026-11-01 — Keep the stock-size shortcut's slot when retargeted
 
 **Decision:** Classify a permitted Report shortcut labelled `البحث عن مخزون المقاسات` as the existing Stock Size Search navigation slot, independently of its `link_to`. Preserve its actual target for native routing. Keep existing grouping for all other targets and unknown shortcuts.
