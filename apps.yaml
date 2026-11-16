@@ -13,3 +13,7 @@ apps:
   - name: elsakr_app
     repo: https://github.com/00JIMMY00/elsakr_app
     ref: $GITHUB_SHA
+  - name: frappe_waha
+    repo: https://github.com/00JIMMY00/frappe_waha
+    ref: main
+    
