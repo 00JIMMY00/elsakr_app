@@ -86,8 +86,9 @@ For ongoing work, see [project context](docs/PROJECT_CONTEXT.md),
 
 Production deployments run from `main` through GitHub Actions. CI installs the
 apps and builds assets, then publishes a Docker image. The client machine pulls
-that image and updates its containerized Frappe stack. A failed rollout restores
-the previous image and the pre-migration database and files backup.
+that image and updates its containerized Frappe stack. The rollout clears the
+site cache before installing each new app so Frappe discovers its DocTypes.
+A failed rollout restores the previous image and the database and files backup.
 
 
 The **Operations** Workspace (`/app/operations`) is a compact Arabic shop hub with

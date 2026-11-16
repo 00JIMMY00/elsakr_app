@@ -155,6 +155,8 @@ roll_forward() {
   for app in "${desired[@]}"; do
     grep -qx "$app" <<< "$available" || return 1
     if ! jq -e --arg site "$site" --arg app "$app" '.[$site] | index($app)' <<< "$installed" >/dev/null; then
+      # Frappe reads the cached module map at startup, before install-app clears it.
+      backend bench --site "$site" clear-cache || return 1
       backend bench --site "$site" install-app "$app" || return 1
     fi
   done

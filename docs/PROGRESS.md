@@ -1,5 +1,18 @@
 # Progress
 
+## 2026-11-16 — Refresh site cache before installing new apps (Local verification)
+
+- Changed: Run Frappe's site `clear-cache` before installing each new app. The
+  failed production run reached the `frappe_waha` installation hook without
+  loading `WAHA Settings`. Its rollback restored the site and the public ping
+  returned `pong`.
+- Checked locally: A stale module map made Frappe skip all `frappe_waha`
+  definitions. Rebuilding the map let it discover 16, including `WAHA Settings`.
+  Simulated rollouts passed for a new app, already installed apps, first install,
+  and rollback after a cache-clear or app-install failure. Shell syntax and diff
+  whitespace checks passed.
+- Remaining: Verify the normal GitHub Actions release and the live site.
+
 ## 2026-11-16 — Show both invoice reports in Arabic (Local development)
 
 - Changed: Both report titles, filters, grouping labels, table columns, statuses,

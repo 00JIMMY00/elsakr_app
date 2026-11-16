@@ -1,5 +1,11 @@
 # Elsakr client updates
 
+## 2026-11-16 — WhatsApp app installation
+
+The previous deployment rolled back after the WhatsApp app installer could not
+find its settings. The rollout now refreshes Frappe's site cache before each new
+app installation. Production verification of the updated rollout is pending.
+
 ## 2026-11-06 — Linked print footer
 
 **Elsakr Sales Invoice** and **Elsakr Quotation** now end with

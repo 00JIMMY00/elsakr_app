@@ -2,6 +2,15 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-11-16 — Refresh the Frappe module map before installing new apps
+
+The rollout runs a separate site `clear-cache` command before each `install-app`.
+Frappe loads its module map from Redis at command startup. A map from the
+previous image can cause Frappe to skip the new app's DocTypes before running its
+installation hooks, as observed when `frappe_waha` could not find `WAHA Settings`.
+The separate command lets the installer rebuild the map from the new app list.
+If the cache clear fails, the rollout uses the existing backup and rollback path.
+
 ## 2026-11-16 — Display invoice report labels in Arabic regardless of Desk language
 
 **Decision:** Render both invoice reports' own labels/messages in Arabic explicitly,
