@@ -1,5 +1,14 @@
 # Progress
 
+## 2026-11-16 — Verify the WhatsApp app installation (Production)
+
+- Deployed: GitHub Actions run `43948152184` built the image and released
+  commit `275e0a4`. The deploy log showed `frappe_waha` DocType sync reaching
+  100%, followed by site migration and successful rollout completion.
+- Checked live: The public Frappe endpoint returned `pong`. The WhatsApp app's
+  Sales Invoice JavaScript asset returned HTTP 200.
+- Remaining: None for the rollout repair.
+
 ## 2026-11-16 — Refresh site cache before installing new apps (Local verification)
 
 - Changed: Run Frappe's site `clear-cache` before installing each new app. The

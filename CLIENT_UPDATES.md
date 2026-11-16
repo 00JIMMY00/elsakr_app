@@ -4,7 +4,9 @@
 
 The previous deployment rolled back after the WhatsApp app installer could not
 find its settings. The rollout now refreshes Frappe's site cache before each new
-app installation. Production verification of the updated rollout is pending.
+app installation. The normal release installed the WhatsApp app and completed
+production migration. The live site responded and served the app's Sales Invoice
+asset. [Deployment run](https://github.com/00JIMMY00/elsakr_app/actions/runs/43948152184)
 
 ## 2026-11-06 — Linked print footer
 
