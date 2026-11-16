@@ -446,22 +446,35 @@ also uses the corrected grouping. The source Workspace's default report target
 remains Stock Size Search; the saved report and its selected production target
 remain site-owned.
 
-## Customer collections and supplier balances
+## Customer collections and supplier payments
+
+Both reports display Arabic titles, filters, columns, cards, charts and payment
+actions even when Desk is in English. Tables use RTL; customer receipts use
+**تحصيل** and supplier payments use **سداد**. Reload Desk to load the scripts.
+
 
 **Simple Receivable Summary** now shows open Sales Invoices with clickable
 invoice/customer links, Invoice Total, Total Paid, Credit Note, Outstanding Amount,
 due dates, and days overdue. **Group By** supports Customer (default), Invoice,
 Customer Group, and Territory. Group totals expand into invoices; **Overdue Only**
-limits the report to late invoices. Five summary cards and a colored ageing chart
-appear above the table. Totals count invoices once, independently of grouping.
+limits the report to late invoices. Five summary cards and a chart of outstanding balances by party
+appear above the table. Totals count invoices once, independently of grouping. Charts show one bar per
+customer or supplier, sorted by outstanding amount, and follow the report filters.
 
 Balances use ERPNext's native Payment Ledger through the selected Date in company
 currency, including allocated receipts, POS payments, and credit notes. Only open
 positive Sales Invoices appear; paid totals cover those displayed invoices.
 Unallocated advances and journal/opening balances are excluded, so these totals
 can differ from a customer's net GL balance. Native company, customer, invoice,
-and Payment Ledger row permissions apply. Simple Payable Summary retains the
-original two-column, positive net supplier GL balance behavior.
+and Payment Ledger row permissions apply.
+
+**Simple Payable Summary** now has the same invoice view for Purchase Invoices:
+Supplier, Invoice, Supplier Group, or Country grouping; supplier/invoice links;
+supplier invoice numbers; Invoice Total, Total Paid, Debit Note, Outstanding
+Amount, dates and overdue days; the same cards/chart and Overdue Only filter.
+Native Accounts Payable allocations supply as-of amounts in company currency.
+Unallocated advances and journal/opening balances are excluded, so this replaces
+the former net supplier GL view. Paid totals cover only displayed open invoices.
 
 Use **Pay** on an invoice, **Pay Customer** for all that customer's displayed
 invoices, or select invoice checkboxes and click **Pay Selected Invoices**. The
@@ -470,6 +483,14 @@ selected invoices must share customer, company, receivable account, and currency
 opens an **unsaved Receive Payment Entry** using native terms, discounts, and
 allocations. Review the cash/bank account and amounts, then save/submit normally.
 A historical report's Pay action still uses today's remaining balance.
+
+In the supplier report, **Pay**, **Pay Supplier**, or **Pay Selected Invoices**
+opens an **unsaved Pay Payment Entry**, paying from cash/bank to the supplier's
+payable account. Selected invoices must share supplier, company, payable account,
+and currency (maximum 200). Invoice holds and native supplier payment holds are
+honored. Review allocations, bank/cash account and bank reference, then save/submit.
+Both reports share `invoice_balance_summary.py` and `invoice_payments.py`; their
+public payment endpoints retain separate customer/supplier scopes.
 
 Payment Entry also has a **Get Outstanding Invoices** toolbar button. Select
 company/party/accounts first; it opens ERPNext's native date/amount filter dialog.

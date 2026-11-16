@@ -146,31 +146,45 @@ The managed HTML Block CSS supplies the divider and is refreshed on migration.
 ERPNext Accounts Receivable Payment Ledger calculations through the selected
 date, in company currency. It includes invoice/customer links, invoice total,
 paid, credit note, outstanding, due dates and overdue days, five native summary
-cards and a colored ageing chart. Customer (default), Invoice, Customer Group and
+cards and a chart of outstanding balances by party. Customer (default), Invoice, Customer Group and
 Territory grouping retain invoice rows without double-counting summaries; an
 Overdue Only filter is optional. Company/customer/invoice listing permissions and
 native Payment Ledger match conditions apply. Unallocated advances and journal
 balances are excluded, so this invoice collection view differs from net GL debt.
 Paid totals refer only to displayed open invoices.
 
-`receivable_payments.make_payment_entry` checks create/read permissions and current
-outstanding and returns an unsaved native Receive Payment Entry for one or up to
-200 invoices sharing customer, company, receivable account and currency. Native
-per-invoice mapping preserves terms, discounts and references. Report row Pay,
-customer-group Pay Customer and checkbox Pay Selected Invoices actions open it;
-historical report dates do not change the payment date or use historical balances
-for allocation. `public/js/payment_entry.js` adds a draft-only toolbar action for
-the native outstanding-invoice picker, confirming replacement of existing refs.
-Nothing is saved/submitted by these actions.
+`Simple Payable Summary` mirrors the invoice view for positive open Purchase
+Invoices using native Accounts Payable Payment Ledger amounts. Its group options
+are Supplier (default), Invoice, Supplier Group and Country. It displays supplier
+invoice numbers and separate Debit Notes, with the same invoice totals, paid,
+outstanding, overdue controls, cards and chart. Supplier/Purchase Invoice listing
+permissions and Payment Ledger match conditions apply. Unallocated advances and
+journal/opening balances are excluded; this supersedes its net GL balance view.
+Both reports share `invoice_balance_summary.py` for native calculations,
+permission-aware scoping, grouping, cards and charts. Charts aggregate filtered
+invoice outstanding by party ID, largest first, independently of table grouping.
+Duplicate party names include IDs; all parties remain represented. Both reports
+explicitly display their own titles, controls, columns, cards and chart labels in
+Arabic regardless of Desk language, with RTL tables. Native identifiers/grouping
+values and saved party names are retained.
 
-`Simple Payable Summary` retains party name and positive net supplier balance
-from non-cancelled payable GL entries through the chosen date, with Company,
-Date and Supplier filters. It requires Company, GL Entry, Supplier and Purchase
-Invoice read access and applies party/GL row restrictions. Both reports retain
-Operations' existing Arabic shortcut labels, and native ERPNext report URLs
-remain available. The customer collection update was checked locally on
-2026-11-16; production release is pending. No business records are written by
-reports.
+Separate whitelisted `receivable_payments.make_payment_entry` and
+`payable_payments.make_payment_entry` endpoints delegate to `invoice_payments.py`.
+They check create/read permissions and current outstanding and return unsaved
+native Receive (customer) or Pay (supplier) Payment Entries for up to 200 invoices
+sharing party, company, receivable/payable account and currency. Native per-invoice
+mapping preserves terms, discounts and references. For suppliers the bank/cash
+account is `paid_from` and the payable account is `paid_to`; invoice holds and
+native supplier holds are honored. Report row Pay, party-group Pay Customer/Pay
+Supplier and checkbox Pay Selected Invoices actions open the entries. Historical
+report dates do not backdate payments or allocate historical balances.
+`public/js/payment_entry.js` adds the draft-only toolbar action for the native
+outstanding-invoice picker for both party types, confirming reference replacement.
+Neither reports nor actions save/submit business documents.
+
+Both reports retain Operations' existing Arabic shortcut labels and native ERPNext
+report URLs remain available. Customer and supplier invoice views were checked
+locally on 2026-11-16; production release is pending.
 
 ## Source of truth
 

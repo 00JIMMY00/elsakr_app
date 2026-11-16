@@ -1,6 +1,6 @@
-"""Outstanding supplier balances as of the selected date."""
+"""Open purchase invoices, as-of balances and native payment actions."""
 
-from elsakr_app.party_balance_summary import execute as execute_summary
+from elsakr_app.invoice_balance_summary import execute as execute_summary
 
 
 def execute(filters=None):

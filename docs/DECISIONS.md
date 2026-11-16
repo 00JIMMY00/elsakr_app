@@ -2,6 +2,65 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-11-16 — Display invoice report labels in Arabic regardless of Desk language
+
+**Decision:** Render both invoice reports' own labels/messages in Arabic explicitly,
+using Arabic server translations and client display labels, with RTL tables.
+Keep report names/routes, field names and grouping values as native identifiers.
+
+**Reason:** The user requested Arabic display; native locale-based translations
+still showed English when the operator's Desk language was English.
+
+**Consequence:** These report labels remain Arabic in English Desk sessions without
+changing account language or other forms. Customer receipt actions use تحصيل and
+supplier payment actions use سداد. Party record names are not translated.
+
+## 2026-11-16 — Chart outstanding by customer and supplier
+
+**Decision:** Replace the invoice reports' ageing buckets with one bar per party,
+summing outstanding from filtered invoice rows and sorting largest first. Use
+customer/supplier display names, adding IDs for duplicate names; include all parties.
+
+**Reason:** The user requested party names on both charts instead of age ranges.
+
+**Consequence:** Charts follow company, date, party and overdue filters regardless
+of table grouping. Overdue columns/cards remain available. No balance calculations
+or payment actions change.
+
+## 2026-11-16 — Mirror invoice collection tools for supplier payments
+
+**Decision:** Upgrade Simple Payable Summary to positive open Purchase Invoices
+using native ERPNext Accounts Payable Payment Ledger calculations, with Supplier,
+Invoice, Supplier Group and Country grouping. Match the customer report's links,
+paid/outstanding detail, overdue controls, cards/chart and payment actions; add
+supplier bill numbers and show Debit Notes separately.
+
+**Reason:** The user approved the customer invoice flow and requested its supplier
+counterpart. Grouping by Country uses the Supplier master in place of Customer
+Territory. Native allocations preserve paid-purchase, return and as-of behavior.
+
+**Consequence:** Supersedes the remaining supplier net-GL choice from 2026-11-06.
+Totals cover displayed open invoices, excluding unallocated advances and
+journal/opening balances, and may differ from net supplier debt. Supplier/Purchase
+Invoice listing permissions, permitted company and native ledger row conditions
+remain required. Both report controllers use `invoice_balance_summary.py` so
+calculations, grouping totals and presentation data stay aligned.
+
+**Decision:** Share unsaved native payment preparation in `invoice_payments.py`,
+with separate whitelisted customer/supplier endpoints. Supplier payments use Pay,
+source bank/cash from `paid_from` and destination payable account from `paid_to`.
+Enforce the same party/company/account/currency and 200-invoice constraints,
+fresh balances and permissions, plus native supplier and invoice holds.
+
+**Reason:** Supplier payments reverse the customer receipt account direction.
+Sharing mapping/merge rules avoids two diverging accounting implementations.
+Separate endpoints bind the invoice type server-side.
+
+**Consequence:** Per-invoice native terms, discounts and payment-request references
+are preserved. No button saves, submits or posts a payment. The existing native
+outstanding-invoice toolbar works for supplier Pay entries as well. Keep the
+customer endpoint and browser flow compatible; regression-check both reports.
+
 ## 2026-11-16 — Collect open invoices through native receivables and draft payments
 
 **Decision:** Evolve Simple Receivable Summary into an invoice collection report,

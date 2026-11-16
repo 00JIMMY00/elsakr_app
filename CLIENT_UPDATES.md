@@ -590,7 +590,16 @@ also uses the corrected grouping. The source Workspace's default report target
 remains Stock Size Search; the saved report and its selected production target
 remain site-owned.
 
-## Customer collections and supplier balances
+## Customer collections and supplier payments
+
+Both reports display Arabic titles, filters, columns, cards, charts and payment
+actions even when Desk is in English. Tables use RTL; customer receipts use
+**تحصيل** and supplier payments use **سداد**. Reload Desk to load the scripts.
+
+
+Charts show outstanding amounts by customer/supplier, largest first, following
+the report filters. Each party has one bar even with several invoices.
+
 
 The Operations customer-balance shortcut opens **Simple Receivable Summary**.
 The 2026-11-16 update adds:
@@ -599,7 +608,7 @@ The 2026-11-16 update adds:
   invoice details and totals that do not count group rows twice.
 - Clickable Sales Invoice and Customer links, invoice total, total paid, separate
   credit notes, outstanding amount, posting/due dates, and days overdue.
-- Five summary cards, a colored ageing chart, overdue colors, and **Overdue Only**.
+- Five summary cards, a chart of outstanding balances by party, overdue colors, and **Overdue Only**.
 - **Pay** on an invoice, **Pay Customer** for its displayed invoices, and
   **Pay Selected Invoices** for checked invoices belonging to one customer.
 
@@ -608,8 +617,12 @@ selected date, in company currency. Only open positive Sales Invoices count.
 Payments/credits reduce invoice balances; unallocated advances and journal/opening
 balances do not. This supersedes the old net-customer-GL view and can differ from
 net customer debt. Paid totals apply only to the open invoices currently shown.
-Simple Payable Summary still shows Name and positive net supplier Outstanding
-Amount from GL, with Company, Date, and Supplier filters.
+The supplier shortcut now opens the matching enhanced **Simple Payable Summary**:
+Supplier, Invoice, Supplier Group or Country grouping, Purchase Invoice/Supplier
+links, supplier invoice number, invoice total, paid, separate debit notes,
+outstanding, due dates and days overdue. It includes the same five cards, a chart of outstanding balances by party, and Overdue Only filter. Its amounts use native Accounts Payable allocations
+through the selected date in company currency. This also replaces its former net
+supplier GL balance view; unallocated advances and journal balances are excluded.
 
 Pay checks live permissions/outstanding and opens an **unsaved Receive Payment
 Entry**. Review receipt amount, allocations, cash/bank account, and any required
@@ -618,6 +631,13 @@ new payment. Select up to 200 invoices with the same customer, company, receivab
 account, and currency; different accounts/currencies require separate entries.
 Native payment terms, discounts, and validation remain active.
 
+On the supplier report, **Pay**, **Pay Supplier** and **Pay Selected Invoices**
+open an **unsaved Pay Payment Entry** for one or more invoices from one supplier.
+Select up to 200 sharing company, payable account and currency. Cash/bank is the
+paying account and the supplier payable account is the receiving account. Current
+outstanding is checked again; invoice holds and native supplier payment holds
+block preparation. Review the entry and submit normally; the report posts nothing.
+
 On a draft Payment Entry, use the new **Get Outstanding Invoices** toolbar action
 after selecting company, party, and the required accounts. It opens the native
 posting/due-date and amount filter dialog; widen or clear the posting-date range
@@ -625,8 +645,8 @@ for older invoices. Existing reference rows require confirmation before
 replacement. No submitted records are modified by either button.
 
 Local development synchronization/checks target `elsakr-dev2.arab-erp.com`.
-Production deployment is pending. Include the new Python mapper, report sources,
-Payment Entry JavaScript/hook, and Arabic translations in the normal source/asset
+Production deployment is pending. Include the shared Python report/payment helpers, separate customer/supplier
+endpoints, report sources, Payment Entry JavaScript/hook and Arabic translations in the normal source/asset
 release; run migration and restart services, then reload Desk. No production
 workflow or image release was performed for this change. Original ERPNext report
 URLs remain available.

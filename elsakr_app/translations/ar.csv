@@ -43,3 +43,13 @@ Replace the current reference rows with outstanding invoices?,هل تريد اس
 "Open sales invoices as of the selected date, in company currency. Paid amounts follow ERPNext allocations; credit notes are separate. Unallocated advances and journal balances are excluded. Pay uses today's remaining balance and opens an unsaved Payment Entry.",فواتير البيع المفتوحة حتى التاريخ المحدد بعملة الشركة. المسدد حسب تخصيصات ERPNext، وتظهر الإشعارات الدائنة منفصلة. لا تشمل الأرصدة الدفعات المقدمة غير المخصصة أو أرصدة قيود اليومية. يفتح زر التحصيل قيد دفع غير محفوظ بالرصيد المتبقي اليوم.
 Outstanding by Days Overdue,المستحق حسب أيام التأخير
 Invoice Total,إجمالي الفاتورة
+Supplier / Group,المورد / المجموعة
+Pay Supplier,سداد للمورد
+Supplier Invoice No,رقم فاتورة المورد
+Select one or more invoices for the same supplier.,حدد فاتورة أو أكثر للمورد نفسه.
+Select between 1 and 200 invoices for one supplier.,حدد من فاتورة واحدة إلى ٢٠٠ فاتورة لمورد واحد.
+"Select invoices for the same supplier, company, payable account and currency.",حدد فواتير للمورد والشركة وحساب الدائنين والعملة نفسها.
+A selected purchase invoice is on hold. Release it before making a payment.,إحدى فواتير الشراء المحددة معلّقة. ارفع التعليق قبل السداد.
+"Open purchase invoices as of the selected date, in company currency. Paid amounts follow ERPNext allocations; debit notes are separate. Unallocated advances and journal balances are excluded. Pay uses today's remaining balance and opens an unsaved Pay Payment Entry.",فواتير الشراء المفتوحة حتى التاريخ المحدد بعملة الشركة. المسدد حسب تخصيصات ERPNext، وتظهر الإشعارات المدينة منفصلة. لا تشمل الأرصدة الدفعات المقدمة غير المخصصة أو أرصدة قيود اليومية. يفتح زر السداد قيد دفع غير محفوظ للمورد بالرصيد المتبقي اليوم.
+Outstanding by Supplier,المستحق حسب المورد
+Outstanding by Customer,المستحق حسب العميل

@@ -1,5 +1,79 @@
 # Progress
 
+## 2026-11-16 — Show both invoice reports in Arabic (Local development)
+
+- Changed: Both report titles, filters, grouping labels, table columns, statuses,
+  summary cards, chart titles and payment actions now use Arabic even in English
+  Desk sessions. Customer actions use تحصيل and supplier actions use سداد. Group
+  option values retain their native keys and report tables use RTL direction.
+  Customer/supplier names remain the saved record names. Updated current docs.
+- Checked: All 15 customer/supplier database regression tests passed after updating
+  the debit-note label expectation. Development HTTPS Chrome in an English Desk
+  session verified Arabic columns/group choices/chart titles in both reports,
+  unchanged party-bar totals and no JavaScript errors. Ruff lint/format,
+  JavaScript syntax/Prettier and diff whitespace checks passed.
+- Remaining: Reload development Desk to load the scripts. Production release is
+  pending; no production deployment or accounting-document changes were made.
+
+## 2026-11-16 — Show customers and suppliers on outstanding charts (Local development)
+
+- Changed: Replaced ageing buckets in both invoice reports with one bar per
+  customer/supplier, summing filtered invoice outstanding and sorting largest
+  first. Duplicate display names include party IDs. Charts include all matching
+  parties and use company currency. Added Arabic chart titles and updated current
+  context, decisions, README and client notes.
+- Checked locally: All 15 customer/supplier database regression tests passed.
+  Focused chart checks verified aggregation across invoices, descending order,
+  distinct parties with identical names, total preservation and empty results.
+  Development HTTPS browser checks confirmed named customer/supplier bars and
+  totals matching filtered invoices in both reports, with no JavaScript errors.
+  Ruff lint/format and diff whitespace checks passed. Cleared development caches;
+  no accounting records were saved or submitted.
+- Remaining: Production deployment is pending. Reload the development reports to
+  load the new charts. Overdue information remains in table columns and cards.
+
+## 2026-11-16 — Add matching supplier invoice payments (Local development)
+
+- Changed: Upgraded Simple Payable Summary to open Purchase Invoices with
+  Supplier/Invoice/Supplier Group/Country grouping, expandable subtotals, native
+  invoice/supplier links, supplier bill numbers, invoice total, paid, debit notes,
+  outstanding, due dates/days overdue, Overdue Only, five cards and an ageing
+  chart. Added matching Arabic labels and compact phone styling.
+- Changed: Added Pay, Pay Supplier and checkbox Pay Selected Invoices actions.
+  Supplier entries open unsaved native Pay Payment Entries with bank/cash as
+  `paid_from` and payable account as `paid_to`. Current balances, permissions,
+  same-party/company/account/currency and 200-invoice limits are enforced;
+  invoice holds and native supplier payment holds are respected. The existing
+  Payment Entry outstanding-invoice toolbar serves supplier entries too.
+- Changed: Extracted shared native report/payment preparation into
+  `invoice_balance_summary.py` and `invoice_payments.py`, retaining separate
+  whitelisted customer/supplier endpoints. Updated context, decisions, README
+  and client notes. The supplier view now excludes unallocated advances and
+  standalone journal balances, replacing its prior net GL balance view.
+- Checked locally: All 15 database tests passed: eight supplier tests and seven
+  customer regression tests. Checked as-of payments/debit notes, Paid purchases,
+  cancelled/future/draft/settled exclusions, company-currency amounts, four group
+  modes and totals without double counting, overdue filtering, permission/empty
+  results, native payment terms, single/multiple unsaved payments, fresh balances,
+  mixed/invalid selections and supplier/invoice holds. Combined Pay entries passed
+  native validation with a synthetic bank reference and zero difference. Ruff
+  lint/format, Python compilation, JavaScript syntax/Prettier and diff whitespace
+  checks passed. All accounting fixtures were rolled back; no test purchase
+  invoices, suppliers or Payment Ledger rows remain.
+- Checked in development HTTPS Chrome: Supplier table/cards/chart, all four group
+  modes, one-invoice Pay, a checked three-invoice supplier group, matching amounts,
+  zero difference, reference-replacement confirmation and actual native outstanding
+  retrieval passed. Payments remained unsaved. Desktop and 390 px phone layouts
+  had no document overflow. A temporary Arabic Accounts user verified translated
+  RTL labels/layout without JavaScript errors and was removed. Navigating from
+  supplier to customer report retained the correct customer endpoint and Receive
+  entry; the final browser run recorded no JavaScript errors. Source was applied
+  through the shared development Bench and site caches cleared; no migration or
+  production workflow/image deployment was performed.
+- Remaining: Production deployment is pending. Release both reports and the shared
+  helpers/endpoints through the normal workflow, verify workflow/live site, and
+  reload Desk. Review the native Pay entry before saving/submitting it.
+
 ## 2026-11-16 — Add invoice collections and native payment actions (Local development)
 
 - Changed: Expanded Simple Receivable Summary with Customer/Invoice/Customer

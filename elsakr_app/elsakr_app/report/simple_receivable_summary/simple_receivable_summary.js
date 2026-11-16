@@ -4,30 +4,36 @@ frappe.query_reports["Simple Receivable Summary"] = {
 	filters: [
 		{
 			fieldname: "company",
-			label: __("Company"),
+			label: __("الشركة"),
 			fieldtype: "Link",
 			options: "Company",
 			default: frappe.defaults.get_user_default("Company"),
 		},
 		{
 			fieldname: "report_date",
-			label: __("Date"),
+			label: __("التاريخ"),
 			fieldtype: "Date",
 			default: frappe.datetime.get_today(),
 			reqd: 1,
 		},
-		{ fieldname: "customer", label: __("Customer"), fieldtype: "Link", options: "Customer" },
+		{ fieldname: "customer", label: __("العميل"), fieldtype: "Link", options: "Customer" },
 		{
 			fieldname: "group_by",
-			label: __("Group By"),
+			label: __("تجميع حسب"),
 			fieldtype: "Select",
-			options: ["Customer", "Invoice", "Customer Group", "Territory"],
+			options: [
+				{ value: "Customer", label: "العميل" },
+				{ value: "Invoice", label: "الفاتورة" },
+				{ value: "Customer Group", label: "مجموعة العملاء" },
+				{ value: "Territory", label: "المنطقة" },
+			],
 			default: "Customer",
 			reqd: 1,
 		},
-		{ fieldname: "overdue_only", label: __("Overdue Only"), fieldtype: "Check" },
+		{ fieldname: "overdue_only", label: __("المتأخر فقط"), fieldtype: "Check" },
 	],
 	onload(report) {
+		report.page.set_title("ملخص مديونية العملاء");
 		if (!document.getElementById("elsakr-receivable-style")) {
 			$(`<style id="elsakr-receivable-style">
 				body[data-route="query-report/Simple Receivable Summary"] .report-summary {
@@ -57,7 +63,7 @@ frappe.query_reports["Simple Receivable Summary"] = {
 			</style>`).appendTo(document.head);
 		}
 		if (!frappe.model.can_create("Payment Entry")) return;
-		report.page.add_inner_button(__("Pay Selected Invoices"), () => {
+		report.page.add_inner_button(__("تحصيل الفواتير المحددة"), () => {
 			const checked = report.datatable ? report.get_checked_items() : [];
 			const names = [
 				...new Set(
@@ -65,7 +71,7 @@ frappe.query_reports["Simple Receivable Summary"] = {
 				),
 			];
 			if (!names.length) {
-				frappe.msgprint(__("Select one or more invoices for the same customer."));
+				frappe.msgprint(__("حدد فاتورة أو أكثر للعميل نفسه."));
 				return;
 			}
 			this.pay(report, names);
@@ -82,7 +88,11 @@ frappe.query_reports["Simple Receivable Summary"] = {
 			});
 	},
 	get_datatable_options(options) {
-		return { ...options, checkboxColumn: frappe.model.can_create("Payment Entry") };
+		return {
+			...options,
+			direction: "rtl",
+			checkboxColumn: frappe.model.can_create("Payment Entry"),
+		};
 	},
 	async pay(report, invoices) {
 		if (report.elsakr_payment_pending) return;
@@ -95,7 +105,7 @@ frappe.query_reports["Simple Receivable Summary"] = {
 					method: "elsakr_app.receivable_payments.make_payment_entry",
 					args: { invoices },
 					freeze: true,
-					freeze_message: __("Preparing Payment Entry"),
+					freeze_message: __("جارٍ تجهيز قيد الدفع"),
 				})
 				.catch(() => null);
 			const message = response?.message;
@@ -116,7 +126,7 @@ frappe.query_reports["Simple Receivable Summary"] = {
 			const names = data.invoice_names || [data.invoice];
 			const encoded = frappe.utils.escape_html(encodeURIComponent(JSON.stringify(names)));
 			return `<button type="button" class="btn btn-xs btn-primary" data-elsakr-pay="${encoded}">${
-				data.is_group ? __("Pay Customer") : __("Pay")
+				data.is_group ? __("تحصيل من العميل") : __("تحصيل")
 			}</button>`;
 		}
 		value = default_formatter(value, row, column, data);
