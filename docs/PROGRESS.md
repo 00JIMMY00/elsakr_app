@@ -1,5 +1,45 @@
 # Progress
 
+## 2026-11-16 — Add invoice collections and native payment actions (Local development)
+
+- Changed: Expanded Simple Receivable Summary with Customer/Invoice/Customer
+  Group/Territory grouping, expandable subtotals, invoice/customer links, invoice
+  total, paid, separate credits, outstanding, dates, overdue days/colors, Overdue
+  Only, five cards and an ageing chart. Native ERPNext Accounts Receivable Payment
+  Ledger calculations supply as-of amounts in company currency; totals count
+  invoice rows once. Added Arabic translations and compact phone cards. Disabled
+  chart animation after observing a native redraw error during resize/refresh.
+- Changed: Added row Pay, group Pay Customer and checkbox Pay Selected Invoices.
+  A permission-checked server mapper refreshes current balances and prepares an
+  unsaved native Receive Payment Entry for up to 200 invoices sharing customer,
+  company, receivable account and currency. Added a draft Payment Entry toolbar
+  action for the native outstanding picker, with confirmation before replacing
+  existing references. Updated decisions/context, README and client notes.
+- Applied locally: Source is active on the shared development Bench. Cleared site
+  and Payment Entry metadata caches on `elsakr-dev2.arab-erp.com`; no migration,
+  business-document save/submission or production release was performed.
+- Checked locally: Ten database regression tests passed (seven collection tests
+  plus the three existing party-balance checks). Covered as-of receipts/credits,
+  POS, cancellation/future/draft/settled exclusions, company currency, grouping
+  without double counting, overdue filtering, permission/empty results, native
+  payment terms, single/multiple receipt mapping, stale displayed balances and
+  invalid/mixed selections. Combined receipts also passed native validation with
+  a synthetic bank reference and zero difference. All accounting fixtures were
+  rolled back; no test invoices, customers or Payment Ledger rows remain.
+- Checked in development HTTPS Chrome: All four group modes, five cards, ageing
+  chart, checkboxes, one-invoice Pay, a three-invoice checked customer group,
+  matching allocations/zero difference, reference replacement confirmation and
+  actual native outstanding-invoice retrieval worked. Receipts remained unsaved.
+  Desktop and 390 px phone layouts had no document overflow. An Arabic Accounts
+  user session showed translated labels and RTL layout; the temporary reviewer
+  was removed. Final browser checks recorded no JavaScript errors. Ruff lint and
+  format, Python compilation, JavaScript syntax/Prettier, payment toolbar
+  draft/internal-transfer/submitted lifecycle and diff whitespace checks passed.
+- Remaining: Production deployment is pending. Release app source/assets through
+  the normal workflow, verify workflow and live site, then reload Desk. Report
+  totals now cover open Sales Invoices, excluding unallocated advances and
+  journal/opening balances; Simple Payable Summary retains net GL balances.
+
 ## 2026-11-06 — Remove footer side lines and center contact text (Live metadata and local source)
 
 - Changed: Removed both decorative side-rule cells and their CSS, and centered

@@ -2,6 +2,44 @@
 
 Record lasting choices here. Add a new dated entry when a choice changes; keep the earlier entry for history.
 
+## 2026-11-16 — Collect open invoices through native receivables and draft payments
+
+**Decision:** Evolve Simple Receivable Summary into an invoice collection report,
+using ERPNext's native Accounts Receivable Payment Ledger calculation for as-of
+invoice totals, receipts and credit notes. Keep only permitted positive open
+Sales Invoices, group by Customer/Invoice/Customer Group/Territory, and calculate
+cards/chart from invoice rows before adding group totals. Keep Simple Payable
+Summary's net GL calculation unchanged.
+
+**Reason:** Staff need invoice navigation, paid/outstanding detail, overdue
+priorities, and direct receipt preparation. Native allocations handle POS,
+returns and historical cutoffs without maintaining a second accounting engine.
+
+**Consequence:** Supersedes the customer-report portion of the 2026-11-06 choice.
+Unallocated advances and journal/opening balances no longer reduce the displayed
+invoice totals; disclose the difference from net customer GL debt. Paid totals
+refer to displayed open invoices. Apply native Payment Ledger match conditions
+and permission-aware Customer/Sales Invoice listing within a permitted company.
+
+**Decision:** Prepare unsaved Receive Payment Entries through native per-invoice
+mapping, with fresh current balances and create/read checks. Combine only invoices
+sharing customer/company/receivable account/currency, enforce a 200-invoice limit,
+and retain native terms/discounts/payment requests. Add a Payment Entry toolbar
+button delegating to the native outstanding picker, confirming before reference
+replacement.
+
+**Reason:** One invoice or several for one customer should lead directly to a
+reviewable native receipt. A historical report must not allocate obsolete amounts
+or backdate a new payment. The picker should be easy to find without duplicating
+ERPNext accounting/selection logic.
+
+**Consequence:** The buttons never insert, save, submit or post a payment. Operators
+review bank/cash account, allocation, amount and bank references before normal
+save/submit. Native submission validation handles concurrent balance changes.
+Different payment accounts/currencies require separate receipts; native picker
+date filters remain in effect. The Payment Entry `doctype_js` hook requires
+updated app assets, cleared metadata caches and service restart on release.
+
 ## 2026-11-06 — Provide compact party balance reports
 
 **Decision:** Add separate Simple Receivable Summary and Simple Payable Summary

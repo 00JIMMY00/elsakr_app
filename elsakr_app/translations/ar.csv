@@ -16,3 +16,30 @@ Purchase Invoices / Returns,فواتير الشراء / المرتجعات
 Submitted invoices only. Returns reduce purchases. Amounts use company currency; outstanding balances are current.,الفواتير المعتمدة فقط. تخصم المرتجعات من المشتريات. المبالغ بعملة الشركة والأرصدة المستحقة حالية.
 Simple Receivable Summary,ملخص مديونية العملاء
 Simple Payable Summary,ملخص استحقاقات الموردين
+Customer / Group,العميل / المجموعة
+Total Paid,إجمالي المسدد
+Pay Customer,تحصيل من العميل
+Pay Selected Invoices,تحصيل الفواتير المحددة
+Overdue Only,المتأخر فقط
+Open Invoices,الفواتير المفتوحة
+Overdue Amount,المبلغ المتأخر
+Days Overdue,أيام التأخير
+Not Due,غير متأخر
+1-30 Days,١–٣٠ يوماً
+31-60 Days,٣١–٦٠ يوماً
+61-90 Days,٦١–٩٠ يوماً
+Over 90 Days,أكثر من ٩٠ يوماً
+Preparing Payment Entry,جارٍ تجهيز قيد الدفع
+Select one or more invoices for the same customer.,حدد فاتورة أو أكثر للعميل نفسه.
+Select between 1 and 200 invoices for one customer.,حدد من فاتورة واحدة إلى ٢٠٠ فاتورة لعميل واحد.
+Invalid invoice selection,اختيار الفواتير غير صالح
+Invalid Group By option,خيار التجميع غير صالح
+An invoice is no longer payable. Refresh the report and select open invoices.,إحدى الفواتير لم تعد قابلة للتحصيل. حدّث التقرير وحدد الفواتير المفتوحة.
+Future-dated invoices cannot be paid from this report.,لا يمكن تحصيل الفواتير ذات التاريخ المستقبلي من هذا التقرير.
+"Select invoices for the same customer, company, receivable account and currency.",حدد فواتير للعميل والشركة وحساب المدينين والعملة نفسها.
+These invoices require separate payments because their payment accounts differ.,تتطلب هذه الفواتير قيود دفع منفصلة لاختلاف حسابات الدفع.
+"Select Company, Party Type and Party first.",حدد الشركة ونوع الطرف والطرف أولاً.
+Replace the current reference rows with outstanding invoices?,هل تريد استبدال المراجع الحالية بالفواتير المستحقة؟
+"Open sales invoices as of the selected date, in company currency. Paid amounts follow ERPNext allocations; credit notes are separate. Unallocated advances and journal balances are excluded. Pay uses today's remaining balance and opens an unsaved Payment Entry.",فواتير البيع المفتوحة حتى التاريخ المحدد بعملة الشركة. المسدد حسب تخصيصات ERPNext، وتظهر الإشعارات الدائنة منفصلة. لا تشمل الأرصدة الدفعات المقدمة غير المخصصة أو أرصدة قيود اليومية. يفتح زر التحصيل قيد دفع غير محفوظ بالرصيد المتبقي اليوم.
+Outstanding by Days Overdue,المستحق حسب أيام التأخير
+Invoice Total,إجمالي الفاتورة

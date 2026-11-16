@@ -51,6 +51,7 @@ doc_events["Item"] = {
 }
 
 doctype_js = {
+	"Payment Entry": "public/js/payment_entry.js",
 	"Item": "public/js/item.js",
 	"Sales Invoice": "public/js/sales_invoice.js",
 	"Customer": "public/js/customer.js",

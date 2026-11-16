@@ -142,15 +142,35 @@ returns, company-currency totals, and current outstanding. It uses native
 Purchase Invoice permissions; its shortcut sits in the purchasing card. Report
 links are grouped after records for every card, including additional tools.
 The managed HTML Block CSS supplies the divider and is refreshed on migration.
-`Simple Receivable Summary` and `Simple Payable Summary` show only party name
-and positive net balance from non-cancelled receivable/payable GL entries through
-the chosen date, in company currency. Their only filters are Company, Date, and
-Customer/Supplier. Party listing and GL row conditions enforce native permissions;
-Company, GL Entry, party, and invoice read access are required. They replace the
-two native summary targets in Operations, retaining the Arabic shortcut labels.
-The native ERPNext report URLs remain available. The two reports and development
-Workspace shortcuts were synchronized on 2026-11-06; production deployment is pending.
-No business records are written by reports.
+`Simple Receivable Summary` now shows open positive Sales Invoices using native
+ERPNext Accounts Receivable Payment Ledger calculations through the selected
+date, in company currency. It includes invoice/customer links, invoice total,
+paid, credit note, outstanding, due dates and overdue days, five native summary
+cards and a colored ageing chart. Customer (default), Invoice, Customer Group and
+Territory grouping retain invoice rows without double-counting summaries; an
+Overdue Only filter is optional. Company/customer/invoice listing permissions and
+native Payment Ledger match conditions apply. Unallocated advances and journal
+balances are excluded, so this invoice collection view differs from net GL debt.
+Paid totals refer only to displayed open invoices.
+
+`receivable_payments.make_payment_entry` checks create/read permissions and current
+outstanding and returns an unsaved native Receive Payment Entry for one or up to
+200 invoices sharing customer, company, receivable account and currency. Native
+per-invoice mapping preserves terms, discounts and references. Report row Pay,
+customer-group Pay Customer and checkbox Pay Selected Invoices actions open it;
+historical report dates do not change the payment date or use historical balances
+for allocation. `public/js/payment_entry.js` adds a draft-only toolbar action for
+the native outstanding-invoice picker, confirming replacement of existing refs.
+Nothing is saved/submitted by these actions.
+
+`Simple Payable Summary` retains party name and positive net supplier balance
+from non-cancelled payable GL entries through the chosen date, with Company,
+Date and Supplier filters. It requires Company, GL Entry, Supplier and Purchase
+Invoice read access and applies party/GL row restrictions. Both reports retain
+Operations' existing Arabic shortcut labels, and native ERPNext report URLs
+remain available. The customer collection update was checked locally on
+2026-11-16; production release is pending. No business records are written by
+reports.
 
 ## Source of truth
 

@@ -446,21 +446,38 @@ also uses the corrected grouping. The source Workspace's default report target
 remains Stock Size Search; the saved report and its selected production target
 remain site-owned.
 
-## Simple customer and supplier balances
+## Customer collections and supplier balances
 
-The Operations shortcuts **ملخص مديونية العملاء** and **ملخص استحقاقات الموردين**
-now open **Simple Receivable Summary** and **Simple Payable Summary**. Each has
-only Name and Outstanding Amount columns, with Company, Date (today by default),
-and Customer/Supplier filters. Balances use posted, non-cancelled receivable or
-payable GL entries through the selected date in company currency. Payments,
-credits, and advances reduce the amount owed; zero and credit balances are omitted.
-Only permitted companies, parties, and GL rows are included. Accounting read
-permissions are required. These are net party balances, rather than invoice ageing.
+**Simple Receivable Summary** now shows open Sales Invoices with clickable
+invoice/customer links, Invoice Total, Total Paid, Credit Note, Outstanding Amount,
+due dates, and days overdue. **Group By** supports Customer (default), Invoice,
+Customer Group, and Territory. Group totals expand into invoices; **Overdue Only**
+limits the report to late invoices. Five summary cards and a colored ageing chart
+appear above the table. Totals count invoices once, independently of grouping.
+
+Balances use ERPNext's native Payment Ledger through the selected Date in company
+currency, including allocated receipts, POS payments, and credit notes. Only open
+positive Sales Invoices appear; paid totals cover those displayed invoices.
+Unallocated advances and journal/opening balances are excluded, so these totals
+can differ from a customer's net GL balance. Native company, customer, invoice,
+and Payment Ledger row permissions apply. Simple Payable Summary retains the
+original two-column, positive net supplier GL balance behavior.
+
+Use **Pay** on an invoice, **Pay Customer** for all that customer's displayed
+invoices, or select invoice checkboxes and click **Pay Selected Invoices**. The
+selected invoices must share customer, company, receivable account, and currency
+(maximum 200). The server checks current invoice balances and permissions and
+opens an **unsaved Receive Payment Entry** using native terms, discounts, and
+allocations. Review the cash/bank account and amounts, then save/submit normally.
+A historical report's Pay action still uses today's remaining balance.
+
+Payment Entry also has a **Get Outstanding Invoices** toolbar button. Select
+company/party/accounts first; it opens ERPNext's native date/amount filter dialog.
+Adjust its posting-date range to include older invoices when needed. Replacing
+existing reference rows asks for confirmation. Drafts only; submitted/cancelled
+entries retain native behavior.
+
+Implemented and checked on `elsakr-dev2.arab-erp.com` on 2026-11-16. Production
+release is pending. Deploy the app source/assets, run normal migration, restart
+services, and reload Desk to load the Payment Entry hook and report scripts.
 The original ERPNext reports remain available at their existing URLs.
-
-Applied to `elsakr-dev2.arab-erp.com` on 2026-11-06. Reload Desk and use the
-Operations shortcuts or `/app/query-report/Simple%20Receivable%20Summary` and
-`/app/query-report/Simple%20Payable%20Summary`. Production deployment is pending.
-Future installations use migration to sync the new reports and Workspace;
-serve the updated Workspace JavaScript and reload Desk. No bundle build was
-needed for the development synchronization.
